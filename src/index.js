@@ -25,5 +25,5 @@ app.use(
 console.log("Hello videoTuber!!");
 logger.info("Hello world")
 logger.warn("Hello world")
-logger.erro("Hello world")
+logger.error("Hello world")
 
