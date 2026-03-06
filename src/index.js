@@ -1,9 +1,12 @@
+import "dotenv/config";
 import logger from "./utils/logger.js";
-import express from "express"
+import express from "express";
 import morgan from "morgan";
+import connectDB from "./db/index.js";
 
-const app = express()
-
+const PORT = process.env.PORT || 3000;
+const app = express();
+// dotenv.config();
 const morganFormat = ":method :url :status :response-time ms";
 
 app.use(
@@ -19,11 +22,26 @@ app.use(
         logger.info(JSON.stringify(logObject));
       },
     },
-  })
+  }),
 );
 
-console.log("Hello videoTuber!!");
-logger.info("Hello world")
-logger.warn("Hello world")
-logger.error("Hello world")
+console.log(process.env.MONGO_URI)
+connectDB()
+  .then(
+    app.listen(PORT, () => {
+      console.log(`App is listening at http://localhost/${PORT}`);
+    }),
+  )
+  .catch((error) => {
+    logger.error("Mongo connection error", error);
+    throw error
+  });
 
+
+
+
+
+// console.log("Hello videoTuber!!");
+logger.info("Hello world");
+// logger.warn("Hello world");
+// logger.error("Hello world");
