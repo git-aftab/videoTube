@@ -1,44 +1,23 @@
 import "dotenv/config";
 import logger from "./utils/logger.js";
-import express from "express";
-import morgan from "morgan";
 import connectDB from "./db/index.js";
+import app from "./app.js"
 
 const PORT = process.env.PORT || 3000;
-const app = express();
-// dotenv.config();
-const morganFormat = ":method :url :status :response-time ms";
 
-app.use(
-  morgan(morganFormat, {
-    stream: {
-      write: (message) => {
-        const logObject = {
-          method: message.split(" ")[0],
-          url: message.split(" ")[1],
-          status: message.split(" ")[2],
-          responseTime: message.split(" ")[3],
-        };
-        logger.info(JSON.stringify(logObject));
-      },
-    },
-  }),
-);
-
-console.log(process.env.MONGO_URI)
+// console.log(process.env.MONGO_URI)
 connectDB()
-  .then(
+  .then(() => {
+    logger.info("MongoDB connected");
+
     app.listen(PORT, () => {
-      console.log(`App is listening at http://localhost/${PORT}`);
-    }),
-  )
+      logger.info(`Server running on http://localhost:${PORT}`);
+    });
+  })
   .catch((error) => {
     logger.error("Mongo connection error", error);
-    throw error
+    process.exit(1);
   });
-
-
-
 
 
 // console.log("Hello videoTuber!!");
