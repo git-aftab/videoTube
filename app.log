@@ -175,3 +175,9 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-03-31T07:58:03.669Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-03-31T07:58:03.673Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-03-31T07:58:11.759Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-03-31T09:25:07.380Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-03-31T09:25:07.900Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-03-31T09:25:07.906Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/healthcheck\",\"status\":\"304\",\"responseTime\":\"10.021\"}","timestamp":"2026-03-31T09:25:13.277Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/favicon.ico\",\"status\":\"404\",\"responseTime\":\"4.871\"}","timestamp":"2026-03-31T09:25:13.369Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/\",\"status\":\"304\",\"responseTime\":\"0.938\"}","timestamp":"2026-03-31T09:25:18.050Z"}
