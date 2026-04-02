@@ -1,7 +1,7 @@
 import "dotenv/config";
 import logger from "./utils/logger.js";
 import connectDB from "./db/index.js";
-import app from "./app.js"
+import app from "./app.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -18,7 +18,6 @@ connectDB()
     logger.error("Mongo connection error", error);
     process.exit(1);
   });
-
 
 // console.log("Hello videoTuber!!");
 logger.info("Hello world");
