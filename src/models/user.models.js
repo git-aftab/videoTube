@@ -39,9 +39,20 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: false,
+    },
+    loginType: {
+      type: String,
+      enum: ["EMAIL_PASSWORD", "GOOGLE", "MICROSOFT"],
+      default: "EMAIL_PASSWORD",
     },
     refreshToken: {
+      type: String,
+    },
+    emailVerificationToken: {
+      type: String,
+    },
+    emailVerificationExpiry: {
       type: String,
     },
   },
