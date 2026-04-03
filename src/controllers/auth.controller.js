@@ -95,6 +95,13 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User does not exists.");
   }
 
+  if (user.loginType !== "EMAIL_PASSWORD") {
+    throw new ApiError(
+      400,
+      `You are registered with ${user.loginType}. Please use that to login.`,
+    );
+  }
+
   const ispassValid = await user.isPasswordCorrect(password);
   if (!ispassValid) {
     throw new ApiError(404, "Invalid Credentials");
@@ -158,11 +165,22 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, req.user, "Current User fetched successfully"));
 });
 
+// VerifyEmail
 const verifyEmail = asyncHandler(async (req, res) => {});
+
+// ResendEmailVerification
 const resendEmailVerification = asyncHandler(async (req, res) => {});
+
+// refreshAccessToken
 const refreshAccessToken = asyncHandler(async (req, res) => {});
+
+// forgotPasswordRequest
 const forgotPasswordRequest = asyncHandler(async (req, res) => {});
+
+// resetForgotPassword
 const resetForgotPassword = asyncHandler(async (req, res) => {});
+
+// changeCurrentPassword
 const changeCurrentPassword = asyncHandler(async (req, res) => {});
 
 export {
