@@ -40,15 +40,18 @@ app.use(
 
 // import routes
 import healthCheckRouter from "./routes/healthCheck.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 // routes
 app.use("/api/v1/healthcheck", healthCheckRouter);
+app.use("/api/v1/auth", authRoutes);
 
 // / route
 app.get("/", (req, res) => {
   res.json({
     welcome: "hey this is videoTube BACKEND",
     healthcheck: "/api/v1/healthcheck",
+    auth: "/api/v1/auth"
   });
 });
 
