@@ -14,7 +14,7 @@ import jwt from "jsonwebtoken";
 const generateAccessTokenAndRefreshToken = async (userId) => {
   try {
     const user = await User.findById(userId);
-    const accessToken = user.generateAccesstoken();
+    const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
 
     user.refreshToken = refreshToken;
@@ -122,7 +122,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .cookie("acessToken", accessToken, options)
+    .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .json(
       new ApiResponse(
@@ -180,7 +180,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
     .digest("hex");
 
   const user = await User.findOne({
-    emailVerificatiionToken: hashedToken,
+    emailVerificationToken: hashedToken,
     emailVerificationExpiry: { $gt: Date.now() },
   });
 
@@ -189,7 +189,7 @@ const verifyEmail = asyncHandler(async (req, res) => {
   }
 
   //Db cleanUp so that unnecessary data not present there --optional
-  user.emailVerificatiionToken = undefined;
+  user.emailVerificationToken = undefined;
   user.emailVerificationExpiry = undefined;
 
   user.isEmailVerified = true;

@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
-import { User } from "../models/user.models";
+import { User } from "../models/user.models.js";
 
 passport.use(
   new GoogleStrategy(
@@ -11,7 +11,9 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
 
-    async (refreshAccessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
+      console.log("GOOGLE PROFILE:", JSON.stringify(profile, null, 2));
+      
       // This runs after Google redirects back to your app
       try {
         let user = await User.findOne({ email: profile._json.email });
@@ -23,9 +25,8 @@ passport.use(
             isEmailVerified: true, //Google already verified it
             loginType: "GOOGLE",
           });
-
-          done(null, user); // passes user to the next step
         }
+        return done(null, user); // passes user to the next step
       } catch (error) {
         done(error, null);
       }

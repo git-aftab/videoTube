@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import logger from "./utils/logger.js";
+import passport from "./config/OAuth.js";
 
 const app = express();
 
@@ -10,6 +11,9 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
+
+// OAuth Config
+app.use(passport.initialize());
 
 app.use(
   cors({
@@ -51,7 +55,7 @@ app.get("/", (req, res) => {
   res.json({
     welcome: "hey this is videoTube BACKEND",
     healthcheck: "/api/v1/healthcheck",
-    auth: "/api/v1/auth"
+    auth: "/api/v1/auth",
   });
 });
 
