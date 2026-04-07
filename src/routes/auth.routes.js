@@ -10,19 +10,27 @@ import {
   forgotPasswordRequest,
   resetForgotPassword,
   changeCurrentPassword,
-  generateAccessTokenAndRefreshToken
+  generateAccessTokenAndRefreshToken,
 } from "../controllers/auth.controller.js";
 
 import passport from "../config/OAuth.js";
 
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
+import { upload } from "../middlewares/multer.middleware.js";
+
 const router = Router();
 
 // Unsecure Routes --> these don't require JWT
 
 // registerUser
-router.route("/register").post(registerUser);
+router.route("/register").post(
+  upload.fields([
+    { name: "avatar", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+  ]),
+  registerUser,
+);
 
 // loginUser
 router.route("/login").post(loginUser);
@@ -43,16 +51,18 @@ router.route("/reset-password").post(resetForgotPassword);
 // router.use(verifyJWT);
 
 // Logout
-router.route("/logout").post(verifyJWT,logoutUser);
+router.route("/logout").post(verifyJWT, logoutUser);
 
 // get Current user
-router.route("/current-user").post(verifyJWT,getCurrentUser);
+router.route("/current-user").post(verifyJWT, getCurrentUser);
 
 // changePassword
-router.route("/change-password").post(verifyJWT,changeCurrentPassword);
+router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 
 //resend email verification
-router.route("/resend-email-verification").post(verifyJWT,resendEmailVerification);
+router
+  .route("/resend-email-verification")
+  .post(verifyJWT, resendEmailVerification);
 
 // OAuth ROUTES
 router

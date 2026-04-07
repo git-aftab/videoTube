@@ -9,6 +9,7 @@ import {
 } from "../utils/mail.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 // Generate AcessToken and RefreshToken for users
 const generateAccessTokenAndRefreshToken = async (userId) => {
@@ -30,7 +31,7 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password, fullName} = req.body;
+  const { username, email, password, fullName } = req.body;
 
   const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
@@ -38,12 +39,26 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User with email or username already exists.", []);
   }
 
+  // get file paths from multer.
+  const avatarLocalPath = req.files?.avatar?.[0].path;
+  const coverImgLocalPath = req.files?.coverImage?.[0].path;
+
+  const avatar = avatarLocalPath
+    ? await uploadOnCloudinary(avatarLocalPath)
+    : null;
+
+  const coverImage = coverImgLocalPath
+    ? await uploadOnCloudinary(coverImgLocalPath)
+    : null;
+
   const user = await User.create({
     email,
     password,
     username,
     fullName,
     isEmailVerified: false,
+    avatar: avatar?.url || "",
+    coverImage: coverImage?.url || "",
   });
 
   //   After user is create generate the temp_token
@@ -374,6 +389,53 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Password Changed Successfully"));
 });
 
+// update Avatar
+const updateAvatar = asyncHandler(async (req, res) => {
+  const avatarLocalPath = req.file?.path; // single file -> req.file not req.files
+
+  if (!avatarLocalPath) {
+    throw new ApiError(404, "Avatar file is required");
+  }
+
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+
+  if (!avatar) {
+    throw new ApiError(500, "Error uplaading the Avatar");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    { $set: { avatar: avatar.url } },
+    { new: true },
+  ).select("-password -refreshToken");
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { user: user }, "Avatar Updated Successfully"));
+});
+
+const updateCoverImage = asyncHandler(async (req, res) => {
+  const coverImgLocalPath = req.file?.path;
+
+  if (!coverImgLocalPath) {
+    throw new ApiError(404, "Cover Image is required");
+  }
+
+  const coverImage = await uploadOnCloudinary(coverImgLocalPath);
+
+  if (!coverImage) {
+    throw new ApiError(500, "Error uploading cover Image");
+  }
+
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    { $set: { coverImage: coverImage.url } },
+    { new: true },
+  ).select("-password -refreshToken");
+
+  return res.status(200, { user: user }, "Cover Image Updated Successfully");
+});
+
 export {
   generateAccessTokenAndRefreshToken,
   loginUser,
@@ -386,4 +448,5 @@ export {
   forgotPasswordRequest,
   resetForgotPassword,
   changeCurrentPassword,
+  updateAvatar,
 };
