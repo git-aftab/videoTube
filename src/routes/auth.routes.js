@@ -11,6 +11,8 @@ import {
   resetForgotPassword,
   changeCurrentPassword,
   generateAccessTokenAndRefreshToken,
+  updateAvatar,
+  updateCoverImage,
 } from "../controllers/auth.controller.js";
 
 import passport from "../config/OAuth.js";
@@ -64,6 +66,18 @@ router
   .route("/resend-email-verification")
   .post(verifyJWT, resendEmailVerification);
 
+
+// update avatar
+router
+  .route("/update-avatar")
+  .patch(verifyJWT, upload.single("avatar"), updateAvatar);
+
+// update coverImage
+router
+  .route("/update-coverimage")
+  .patch(verifyJWT, upload.single("coverImage"), updateCoverImage);
+
+  
 // OAuth ROUTES
 router
   .route("/google")

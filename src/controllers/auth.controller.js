@@ -449,4 +449,5 @@ export {
   resetForgotPassword,
   changeCurrentPassword,
   updateAvatar,
+  updateCoverImage
 };
