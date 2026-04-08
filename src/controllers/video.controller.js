@@ -29,6 +29,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
   if (!video) {
     throw new ApiError(500, "failed to upload the video");
   }
+  console.log("Video uploaded!", video?.url);
 
   const thumbnailLocatPath = req.files?.thumbnail?.[0]?.path;
   const thumbnail = thumbnailLocatPath
@@ -55,6 +56,38 @@ const getVideoById = asyncHandler(async (req, res) => {
 
 const updateVideoDets = asyncHandler(async (req, res) => {
   //TODO: update video details like title, description, thumbnail
+  const { title, description } = req.body;
+  let updateField = {};
+
+  if (title) updateField.title = title;
+  if (description) updateField.description = description;
+  const { videoId } = req.params;
+
+  const thumbnailLocatPath = req.file?.path;
+
+  if (thumbnailLocatPath) {
+    const thumbnail = await uploadOnCloudinary(thumbnailLocatPath);
+    if (!thumbnail) {
+      throw new ApiError(500, "Thumbnail upload failed");
+    }
+    updateField.thumbnail = thumbnail?.url;
+  }
+
+  // empty check
+  if (Object.keys(updateField).length === 0) {
+    throw new ApiError(400, "No fields to update");
+  }
+  const videoDoc = await Video.findByIdAndUpdate(
+    videoId,
+    {
+      $set: updateField,
+    },
+    { new: true },
+  );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, videoDoc, "Video Updated Successfully"));
 });
 
 const deleteVideo = asyncHandler(async (req, res) => {
