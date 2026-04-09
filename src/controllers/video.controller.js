@@ -92,6 +92,8 @@ const updateVideoDets = asyncHandler(async (req, res) => {
 
 const deleteVideo = asyncHandler(async (req, res) => {
   //TODO: delete video
+  const {videoId} = req.params;
+  
 });
 
 const togglePublishStatus = asyncHandler(async (req, res) => {
