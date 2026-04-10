@@ -313,7 +313,7 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
   }
 
   const { unHashedToken, hashedToken, tokenExpiry } =
-    user.generateAccessTokenAndRefreshToken();
+    user.generateTemporaryToken();
 
   user.forgotPasswordToken = hashedToken;
   user.forgotPasswordTokenExpiry = tokenExpiry;

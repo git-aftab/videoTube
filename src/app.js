@@ -45,10 +45,12 @@ app.use(
 // import routes
 import healthCheckRouter from "./routes/healthCheck.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import videoRoutes from "./routes/video.routes.js";
 
 // routes
 app.use("/api/v1/healthcheck", healthCheckRouter);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/video", videoRoutes);
 
 // / route
 app.get("/", (req, res) => {
@@ -56,6 +58,7 @@ app.get("/", (req, res) => {
     welcome: "hey this is videoTube BACKEND",
     healthcheck: "/api/v1/healthcheck",
     auth: "/api/v1/auth",
+    video: "/api/v1/video",
   });
 });
 

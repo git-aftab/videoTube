@@ -38,7 +38,7 @@ router.route("/register").post(
 router.route("/login").post(loginUser);
 
 // verifyEmail
-router.route("/verify-email/:verificationToken").post(verifyEmail);
+router.route("/verify-email/:verificationToken").get(verifyEmail);
 
 // refreshAccessToken
 router.route("/refresh-token").post(refreshAccessToken);
@@ -47,7 +47,7 @@ router.route("/refresh-token").post(refreshAccessToken);
 router.route("/forgot-password").post(forgotPasswordRequest);
 
 // resetFrogotPassword
-router.route("/reset-password").post(resetForgotPassword);
+router.route("/reset-password/:resetToken").post(resetForgotPassword);
 
 // Secure routes --> hit after user is logged in
 // router.use(verifyJWT);

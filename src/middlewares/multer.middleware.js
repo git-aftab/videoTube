@@ -1,4 +1,12 @@
 import multer from "multer";
+import fs from 'fs'
+
+const uploadPath = "public/temp";
+
+// Auto create folder
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

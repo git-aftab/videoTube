@@ -1,6 +1,6 @@
 import { User } from "../models/user.models.js";
-import { ApiError } from "../utils/ApiError.js";
-import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/apiError.js";
+import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
@@ -92,10 +92,18 @@ const updateVideoDets = asyncHandler(async (req, res) => {
 
 const deleteVideo = asyncHandler(async (req, res) => {
   //TODO: delete video
-  const {videoId} = req.params;
-  
+  const { videoId } = req.params;
 });
 
 const togglePublishStatus = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
 });
+
+export {
+  publishAVideo,
+  togglePublishStatus,
+  updateVideoDets,
+  deleteVideo,
+  getAllVideos,
+  getVideoById,
+};
