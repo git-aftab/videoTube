@@ -418,3 +418,76 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-09T10:23:20.805Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-09T10:23:21.386Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-09T10:23:21.392Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:27:07.750Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:27:08.310Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:27:08.318Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:31:07.801Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:31:08.284Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:31:08.291Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:32:14.193Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:32:14.715Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:32:14.731Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/register\",\"status\":\"201\",\"responseTime\":\"5902.351\"}","timestamp":"2026-04-11T07:32:52.863Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:40:11.216Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:40:11.762Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:40:11.773Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:40:26.126Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:40:26.665Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:40:26.674Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:40:38.113Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:40:38.637Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:40:38.649Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:40:44.671Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:40:45.174Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:40:45.184Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:40:48.993Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:40:49.478Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:40:49.487Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:40:55.318Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:40:55.801Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:40:55.808Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:41:06.687Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:41:07.206Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:41:07.214Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:41:11.755Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:41:12.228Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:41:12.234Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:41:34.895Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:41:35.379Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:41:35.386Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:41:40.393Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:41:40.859Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:41:40.868Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:41:51.823Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:41:52.363Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:41:52.372Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:42:13.704Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:42:14.154Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:42:14.161Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:42:20.134Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:42:20.566Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:42:20.571Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/register\",\"status\":\"500\",\"responseTime\":\"127.359\"}","timestamp":"2026-04-11T07:43:36.442Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:44:44.993Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:44:45.427Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:44:45.434Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:44:55.057Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:44:55.583Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:44:55.594Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/register\",\"status\":\"201\",\"responseTime\":\"5152.119\"}","timestamp":"2026-04-11T07:45:06.312Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:48:46.391Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:48:46.942Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:48:46.951Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:49:00.633Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:49:01.104Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:49:01.110Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:51:39.241Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:51:39.733Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:51:39.743Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:51:51.879Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:51:52.312Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:51:52.319Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-11T07:52:04.446Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-11T07:52:04.907Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-11T07:52:04.916Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/register\",\"status\":\"201\",\"responseTime\":\"18615.422\"}","timestamp":"2026-04-11T07:52:27.442Z"}
