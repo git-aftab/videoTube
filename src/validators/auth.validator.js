@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 
 const registerValidator = () => {
-  [
+  return [
     body("email")
       .trim()
       .notEmpty()
@@ -27,7 +27,7 @@ const registerValidator = () => {
 };
 
 const loginValidator = () => {
-  [
+  return [
     body("email").trim().notEmpty().withMessage("Email is required"),
     body("username").trim().notEmpty().withMessage("username is required"),
     body("password").trim().notEmpty().withMessage("Password is required"),
@@ -35,7 +35,7 @@ const loginValidator = () => {
 };
 
 const changeCurrentPasswordValidator = () => {
-  [
+  return [
     body("oldPassword")
       .trim()
       .notEmpty()

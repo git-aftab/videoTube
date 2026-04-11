@@ -20,6 +20,14 @@ import passport from "../config/OAuth.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 import { upload } from "../middlewares/multer.middleware.js";
+import {
+  registerValidator,
+  loginValidator,
+  userForgotPasswordValidator,
+  changeCurrentPasswordValidator,
+  resetForgotPasswordValidator,
+} from "../validators/auth.validator.js";
+import { validate } from "../middlewares/validator.middleware.js";
 
 const router = Router();
 
@@ -31,6 +39,8 @@ router.route("/register").post(
     { name: "avatar", maxCount: 1 },
     { name: "coverImage", maxCount: 1 },
   ]),
+  ...registerValidator(),
+  validate,
   registerUser,
 );
 
@@ -42,7 +52,6 @@ router.route("/verify-email/:verificationToken").get(verifyEmail);
 
 // refreshAccessToken
 router.route("/refresh-token").post(refreshAccessToken);
-
 // forgotPassword
 router.route("/forgot-password").post(forgotPasswordRequest);
 
@@ -66,7 +75,6 @@ router
   .route("/resend-email-verification")
   .post(verifyJWT, resendEmailVerification);
 
-
 // update avatar
 router
   .route("/update-avatar")
@@ -77,7 +85,6 @@ router
   .route("/update-coverimage")
   .patch(verifyJWT, upload.single("coverImage"), updateCoverImage);
 
-  
 // OAuth ROUTES
 router
   .route("/google")
