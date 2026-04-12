@@ -2,7 +2,10 @@ import { User } from "../models/user.models.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import {
+  deleteFromCloudinary,
+  uploadOnCloudinary,
+} from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
 
@@ -93,6 +96,29 @@ const updateVideoDets = asyncHandler(async (req, res) => {
 const deleteVideo = asyncHandler(async (req, res) => {
   //TODO: delete video
   const { videoId } = req.params;
+
+  // Getting the video and verifying ownerShip in the router using the verifyOwnerShip middleware
+
+  const video = req.doc;
+
+  await deleteFromCloudinary(video.videoFile);
+  await deleteFromCloudinary(video.thumbnail);
+
+  const deletedVideo = await Video.findByIdAndDelete(videoId);
+
+  if (!deletedVideo) {
+    throw new ApiError(500, "Error deleting video. Please Try Again");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { deletedVideo: deletedVideo },
+        "Video deleted Successfully",
+      ),
+    );
 });
 
 const togglePublishStatus = asyncHandler(async (req, res) => {

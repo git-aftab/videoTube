@@ -45,7 +45,7 @@ router.route("/register").post(
 );
 
 // loginUser
-router.route("/login").post(loginUser);
+router.route("/login").post(...loginValidator(), validate, loginUser);
 
 // verifyEmail
 router.route("/verify-email/:verificationToken").get(verifyEmail);

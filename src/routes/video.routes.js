@@ -17,6 +17,7 @@ router.route("/").get(getAllVideos).post(publishAVideo);
 
 router
   .route("/:videoId")
-  .patch(verifyJWT, verifyOwnerShip(Video, "videoId"), updateVideoDets);
+  .patch(verifyJWT, verifyOwnerShip(Video, "videoId"), updateVideoDets)
+  .delete(verifyJWT, verifyOwnerShip(Video, "videoId"), deleteVideo);
 
 export default router;
