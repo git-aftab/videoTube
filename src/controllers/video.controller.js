@@ -8,7 +8,7 @@ import {
 } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
-import { pipeline } from "nodemailer/lib/xoauth2/index.js";
+// import { pipeline } from "nodemailer/lib/xoauth2/index.js";
 
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
@@ -143,6 +143,60 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
 const getVideoById = asyncHandler(async (req, res) => {
   //TODO: get video by id
+  const { videoId } = req.params;
+  if (!isValidObjectId(videoId)) {
+    throw new ApiError(404, "Invalid videoId");
+  }
+
+  // Aggregate pipeline to fetch video -> owner details
+  const video = await Video.aggregate([
+    // Stage 1: find this specific video
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(videoId),
+      },
+    },
+
+    // Stage 2: Join with users to get Owner Details
+    {
+      $lookup: {
+        from: "users",
+        localField: "owner",
+        foreignField: "_id",
+        as: "ownerDetails",
+        pipeline: [
+          {
+            $project: {
+              username: 1,
+              avatar: 1,
+              fullname: 1,
+            },
+          },
+        ],
+      },
+    },
+
+    // Stage 3: Flatten OwnerDetails array to object
+    {
+      $addFields: {
+        ownerDetails: { $first: "$ownerDetails" },
+      },
+    },
+  ]);
+
+  // aggregate always returns an array -> get the first elem
+  if (!video.length) {
+    throw new ApiError(404, "Video not found");
+  }
+
+  // increment view count every time the video is fetched
+  await Video.findByIdAndUpdate(videoId, {
+    $inc: { views: 1 }, // $inc increments the field by given val
+  });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, video[0], "Video Fetched Successfully"));
 });
 
 const updateVideoDets = asyncHandler(async (req, res) => {
