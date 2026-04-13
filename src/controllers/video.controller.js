@@ -8,10 +8,98 @@ import {
 } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
+import { pipeline } from "nodemailer/lib/xoauth2/index.js";
 
 const getAllVideos = asyncHandler(async (req, res) => {
-  const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
   //TODO: get all videos based on query, sort pagination
+  const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
+
+  // STEP_01: MATCH
+  const matchStage = { isPublished: true }; //show only published Video
+
+  // if user provided filter by that
+  if (userId) {
+    if (!isValidObjectId(userId)) throw new ApiError(404, "Invalid userId");
+    matchStage.owner = new mongoose.Types.ObjectId(userId);
+  }
+
+  // if query provied search in title && description
+  if (query) {
+    matchStage.$or = [
+      { title: { $regex: query, $options: "i" } }, //"i" = Case in-sensitive
+      { description: { $regex: query, $options: "i" } },
+    ];
+  }
+
+  // STEP_02: SORT
+  const pipeline = [
+    //stage 1: filter docs
+    { $match: matchStage },
+
+    //stage 2: sort dods
+    {
+      $sort: {
+        [sortBy || "createdAt"]: sortType === "asc" ? 1 : -1,
+      },
+    },
+
+    // stage 3: join with users collection to get owner details
+    {
+      $lookup: {
+        from: "users", //collection to join with
+        localField: "owner", //field in video doc
+        foreignField: "_id", //field in user doc
+        as: "ownerDetails", //Output array field name
+        pipeline: [
+          //nested: only pick needed field in user
+          {
+            $project: {
+              username: 1,
+              avatar: 1,
+              fullname: 1,
+            },
+          },
+        ],
+      },
+    },
+
+    // stage 4: $lookup always retrun array, flatten to single object
+    {
+      $addFields: {
+        ownerDetails: { $first: "$ownerDetails" },
+      },
+    },
+
+    // stage 5: Pick only the fields you want in res.
+    {
+      $project: {
+        videoFile: 1,
+        thumbnail: 1,
+        title: 1,
+        description: 1,
+        duration: 1,
+        views: 1,
+        isPublished: 1,
+        createdAt: 1,
+        ownerDetails: 1,
+      },
+    },
+  ];
+
+  // stept 3: paginate using plugin in model
+  const options = {
+    page: parseInt(page),
+    limit: parseInt(limit),
+  };
+
+  const videos = await Video.aggregatePaginate(
+    Video.aggregate(pipeline),
+    options,
+  );
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, videos, "Videos fetched successfully"));
 });
 
 const publishAVideo = asyncHandler(async (req, res) => {
@@ -123,6 +211,23 @@ const deleteVideo = asyncHandler(async (req, res) => {
 
 const togglePublishStatus = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
+  // const video = req.doc;
+
+  const updatedVideo = await Video.findByIdAndUpdate(
+    videoId,
+    { $set: { isPublished: !video.isPublished } },
+    { new: true },
+  );
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { isPublished: updatedVideo.isPublished },
+        `Video is now ${updatedVideo.isPublished ? "Published" : "Unpublished"}`,
+      ),
+    );
 });
 
 export {
