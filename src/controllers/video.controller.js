@@ -8,8 +8,7 @@ import {
 } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
-// import { pipeline } from "nodemailer/lib/xoauth2/index.js";
-
+import logger from "../utils/logger.js"
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
@@ -104,6 +103,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
 
 const publishAVideo = asyncHandler(async (req, res) => {
   // TODO: get video, upload to cloudinary, create video
+  console.log("req.files:", req.files)
   const { title, description } = req.body;
 
   if (!title) {
@@ -111,6 +111,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
   }
 
   const videoLocalPath = req.files?.videoFile?.[0]?.path;
+  console.info("Video Local Path:",videoLocalPath)
 
   if (!videoLocalPath) {
     throw new ApiError(404, "Video localpath is required");
@@ -132,7 +133,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     videoFile: video?.url,
     description: description || "",
     duration: video?.duration,
-    thumbnail: thumbnail?.url,
+    thumbnail: thumbnail?.url || "",
     owner: req.user?._id,
   });
 
