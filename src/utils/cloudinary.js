@@ -3,51 +3,89 @@ import fs from "fs";
 import path from "path";
 import "dotenv/config";
 
-// configure cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.COULDINARY_API_KEY,
+  api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+// safe delete
+const safeUnlink = (filePath) => {
+  try {
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+  } catch (err) {
+    console.error("File delete error:", err.message);
+  }
+};
+
+// IMAGE UPLOAD
+export const uploadImageToCloudinary = async (localFilePath) => {
   try {
     if (!localFilePath) return null;
-
-    console.log("Uploading to cloudinary:", localFilePath);
 
     const absolutePath = path.resolve(localFilePath);
 
     const response = await cloudinary.uploader.upload(absolutePath, {
-      resource_type: "auto",
+      resource_type: "image",
     });
 
-    console.log("File uploaded on cloudinary. File src:" + response.url);
-
-    // once the file is uploaded then we would like to delete it from our servers
-    fs.unlinkSync(absolutePath);
-    return response;
+    safeUnlink(absolutePath);
 
     return response;
   } catch (error) {
-    console.error("cloudinary upload error", error);
-    fs.unlinkSync(path.resolve(localFilePath));
+    console.error("Image upload error:", error);
+    safeUnlink(localFilePath);
     return null;
   }
 };
 
-const deleteFromCloudinary = async (imageUrl) => {
-  try {
-    if (!imageUrl) return null;
+// VIDEO UPLOAD -> stream-based 
+export const uploadVideoToCloudinary = async (localFilePath) => {
+  return new Promise((resolve, reject) => {
+    try {
+      if (!localFilePath) return resolve(null);
 
-    console.log("Image URL:", imageUrl);
+      const absolutePath = path.resolve(localFilePath);
 
-    const publicId = imageUrl.split("/").pop().split(".")[0];
-    console.log("PublicId:", publicId);
-    await cloudinary.uploader.destroy(publicId);
-  } catch (error) {
-    console.error("Error Deleting the source", error);
-  }
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          resource_type: "video",
+          timeout: 60000, // increase timeout
+        },
+        (error, result) => {
+          safeUnlink(absolutePath);
+
+          if (error) {
+            console.error("Video upload error:", error);
+            return reject(error);
+          }
+
+          resolve(result);
+        },
+      );
+
+      fs.createReadStream(absolutePath).pipe(stream);
+    } catch (error) {
+      console.error("Stream setup error:", error);
+      safeUnlink(localFilePath);
+      reject(error);
+    }
+  });
 };
 
-export { uploadOnCloudinary, deleteFromCloudinary };
+// DELETE
+export const deleteFromCloudinary = async (url, resourceType = "image") => {
+  try {
+    if (!url) return;
+
+    const publicId = url.split("/").pop().split(".")[0];
+
+    await cloudinary.uploader.destroy(publicId, {
+      resource_type: resourceType,
+    });
+  } catch (error) {
+    console.error("Delete error:", error);
+  }
+};
