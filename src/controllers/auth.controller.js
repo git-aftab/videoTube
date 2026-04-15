@@ -9,7 +9,7 @@ import {
 } from "../utils/mail.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { uploadImageToCloudinary } from "../utils/cloudinary.js";
 
 // Generate AcessToken and RefreshToken for users
 const generateAccessTokenAndRefreshToken = async (userId) => {
@@ -45,11 +45,11 @@ const registerUser = asyncHandler(async (req, res) => {
   const coverImgLocalPath = req.files?.coverImage?.[0].path;
 
   const avatar = avatarLocalPath
-    ? await uploadOnCloudinary(avatarLocalPath)
+    ? await uploadImageToCloudinary(avatarLocalPath)
     : null;
 
   const coverImage = coverImgLocalPath
-    ? await uploadOnCloudinary(coverImgLocalPath)
+    ? await uploadImageToCloudinary(coverImgLocalPath)
     : null;
 
   const user = await User.create({

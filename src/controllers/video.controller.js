@@ -4,7 +4,8 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {
   deleteFromCloudinary,
-  uploadOnCloudinary,
+  uploadImageToCloudinary,
+  uploadVideoToCloudinary
 } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
@@ -117,7 +118,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Video localpath is required");
   }
 
-  const video = await uploadOnCloudinary(videoLocalPath);
+  const video = await uploadVideoToCloudinary(videoLocalPath);
   if (!video) {
     throw new ApiError(500, "failed to upload the video");
   }
@@ -125,7 +126,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
   const thumbnailLocatPath = req.files?.thumbnail?.[0]?.path;
   const thumbnail = thumbnailLocatPath
-    ? await uploadOnCloudinary(thumbnailLocatPath)
+    ? await uploadImageToCloudinary(thumbnailLocatPath)
     : null;
 
   const videoDoc = await Video.create({
