@@ -5,11 +5,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import {
   deleteFromCloudinary,
   uploadImageToCloudinary,
-  uploadVideoToCloudinary
+  uploadVideoToCloudinary,
 } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
-import logger from "../utils/logger.js"
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
@@ -104,7 +103,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
 
 const publishAVideo = asyncHandler(async (req, res) => {
   // TODO: get video, upload to cloudinary, create video
-  console.log("req.files:", req.files)
+  console.log("req.files:", req.files);
   const { title, description } = req.body;
 
   if (!title) {
@@ -112,7 +111,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
   }
 
   const videoLocalPath = req.files?.videoFile?.[0]?.path;
-  console.info("Video Local Path:",videoLocalPath)
+  console.info("Video Local Path:", videoLocalPath);
 
   if (!videoLocalPath) {
     throw new ApiError(404, "Video localpath is required");
@@ -203,17 +202,17 @@ const getVideoById = asyncHandler(async (req, res) => {
 
 const updateVideoDets = asyncHandler(async (req, res) => {
   //TODO: update video details like title, description, thumbnail
+  const { videoId } = req.params;
   const { title, description } = req.body;
   let updateField = {};
 
   if (title) updateField.title = title;
   if (description) updateField.description = description;
-  const { videoId } = req.params;
 
   const thumbnailLocatPath = req.file?.path;
 
   if (thumbnailLocatPath) {
-    const thumbnail = await uploadOnCloudinary(thumbnailLocatPath);
+    const thumbnail = await uploadImageToCloudinary(thumbnailLocatPath);
     if (!thumbnail) {
       throw new ApiError(500, "Thumbnail upload failed");
     }
@@ -267,7 +266,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
 
 const togglePublishStatus = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
-  // const video = req.doc;
+  const video = req.doc;
 
   const updatedVideo = await Video.findByIdAndUpdate(
     videoId,
@@ -280,7 +279,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { isPublished: updatedVideo.isPublished },
+        { isPublished: updatedVideo.isPublished, updatedVideo: updatedVideo },
         `Video is now ${updatedVideo.isPublished ? "Published" : "Unpublished"}`,
       ),
     );
