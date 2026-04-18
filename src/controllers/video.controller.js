@@ -9,6 +9,7 @@ import {
 } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
+
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
@@ -243,6 +244,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
   // Getting the video and verifying ownerShip in the router using the verifyOwnerShip middleware
 
   const video = req.doc;
+  console.log("Data in req.doc", req.doc);
 
   await deleteFromCloudinary(video.videoFile);
   await deleteFromCloudinary(video.thumbnail);
@@ -267,6 +269,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
 const togglePublishStatus = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   const video = req.doc;
+  console.log("Data in req.doc", req.doc);
 
   const updatedVideo = await Video.findByIdAndUpdate(
     videoId,
