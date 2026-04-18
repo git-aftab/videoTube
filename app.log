@@ -689,3 +689,6 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"PATCH\",\"url\":\"/api/v1/videos/69dfde5c91792755353cb9dc/toggle-publish\",\"status\":\"200\",\"responseTime\":\"330.667\"}","timestamp":"2026-04-16T18:50:04.786Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"PATCH\",\"url\":\"/api/v1/videos/69dfde5c91792755353cb9dc/toggle-publish\",\"status\":\"200\",\"responseTime\":\"220.380\"}","timestamp":"2026-04-16T18:50:08.317Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"PATCH\",\"url\":\"/api/v1/videos/69dfde5c91792755353cb9dc/toggle-publish\",\"status\":\"200\",\"responseTime\":\"610.133\"}","timestamp":"2026-04-16T18:50:11.188Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-04-18T10:51:27.532Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-04-18T10:51:27.989Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-04-18T10:51:27.995Z"}
