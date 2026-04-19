@@ -101,7 +101,7 @@ const updateComment = asyncHandler(async (req, res) => {
   if (existingComment.content === content) {
     return res
       .status(200)
-      .json(new ApiResponse(200, existingComment, "No Changes Detected"));
+      .json(new ApiResponse(200, existingComment, "No Changes Detected in comment"));
   }
 
   const updatedComment = await Comment.findByIdAndUpdate(
