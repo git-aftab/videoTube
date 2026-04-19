@@ -1,7 +1,8 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import mongoose, { Comment } from "../models/comment.models.js";
+import { Comment } from "../models/comment.models.js";
+import mongoose from "mongoose";
 // import { User } from "../models/user.models.js";
 import { Video } from "../models/video.models.js";
 
@@ -9,6 +10,51 @@ const getVideoComments = asyncHandler(async (req, res) => {
   //TODO: get all comments for a video
   const { videoId } = req.params;
   const { page = 1, limit = 10 } = req.query;
+
+  const skip = (page - 1) * limit;
+
+  const comments = await Comment.aggregate([
+    //match comments of this video
+    {
+      $match: {
+        Video: new mongoose.Types.ObjectId(videoId),
+      },
+    },
+    //sort latest first
+    {
+      $sort: { createdAt: -1 },
+    },
+    //pagination
+    {
+      $skip: skip,
+    },
+    {
+      $limit: Number(limit),
+    },
+    //Join User(Owner)
+    {
+      $lookup: {
+        from: "users",
+        localField: "owner",
+        foreignField: "_id",
+        as: "owner",
+      },
+    },
+    // select only required field
+    {
+      $project: {
+        content: 1,
+        createdAt: 1,
+        "owner._id": 1,
+        "owner.username": 1,
+        "owner.avatar": 1,
+      },
+    },
+  ]);
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, comments, "Comments fetched successfully"));
 });
 
 const addComment = asyncHandler(async (req, res) => {
@@ -65,7 +111,7 @@ const updateComment = asyncHandler(async (req, res) => {
   );
 
   if (!updatedComment) {
-    throw new ApiError(400, "Error updating Comment");
+    throw new ApiError(500, "Error updating Comment");
   }
 
   return res
@@ -83,7 +129,22 @@ const deleteComment = asyncHandler(async (req, res) => {
   // TODO: delete a comment
   const { commentId } = req.params;
 
+  //verifying ownership in route
   const deletedComment = await Comment.findByIdAndDelete(commentId);
+
+  if (!deletedComment) {
+    throw new ApiError(404, "Comment Not Found");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { deletedComment: deletedComment },
+        "Comment deleted successfully",
+      ),
+    );
 });
 
 export { getVideoComments, addComment, updateComment, deleteComment };

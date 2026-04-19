@@ -205,10 +205,16 @@ const updateVideoDets = asyncHandler(async (req, res) => {
   //TODO: update video details like title, description, thumbnail
   const { videoId } = req.params;
   const { title, description } = req.body;
+  const video = req.doc; //from ownerShip middleware
   let updateField = {};
 
-  if (title) updateField.title = title;
-  if (description) updateField.description = description;
+  //Only update if actually changed
+  if (title !== undefined && title !== video.title) {
+    updateField.title = title;
+  }
+  if (description !== undefined && description !== video.description) {
+    updateField.description = description;
+  }
 
   const thumbnailLocatPath = req.file?.path;
 
