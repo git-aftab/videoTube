@@ -44,29 +44,158 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
 });
 
 const getPlaylistById = asyncHandler(async (req, res) => {
-  const { playlistId } = req.params;
   //TODO: get playlist by id
+  const { playlistId } = req.params;
+
+  if (!isValidObjectId(playlistId)) {
+    throw new ApiError(400, "Invalid Playlist ID");
+  }
+
+  const playlist = await Playlist.findById(playlistId).populate({
+    path: "videos",
+    select: "title thumbnail duration views",
+  });
+
+  if (!playlist) {
+    throw new ApiError(404, "Playlist not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, playlist, "Playlist Fetched Successfully"));
 });
 
 const addVideoToPlaylist = asyncHandler(async (req, res) => {
   const { playlistId, videoId } = req.params;
+
+  if (!isValidObjectId(playlistId) || !isValidObjectId(videoId)) {
+    throw new ApiError(400, "Invalid palylist or Video Id");
+  }
+
+  const playlist = await Playlist.findByIdAndUpdate(
+    playlistId,
+    { $addToSet: videoId },
+    { new: true },
+  );
+
+  if (!playlist) {
+    throw new ApiError(404, "Playlist not found");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, playlist, "Video added to playlist successfully"),
+    );
 });
 
 const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
-  const { playlistId, videoId } = req.params;
   // TODO: remove video from playlist
+  const { playlistId, videoId } = req.params;
+
+  if (!isValidObjectId(playlistId) || !isValidObjectId(videoId)) {
+    throw new ApiError(400, "Invalid palylist or Video Id");
+  }
+
+  const playlist = await Playlist.findByIdAndUpdate(
+    playlistId,
+    { $pull: videoId },
+    { new: true },
+  );
+
+  if (!playlist) {
+    throw new ApiError(404, "Playlist not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, playlist, "Video removed from playlist"));
 });
 
 const deletePlaylist = asyncHandler(async (req, res) => {
-  const { playlistId } = req.params;
   // TODO: delete playlist
+  const { playlistId } = req.params;
+
+  if (!isValidObjectId(playlistId)) {
+    throw new ApiError(400, "Invalid Playlist Id");
+  }
+
+  const deletedPlaylist = await Playlist.findByIdAndDelete(playlistId);
+
+  if (deletePlaylist) {
+    throw new ApiError(500, "Error Deleting the Playlist");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, deletePlaylist, "Playlist deleted successfully"),
+    );
 });
 
 const updatePlaylist = asyncHandler(async (req, res) => {
+  //TODO: update playlist
   const { playlistId } = req.params;
   const { name, description } = req.body;
-  //TODO: update playlist
+  const playlist = req.doc;
+
+  let updateField = {};
+
+  if (!isValidObjectId(playlistId)) {
+    throw new ApiError(400, "Invalid Playlist ID");
+  }
+
+  if (name !== undefined && name !== playlist.name) {
+    updateField.name = name;
+  }
+  if (description !== undefined && description !== playlist.description) {
+    updateField.description = description;
+  }
+
+  if (Object.keys(updateField).length === 0) {
+    throw new ApiError(400, "No changes provided");
+  }
+
+  const updatedPlaylist = await Playlist.findByIdAndUpdate(
+    playlistId,
+    { $set: updateField },
+    { new: true, runValidators: true },
+  );
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, updatedPlaylist, "Playlist Updated Successfully"),
+    );
 });
+
+// ------------ EXAMPLE: just using req.doc -------------
+
+// const updatePlaylist = asyncHandler(async (req, res) => {
+//   const { name, description } = req.body;
+//   const playlist = req.doc;
+
+//   const updateField = {};
+
+//   if (name?.trim() && name !== playlist.name) {
+//     updateField.name = name;
+//   }
+
+//   if (description !== undefined && description !== playlist.description) {
+//     updateField.description = description;
+//   }
+
+//   if (Object.keys(updateField).length === 0) {
+//     throw new ApiError(400, "No changes provided");
+//   }
+
+//   Object.assign(playlist, updateField);
+//   await playlist.save();
+
+//   return res
+//     .status(200)
+//     .json(new ApiResponse(200, playlist, "Playlist updated successfully"));
+// });
 
 export {
   createPlaylist,
