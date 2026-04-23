@@ -172,4 +172,4 @@ const getAllTweets = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, tweets, "All tweets fetched successfully"));
 });
 
-export { createTweet, getUserTweets, updateTweet, deleteTweet };
+export { createTweet, getUserTweets, updateTweet, deleteTweet, getAllTweets};
