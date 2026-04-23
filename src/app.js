@@ -46,11 +46,21 @@ app.use(
 import healthCheckRouter from "./routes/healthCheck.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import videoRoutes from "./routes/video.routes.js";
+import tweetRoutes from "./routes/tweet.routes.js";
+import commentRoutes from "./routes/comment.routes.js";
+import likeRoutes from "./routes/like.routes.js";
+import playListRoutes from "./routes/playlist.routes.js";
+import subscriptionRoutes from "./routes/subscription.routes.js";
 
 // routes
 app.use("/api/v1/healthcheck", healthCheckRouter);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/videos", videoRoutes);
+app.use("/api/v1/comment", commentRoutes);
+app.use("/api/v1/tweet", tweetRoutes);
+app.use("/api/v1/playlist", playListRoutes);
+app.use("/api/v1/subscribe", subscriptionRoutes);
+app.use("/api/v1/like", likeRoutes);
 
 // / route
 app.get("/", (req, res) => {
@@ -59,6 +69,11 @@ app.get("/", (req, res) => {
     healthcheck: "/api/v1/healthcheck",
     auth: "/api/v1/auth",
     video: "/api/v1/videos",
+    comment: "/api/v1/comment",
+    tweet: "/api/v1/tweet",
+    playlist: "/api/v1/playlist",
+    subscription: "/api/v1/subscribe",
+    like: "/api/v1/like",
   });
 });
 
