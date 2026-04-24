@@ -14,43 +14,58 @@ const getVideoComments = asyncHandler(async (req, res) => {
   const skip = (page - 1) * limit;
 
   const comments = await Comment.aggregate([
-    //match comments of this video
     {
       $match: {
-        Video: new mongoose.Types.ObjectId(videoId),
+        video: new mongoose.Types.ObjectId(videoId),
       },
     },
-    //sort latest first
     {
-      $sort: { createdAt: -1 },
-    },
-    //pagination
-    {
-      $skip: skip,
-    },
-    {
-      $limit: Number(limit),
-    },
-    //Join User(Owner)
-    {
-      $lookup: {
-        from: "users",
-        localField: "owner",
-        foreignField: "_id",
-        as: "owner",
+      $facet: {
+        comments: [
+          { $sort: { createdAt: -1 } },
+          { $skip: skip },
+          { $limit: Number(limit) },
+
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "owner",
+            },
+          },
+          { $unwind: "$owner" },
+
+          {
+            $project: {
+              content: 1,
+              createdAt: 1,
+              "owner._id": 1,
+              "owner.username": 1,
+              "owner.avatar": 1,
+            },
+          },
+        ],
+
+        totalCount: [
+          {
+            $count: "count",
+          },
+        ],
       },
     },
-    // select only required field
     {
-      $project: {
-        content: 1,
-        createdAt: 1,
-        "owner._id": 1,
-        "owner.username": 1,
-        "owner.avatar": 1,
+      $addFields: {
+        totalCount: {
+          $ifNull: [{ $arrayElemAt: ["$totalCount.count", 0] }, 0],
+        },
       },
     },
   ]);
+
+  if (!comments) {
+    throw new ApiError(404, "Error fetching comments");
+  }
 
   return res
     .status(200)
@@ -73,7 +88,7 @@ const addComment = asyncHandler(async (req, res) => {
 
   const comment = await Comment.create({
     content: content,
-    video: videoId,
+    video: new mongoose.Types.ObjectId(videoId),
     owner: req.user._id,
   });
   if (!comment) {
@@ -101,12 +116,14 @@ const updateComment = asyncHandler(async (req, res) => {
   if (existingComment.content === content) {
     return res
       .status(200)
-      .json(new ApiResponse(200, existingComment, "No Changes Detected in comment"));
+      .json(
+        new ApiResponse(200, existingComment, "No Changes Detected in comment"),
+      );
   }
 
   const updatedComment = await Comment.findByIdAndUpdate(
     commentId,
-    { $set: content },
+    { $set: {content} },
     { new: true, runValidators: true },
   );
 

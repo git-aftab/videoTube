@@ -26,3 +26,5 @@ router
   .post(verifyJWT, verifyOwnerShip(Comment, "commentId"), toggleCommentLike);
 
 router.route("/get-liked-videos").get(verifyJWT, getLikedVideos);
+
+export default router;

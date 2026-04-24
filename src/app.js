@@ -73,7 +73,6 @@ app.get("/", (req, res) => {
     tweet: "/api/v1/tweet",
     playlist: "/api/v1/playlist",
     subscription: "/api/v1/subscribe",
-    like: "/api/v1/like",
   });
 });
 

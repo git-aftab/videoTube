@@ -14,3 +14,5 @@ router
   .post(verifyJWT, toggleSubscription);
 
 router.route("/subscriberId").post(verifyJWT, getSubscribedChannels);
+
+export default router
