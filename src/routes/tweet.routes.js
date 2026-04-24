@@ -9,7 +9,6 @@ import {
   deleteTweet,
   getAllTweets,
 } from "../controllers/tweet.controller.js";
-import router from "./video.routes.js";
 
 const router = Router();
 
