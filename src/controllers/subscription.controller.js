@@ -7,7 +7,6 @@ import { User } from "../models/user.models.js";
 
 // controller
 const toggleSubscription = asyncHandler(async (req, res) => {
-  // TODO: toggle subscription
   const { channelId } = req.params;
   const userId = req.user._id;
 
@@ -16,16 +15,14 @@ const toggleSubscription = asyncHandler(async (req, res) => {
   }
 
   if (channelId === userId.toString()) {
-    throw new ApiError(400, "You Cannot Subscribe Yourself!");
+    throw new ApiError(400, "You cannot subscribe to yourself!");
   }
 
   const channel = await User.findById(channelId);
-
   if (!channel) {
-    throw new ApiError(400, "Channel Not Found");
+    throw new ApiError(404, "Channel not found");
   }
 
-  // Is existing subscriber
   const existingSubs = await Subscription.findOne({
     subscriber: userId,
     channel: channelId,
@@ -36,23 +33,18 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 
     return res
       .status(200)
-      .res.json(
-        new ApiResponse(200, existingSubs, "Channel Unsubscribed Successfully"),
-      );
+      .json(new ApiResponse(200, null, "Unsubscribed successfully"));
   }
 
   const newSubscription = await Subscription.create({
-    subscriberId: userId,
+    subscriber: userId,
     channel: channelId,
   });
 
   return res
     .status(201)
-    .res.json(
-      new ApiResponse(201, newSubscription, "Channel Subscribed Successfully"),
-    );
+    .json(new ApiResponse(201, newSubscription, "Subscribed successfully"));
 });
-
 // controller to return subscriber list of a channel
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   const { channelId } = req.params;
@@ -60,6 +52,8 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   if (!channelId) {
     throw new ApiError(404, "Invalid Channel Id");
   }
+
+  console.log("Before aggregaation channelId", channelId);
 
   const result = await Subscription.aggregate([
     {
@@ -109,6 +103,8 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     },
   ]);
 
+  console.log("after aggregation:", result);
+
   return res
     .status(200)
     .json(new ApiResponse(200, result, "Subscriber Fetched Successfully"));
@@ -116,9 +112,9 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
 
 // controller to return channel list to which user has subscribed
 const getSubscribedChannels = asyncHandler(async (req, res) => {
-  const { subscriberId } = req.params;
+  const { userId } = req.params;
 
-  if (!mongoose.isValidObjectId(subscriberId)) {
+  if (!mongoose.isValidObjectId(userId)) {
     throw new ApiError(400, "Invalid subscriber ID");
   }
 
@@ -126,7 +122,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
     // 1. Match subscriptions of user
     {
       $match: {
-        subscriber: new mongoose.Types.ObjectId(subscriberId),
+        subscriber: new mongoose.Types.ObjectId(userId),
       },
     },
 
