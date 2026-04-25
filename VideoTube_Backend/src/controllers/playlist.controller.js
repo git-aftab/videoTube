@@ -4,9 +4,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import mongoose, { isValidObjectId } from "mongoose";
 import { Playlist } from "../models/playlist.models.js";
 
-// controller
 const createPlaylist = asyncHandler(async (req, res) => {
-  //TODO: create playlist
   const { name, description } = req.body;
 
   if (!name.trim()) {
@@ -27,14 +25,19 @@ const createPlaylist = asyncHandler(async (req, res) => {
 const getUserPlaylists = asyncHandler(async (req, res) => {
   //TODO: get user playlists
   const { userId } = req.params;
+  console.log("got user id", userId);
 
   if (!isValidObjectId(userId)) {
     throw new ApiError(400, "Invalid User ID");
   }
 
+  console.log("yes valid objectId(userId");
+
   const playlists = await Playlist.find({ owner: userId })
     .select("name description videos createdAt")
     .sort({ createdAt: -1 });
+
+  console.log(`playlists of the ${userId}: ${playlists}`);
 
   return res
     .status(200)
@@ -74,7 +77,7 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
 
   const playlist = await Playlist.findByIdAndUpdate(
     playlistId,
-    { $addToSet: videoId },
+    { $addToSet: { videoId } },
     { new: true },
   );
 

@@ -15,7 +15,7 @@ import {
 
 const router = Router();
 
-router.route("/").get(verifyJWT, createPlaylist);
+router.route("/").post(verifyJWT, createPlaylist);
 
 router
   .route("/:playlistId")
@@ -26,13 +26,13 @@ router
 
 router
   .route("/:playlistId/:videoId")
-  .post(verifyJWT, verifyOwnerShip(Playlist, "playlistId"), addVideoToPlaylist)
+  .post(verifyJWT, addVideoToPlaylist)
   .post(
     verifyJWT,
     verifyOwnerShip(Playlist, "playlistId"),
     removeVideoFromPlaylist,
   );
 
-router.route("/userId").get(verifyJWT, getUserPlaylists);
+router.route("/user/:userId").get(verifyJWT, getUserPlaylists);
 
 export default router;
