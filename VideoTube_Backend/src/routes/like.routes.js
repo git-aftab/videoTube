@@ -16,13 +16,13 @@ import { Comment } from "../models/comment.models.js";
 const router = Router();
 
 router
-  .route("/:videoId")
+  .route("/video/:videoId")
   .post(verifyJWT, verifyOwnerShip(Video, "videoId"), toggleVideoLike);
 router
-  .route("/:tweetId")
+  .route("/tweet/:tweetId")
   .post(verifyJWT, verifyOwnerShip(Tweet, "tweetId"), toggleTweetLike);
 router
-  .route("/:commentId")
+  .route("/comment/:commentId")
   .post(verifyJWT, verifyOwnerShip(Comment, "commentId"), toggleCommentLike);
 
 router.route("/get-liked-videos").get(verifyJWT, getLikedVideos);

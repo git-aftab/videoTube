@@ -20,14 +20,13 @@ router.route("/").post(verifyJWT, createPlaylist);
 router
   .route("/:playlistId")
   .get(verifyJWT, getPlaylistById)
-  .post(verifyJWT, verifyOwnerShip(Playlist, "playlistId"), deletePlaylist)
-  .post(verifyJWT, verifyOwnerShip(Playlist, "playlistId"), updatePlaylist);
-
+  .patch(verifyJWT, verifyOwnerShip(Playlist, "playlistId"), updatePlaylist)
+  .delete(verifyJWT, verifyOwnerShip(Playlist, "playlistId"), deletePlaylist);
 
 router
   .route("/:playlistId/:videoId")
   .post(verifyJWT, addVideoToPlaylist)
-  .post(
+  .delete(
     verifyJWT,
     verifyOwnerShip(Playlist, "playlistId"),
     removeVideoFromPlaylist,

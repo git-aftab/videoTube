@@ -23,7 +23,7 @@ router
 
 router
   .route("/:videoId/:commentId")
-  .post(verifyJWT, verifyOwnerShip(Comment, "commentId"), deleteComment)
+  .delete(verifyJWT, verifyOwnerShip(Comment, "commentId"), deleteComment)
   .patch(
     verifyJWT,
     verifyOwnerShip(Comment, "commentId"),
