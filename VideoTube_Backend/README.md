@@ -1,4 +1,4 @@
-# 🎥 VideoTube
+# 🎥 VideoTube Backend
 
 > A production-grade, YouTube-inspired backend engineered for scale — built with real-world architecture patterns, intelligent AI features, and clean separation of concerns.
 
