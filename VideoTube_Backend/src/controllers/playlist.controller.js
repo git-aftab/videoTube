@@ -102,7 +102,7 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
 
   const playlist = await Playlist.findByIdAndUpdate(
     playlistId,
-    { $pull: videoId },
+    { $pull: {videoId} },
     { new: true },
   );
 
@@ -126,7 +126,7 @@ const deletePlaylist = asyncHandler(async (req, res) => {
   const deletedPlaylist = await Playlist.findByIdAndDelete(playlistId);
 
   if (deletePlaylist) {
-    throw new ApiError(500, "Error Deleting the Playlist");
+    throw new ApiError(404, "Error Deleting the Playlist");
   }
 
   return res
