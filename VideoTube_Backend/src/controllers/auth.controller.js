@@ -11,6 +11,11 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { uploadImageToCloudinary } from "../utils/cloudinary.js";
 
+import {
+  addVerificationEmailJob,
+  addForgotPasswordEmailJob,
+} from "../queues/email.queue.js";
+
 // Generate AcessToken and RefreshToken for users
 const generateAccessTokenAndRefreshToken = async (userId) => {
   try {
@@ -71,14 +76,22 @@ const registerUser = asyncHandler(async (req, res) => {
 
   await user.save({ validateBeforeSave: false });
 
-  await sendEmail({
-    email: user?.email,
-    subject: "Please Verify your email",
-    mailgenContent: emailVerificationMailgenContent(
-      user.username,
-      `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}`, //generate a dynamic link of localhost or hosted
-    ),
-  });
+  // --------prev mailing services without redis & bullmq -------
+  // await sendEmail({
+  //   email: user?.email,
+  //   subject: "Please Verify your email",
+  //   mailgenContent: emailVerificationMailgenContent(
+  //     user.username,
+  //     `${req.protocol}://${req.get("host")}/api/v1/users/verify-email/${unHashedToken}`, //generate a dynamic link of localhost or hosted
+  //   ),
+  // });
+
+  // new mailing service - bullmq+redis
+  await addVerificationEmailJob(
+    user.email,
+    user.username,
+    `${req.protocol}://${req.get("host")}/api/v1//auth/verify-email/${unHashedToken}`,
+  );
 
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken -emailverificationToken -emailVerificationToken",
@@ -237,14 +250,21 @@ const resendEmailVerification = asyncHandler(async (req, res) => {
 
   await user.save({ validateBeforeSave: false });
 
-  await sendEmail({
-    email: user?.email,
-    subject: "Please verify your email",
-    mailgenContent: emailVerificationMailgenContent(
-      user.username,
-      `${req.protocol}://${req.get("host")}/api/v1/user/verify-email/${unHashedToken}`,
-    ),
-  });
+  // await sendEmail({
+  //   email: user?.email,
+  //   subject: "Please verify your email",
+  //   mailgenContent: emailVerificationMailgenContent(
+  //     user.username,
+  //     `${req.protocol}://${req.get("host")}/api/v1/user/verify-email/${unHashedToken}`,
+  //   ),
+  // });
+
+  // new mailing using bullmq + redis
+  await addVerificationEmailJob(
+    user.email,
+    user.username,
+    `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${unHashedToken}`,
+  );
 
   return res
     .status(200)
@@ -321,14 +341,21 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
 
   await user.save({ validateBeforeSave: false });
 
-  await sendEmail({
-    email: user?.email,
-    subject: "Password reset request",
-    mailgenContent: forgotPasswordMailgenContent(
-      user.username,
-      `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`,
-    ),
-  });
+  // await sendEmail({
+  //   email: user?.email,
+  //   subject: "Password reset request",
+  //   mailgenContent: forgotPasswordMailgenContent(
+  //     user.username,
+  //     `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`,
+  //   ),
+  // });
+
+  // ---------- new mailing -----
+  await addForgotPasswordEmailJob(
+    user.email,
+    user.username,
+    `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`,
+  );
 
   return res
     .status(200)
@@ -450,5 +477,5 @@ export {
   resetForgotPassword,
   changeCurrentPassword,
   updateAvatar,
-  updateCoverImage
+  updateCoverImage,
 };
