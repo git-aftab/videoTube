@@ -17,7 +17,17 @@ app.use(passport.initialize());
 
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
+    origin: (origin, callback) => {
+      const allowed = process.env.CORS_ORIGIN?.split(",") || [
+        "http://localhost:5173",
+      ];
+      // allow requests with no origin (Postman, mobile apps)
+      if (!origin || allowed.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

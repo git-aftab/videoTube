@@ -16,7 +16,7 @@ router.route("/").get(verifyJWT, getAllTweets).post(verifyJWT, createTweet);
 
 router
   .route("/:tweetId")
-  .post(verifyJWT, verifyOwnerShip(Tweet, "tweetId"), deleteTweet)
+  .delete(verifyJWT, verifyOwnerShip(Tweet, "tweetId"), deleteTweet)
   .patch(verifyJWT, verifyOwnerShip(Tweet, "tweetId"), updateTweet);
 
 router.route("/:userId").get(verifyJWT, getUserTweets);
