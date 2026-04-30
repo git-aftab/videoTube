@@ -1,7 +1,7 @@
 import { Queue } from "bullmq";
 import redis from "../config/redis";
 
-const uploadVideoQueue = new Queue("videoQueue", {
+const videoQueue = new Queue("videoQueue", {
   connection: redis,
   defaultJobOptions: {
     attempts: 3,
@@ -14,4 +14,11 @@ const uploadVideoQueue = new Queue("videoQueue", {
   },
 });
 
-const addVideoUploadJob = async(videopath, videoId)
+const addVideoUploadJob = async (videoPath, videoId) => {
+  await videoQueue.add("uploadVideo", {
+    videoPath,
+    videoId,
+  });
+};
+
+export { addVideoUploadJob, videoQueue };
