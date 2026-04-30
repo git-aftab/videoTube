@@ -9,6 +9,7 @@ import {
 } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
+import { addVideoUploadJob } from "../queues/video.queue.js"
 
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
@@ -118,25 +119,33 @@ const publishAVideo = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Video localpath is required");
   }
 
-  const video = await uploadVideoToCloudinary(videoLocalPath);
+  // const video = await uploadVideoToCloudinary(videoLocalPath);
+
   if (!video) {
     throw new ApiError(500, "failed to upload the video");
   }
   console.log("Video uploaded!", video?.url);
 
   const thumbnailLocatPath = req.files?.thumbnail?.[0]?.path;
-  const thumbnail = thumbnailLocatPath
-    ? await uploadImageToCloudinary(thumbnailLocatPath)
-    : null;
+  // const thumbnail = thumbnailLocatPath
+  //   ? await uploadImageToCloudinary(thumbnailLocatPath)
+  //   : null;
 
   const videoDoc = await Video.create({
     title,
-    videoFile: video?.url,
+    videoFile: "",
     description: description || "",
-    duration: video?.duration,
-    thumbnail: thumbnail?.url || "",
+    duration: 0,
+    thumbnail: "" || "",
     owner: req.user?._id,
+    isPublished: false,
   });
+
+  await addVideoUploadJob({
+    videoPath: videoLocalPath,
+    thumbnailPath: thumbnailLocatPath,
+    videoId: videoDoc._id 
+  })
 
   return res
     .status(201)

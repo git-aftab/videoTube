@@ -1,6 +1,9 @@
 import { Worker } from "bullmq";
 import redis from "../config/redis";
-import { uploadVideoToCloudinary } from "../utils/cloudinary.js";
+import {
+  uploadImageToCloudinary,
+  uploadVideoToCloudinary,
+} from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 
 const videoWorker = new Worker(
@@ -8,24 +11,48 @@ const videoWorker = new Worker(
   async (job) => {
     const { name, data } = job;
 
-    if (name === "uploadVideo") {
-      const { videoPath, videoId } = data;
-      console.log("Processing Video upload: ", videoId);
+    if (name !== "uploadVideo") return;
 
-      const uploadedVideo = await uploadVideoToCloudinary(videoPath);
+    const { videoPath, thumbnailPath, videoId } = data;
 
-      if (!uploadedVideo) {
-        throw new Error("Video upload failed");
-      }
+    console.log("🎬 Processing video job:", videoId);
 
-      await Video.findByIdAndUpdate(videoId, {
-        videoFile: uploadedVideo.secure_url,
-        duration: uploadedVideo.duration,
-        isPublished: true,
-      });
-      console.log("Video uploaded successfully", videoId);
+    // upload video
+    const uploadedVideo = await uploadVideoToCloudinary(videoPath);
+    if (!uploadedVideo) {
+      throw new Error("Video Upload failed");
     }
+
+    // thumbnail --- OPTIONAL -> null
+    let uploadedThumbnail = null;
+
+    if (thumbnailPath) {
+      uploadedThumbnail = await uploadImageToCloudinary(thumbnailPath);
+
+      if (!uploadedThumbnail) {
+        throw new Error("Thumbnail Upload failed");
+      }
+    }
+
+    // update DB
+    const updatedData = {
+      videoFile: uploadedVideo.secure_url,
+      duration: uploadedVideo.duration,
+      isPublished: true,
+    };
+
+    if (uploadedThumbnail.secure_url) {
+      updatedData.thumbnail = uploadedThumbnail.secure_url;
+    }
+
+    await Video.findByIdAndUpdate(videoId, updatedData);
+
+    safeUnlink(videoPath);
+    if (thumbnailPath) safeUnlink(thumbnailPath);
+
+    console.log("Video Job completed", videoId);
   },
+
   { connection: redis },
 );
 
