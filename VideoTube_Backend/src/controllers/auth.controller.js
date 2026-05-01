@@ -15,6 +15,7 @@ import {
   addVerificationEmailJob,
   addForgotPasswordEmailJob,
 } from "../queues/email.queue.js";
+import { addAvatarUploadJob } from "../queues/profile.queue.js";
 
 // Generate AcessToken and RefreshToken for users
 const generateAccessTokenAndRefreshToken = async (userId) => {
@@ -49,13 +50,13 @@ const registerUser = asyncHandler(async (req, res) => {
   const avatarLocalPath = req.files?.avatar?.[0].path;
   const coverImgLocalPath = req.files?.coverImage?.[0].path;
 
-  const avatar = avatarLocalPath
-    ? await uploadImageToCloudinary(avatarLocalPath)
-    : null;
+  // const avatar = avatarLocalPath
+  //   ? await uploadImageToCloudinary(avatarLocalPath)
+  //   : null;
 
-  const coverImage = coverImgLocalPath
-    ? await uploadImageToCloudinary(coverImgLocalPath)
-    : null;
+  // const coverImage = coverImgLocalPath
+  //   ? await uploadImageToCloudinary(coverImgLocalPath)
+  //   : null;
 
   const user = await User.create({
     email,
@@ -63,8 +64,14 @@ const registerUser = asyncHandler(async (req, res) => {
     username,
     fullName,
     isEmailVerified: false,
-    avatar: avatar?.url || "",
-    coverImage: coverImage?.url || "",
+    avatar: "",
+    coverImage: "",
+  });
+
+  await addAvatarUploadJob({
+    avatar: avatarLocalPath,
+    coverImage: coverImgLocalPath,
+    userId: user._id,
   });
 
   //   After user is create generate the temp_token
