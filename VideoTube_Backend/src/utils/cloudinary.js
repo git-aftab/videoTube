@@ -10,7 +10,7 @@ cloudinary.config({
 });
 
 // safe delete
-const safeUnlink = (filePath) => {
+export const safeUnlink = (filePath) => {
   try {
     if (filePath && fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);

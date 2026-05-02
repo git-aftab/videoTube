@@ -74,6 +74,8 @@ const registerUser = asyncHandler(async (req, res) => {
     userId: user._id,
   });
 
+  console.log("Initilized the avatar/cover image upload in Bg");
+
   //   After user is create generate the temp_token
   const { unHashedToken, hashedToken, tokenExpiry } =
     user.generateTemporaryToken();
