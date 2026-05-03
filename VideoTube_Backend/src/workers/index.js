@@ -1,5 +1,5 @@
 import connectDB from "../db/index.js";
-import "../config/env.js"; // or however you load dotenv
+import "dotenv/config"; // or however you load dotenv
 await connectDB();
 
 import "./email.worker.js";

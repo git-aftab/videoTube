@@ -7,6 +7,7 @@ import fs from "fs";
 const profileWorker = new Worker(
   "profileQueue",
   async (job) => {
+    console.log("Profile Worker received job:", job.id, job.name);
     const { name, data } = job;
 
     if (name !== "uploadAvatar") return;
