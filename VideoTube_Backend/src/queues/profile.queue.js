@@ -15,15 +15,18 @@ const profileQueue = new Queue("profileQueue", {
 });
 
 const addAvatarUploadJob = async ({
-  avatarLocalPath,
-  coverImgLocalPath,
+  absoludetAvatarPath,
+  absoluteCoverImagePath,
   userId,
 }) => {
   await profileQueue.add("uploadAvatar", {
-    avatar: avatarLocalPath || null,
-    coverImage: coverImgLocalPath || null,
+    avatar: absoludetAvatarPath,
+    coverImage: absoluteCoverImagePath,
     userId,
   });
+  console.log("Added profile upload job to queue for user:", userId);
+  console.log("absoludetAvatarPath passed to worker:", absoludetAvatarPath);
+  console.log("absoluteCoverImagePath passed to worker:", absoluteCoverImagePath);
 };
 
 export { profileQueue, addAvatarUploadJob };

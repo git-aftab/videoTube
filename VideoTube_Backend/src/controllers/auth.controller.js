@@ -16,6 +16,7 @@ import {
   addForgotPasswordEmailJob,
 } from "../queues/email.queue.js";
 import { addAvatarUploadJob } from "../queues/profile.queue.js";
+import path from "path";
 
 // Generate AcessToken and RefreshToken for users
 const generateAccessTokenAndRefreshToken = async (userId) => {
@@ -50,13 +51,13 @@ const registerUser = asyncHandler(async (req, res) => {
   const avatarLocalPath = req.files?.avatar?.[0].path;
   const coverImgLocalPath = req.files?.coverImage?.[0].path;
 
-  // const avatar = avatarLocalPath
-  //   ? await uploadImageToCloudinary(avatarLocalPath)
-  //   : null;
+  const absoludetAvatarPath = avatarLocalPath
+    ? path.resolve(avatarLocalPath)
+    : null;
 
-  // const coverImage = coverImgLocalPath
-  //   ? await uploadImageToCloudinary(coverImgLocalPath)
-  //   : null;
+  const absoluteCoverImagePath = coverImgLocalPath
+    ? path.resolve(coverImgLocalPath)
+    : null;
 
   const user = await User.create({
     email,
@@ -69,10 +70,13 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   await addAvatarUploadJob({
-    avatar: avatarLocalPath,
-    coverImage: coverImgLocalPath,
+    absoludetAvatarPath,
+    absoluteCoverImagePath,
     userId: user._id,
   });
+
+  console.log("absoludetAvatarPath:", absoludetAvatarPath);
+  console.log("absoluteCoverImagePath:", absoluteCoverImagePath);
 
   console.log("Initilized the avatar/cover image upload in Bg");
 
@@ -96,11 +100,11 @@ const registerUser = asyncHandler(async (req, res) => {
   // });
 
   // new mailing service - bullmq+redis
-  await addVerificationEmailJob(
-    user.email,
-    user.username,
-    `${req.protocol}://${req.get("host")}/api/v1//auth/verify-email/${unHashedToken}`,
-  );
+  // await addVerificationEmailJob(
+  //   user.email,
+  //   user.username,
+  //   `${req.protocol}://${req.get("host")}/api/v1//auth/verify-email/${unHashedToken}`,
+  // );
 
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken -emailverificationToken -emailVerificationToken",

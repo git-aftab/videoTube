@@ -36,7 +36,7 @@ export const uploadImageToCloudinary = async (localFilePath) => {
     return response;
   } catch (error) {
     console.error("Image upload error:", error);
-    safeUnlink(localFilePath);
+    // safeUnlink(localFilePath);
     return null;
   }
 };
@@ -69,7 +69,7 @@ export const uploadVideoToCloudinary = async (localFilePath) => {
       fs.createReadStream(absolutePath).pipe(stream);
     } catch (error) {
       console.error("Stream setup error:", error);
-      safeUnlink(localFilePath);
+      // safeUnlink(localFilePath);
       reject(error);
     }
   });
