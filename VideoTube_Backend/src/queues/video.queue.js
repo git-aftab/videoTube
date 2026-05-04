@@ -12,6 +12,11 @@ const videoQueue = new Queue("videoQueue", {
 });
 
 const addVideoUploadJob = async ({ videoPath, thumbnailPath, videoId }) => {
+  console.log("Adding video upload job to the queue with data:", {
+    videoPath,
+    thumbnailPath,
+    videoId,
+  });
   await videoQueue.add("uploadVideo", {
     videoPath,
     thumbnailPath: thumbnailPath || null,

@@ -121,11 +121,6 @@ const publishAVideo = asyncHandler(async (req, res) => {
 
   // const video = await uploadVideoToCloudinary(videoLocalPath);
 
-  if (!video) {
-    throw new ApiError(500, "failed to upload the video");
-  }
-  console.log("Video uploaded!", video?.url);
-
   const thumbnailLocatPath = req.files?.thumbnail?.[0]?.path;
   // const thumbnail = thumbnailLocatPath
   //   ? await uploadImageToCloudinary(thumbnailLocatPath)

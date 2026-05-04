@@ -5,7 +5,8 @@ const videoSchema = new Schema(
   {
     videoFile: {
       type: String, // cloudinary url
-      required: true,
+      // required: true,
+      default: "",
     },
     thumbnail: {
       type: String, // cloudinary
@@ -28,7 +29,7 @@ const videoSchema = new Schema(
     },
     isPublished: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     owner: {
       type: Schema.Types.ObjectId,
