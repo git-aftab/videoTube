@@ -1,4 +1,4 @@
-import redis from "redis";
+import redis from "../config/redis.js";
 
 export const getCache = async (key) => {
   try {
