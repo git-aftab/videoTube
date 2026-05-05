@@ -254,11 +254,11 @@ FORGOT_PASSWORD_REDIRECT_URL=http://localhost:5173/reset-password
 - [x] Aggregation-based video feed with search, sort, pagination
 - [x] Ownership middleware
 - [x] Input validation with express-validator
-- [ ] Comments, Likes, Playlists, Subscriptions, Tweets
+- [x] Comments, Likes, Playlists, Subscriptions, Tweets
 - [ ] RAG pipeline — video transcript ingestion + vector embeddings
 - [ ] Video Q&A and summarization endpoints
 - [ ] Comment sentiment overview
-- [ ] Redis caching layer
+- [x] Redis caching layer
 - [ ] Rate limiting
 - [ ] Semantic search
 - [ ] Microservices exploration
