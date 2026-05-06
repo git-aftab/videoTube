@@ -11,8 +11,6 @@ import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
 import { addVideoUploadJob } from "../queues/video.queue.js";
 import { getCache, setCache, deleteCache } from "../utils/cache.js";
-import { cache } from "react";
-
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
@@ -95,25 +93,25 @@ const getAllVideos = asyncHandler(async (req, res) => {
     limit: parseInt(limit),
   };
 
-  const cacheKey = `videos:${JSON.stringify({
-    page,
-    limit,
-    query,
-    sortBy,
-    sortType,
-    userId,
-  })}`;
+  // const cacheKey = `videos:${JSON.stringify({
+  //   page,
+  //   limit,
+  //   query,
+  //   sortBy,
+  //   sortType,
+  //   userId,
+  // })}`;
 
-  const cached = await getCache(cacheKey);
+  // const cached = await getCache(cacheKey);
 
-  if (cached) {
-    console.log("==> Cache HIT");
-    return res
-      .status(200)
-      .json(new ApiResponse(200, cached, "Video fetched From cache"));
-  } else {
-    console.log("Cache MISS");
-  }
+  // if (cached) {
+  //   console.log("==> Cache HIT");
+  //   return res
+  //     .status(200)
+  //     .json(new ApiResponse(200, cached, "Video fetched From cache"));
+  // } else {
+  //   console.log("Cache MISS");
+  // }
 
   const videos = await Video.aggregatePaginate(
     Video.aggregate(pipeline),
@@ -121,7 +119,7 @@ const getAllVideos = asyncHandler(async (req, res) => {
   );
 
   // store cache
-  await setCache(cacheKey, videos, 60);
+  // await setCache(cacheKey, videos, 60);
 
   return res
     .status(200)
@@ -181,21 +179,21 @@ const getVideoById = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Invalid videoId");
   }
 
-  const cachekey = `video:${videoId}`;
+  // const cachekey = `video:${videoId}`;
 
   // increment view count every time the video is fetched
   await Video.findByIdAndUpdate(videoId, {
     $inc: { views: 1 }, // $inc increments the field by given val
   });
 
-  const cached = await getCache(cachekey);
-  if (cached) {
-    console.log("==> Video Cache HIT");
-    return res
-      .status(200)
-      .json(new ApiResponse(200, cached, "Video fetched From cache"));
-  }
-  console.log("==> Video Cache MISS");
+  // const cached = await getCache(cachekey);
+  // if (cached) {
+  //   console.log("==> Video Cache HIT");
+  //   return res
+  //     .status(200)
+  //     .json(new ApiResponse(200, cached, "Video fetched From cache"));
+  // }
+  // console.log("==> Video Cache MISS");
 
   // Aggregate pipeline to fetch video -> owner details
   const video = await Video.aggregate([
@@ -238,8 +236,8 @@ const getVideoById = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Video not found");
   }
 
-  const finalVideo = video[0];
-  await setCache(cachekey, finalVideo, 60);
+  // const finalVideo = video[0];
+  // await setCache(cachekey, finalVideo, 60);
 
   return res
     .status(200)

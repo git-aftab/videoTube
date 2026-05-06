@@ -11,12 +11,33 @@ import {
 } from "../controllers/video.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { cacheMiddleWare } from "../middlewares/cache.middleware.js";
 
 const router = Router();
 
 router
   .route("/")
-  .get(getAllVideos)
+  .get(
+    cacheMiddleWare((req) => {
+      const {
+        page = 1,
+        limit = 10,
+        query,
+        sortBy,
+        sortType,
+        userId,
+      } = req.query;
+      return `videos:${JSON.stringify({
+        page,
+        limit,
+        query,
+        sortBy,
+        sortType,
+        userId,
+      })}`;
+    }, 60),
+    getAllVideos,
+  )
   .post(
     verifyJWT,
     upload.fields([
@@ -28,7 +49,13 @@ router
 
 router
   .route("/:videoId")
-  .get(verifyJWT, getVideoById)
+  .get(
+    verifyJWT,
+    cacheMiddleWare((req) => {
+      `video:${req.params.videoId}`;
+    }),
+    getVideoById,
+  )
   .patch(verifyJWT, verifyOwnerShip(Video, "videoId"), updateVideoDets)
   .delete(verifyJWT, verifyOwnerShip(Video, "videoId"), deleteVideo);
 
