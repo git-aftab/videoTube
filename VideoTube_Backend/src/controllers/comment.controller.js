@@ -5,6 +5,7 @@ import { Comment } from "../models/comment.models.js";
 import mongoose from "mongoose";
 // import { User } from "../models/user.models.js";
 import { Video } from "../models/video.models.js";
+import { deleteCache } from "../utils/cache.js";
 
 const getVideoComments = asyncHandler(async (req, res) => {
   //TODO: get all comments for a video
@@ -95,6 +96,7 @@ const addComment = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Cannot upload the comment");
   }
 
+  await deleteCache(`video:*`);
   return res
     .status(201)
     .json(
@@ -123,13 +125,15 @@ const updateComment = asyncHandler(async (req, res) => {
 
   const updatedComment = await Comment.findByIdAndUpdate(
     commentId,
-    { $set: {content} },
+    { $set: { content } },
     { new: true, runValidators: true },
   );
 
   if (!updatedComment) {
     throw new ApiError(500, "Error updating Comment");
   }
+
+  await deleteCache(`video:*`);
 
   return res
     .status(200)
@@ -152,6 +156,8 @@ const deleteComment = asyncHandler(async (req, res) => {
   if (!deletedComment) {
     throw new ApiError(404, "Comment Not Found");
   }
+
+  deleteCache(`video:*`)
 
   return res
     .status(200)

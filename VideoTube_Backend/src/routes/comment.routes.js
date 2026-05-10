@@ -13,12 +13,18 @@ import {
 } from "../controllers/comment.controller.js";
 import { Comment } from "../models/comment.models.js";
 import { validate } from "../middlewares/validator.middleware.js";
+import { cacheMiddleWare } from "../middlewares/cache.middleware.js";
 
 const router = Router();
 
 router
   .route("/:videoId")
-  .get(getVideoComments)
+  .get(
+    cacheMiddleWare((req) => {
+      `video:${req.params.videoId}`;
+    }),
+    getVideoComments,
+  )
   .post(verifyJWT, ...addCommentValidator(), validate, addComment);
 
 router

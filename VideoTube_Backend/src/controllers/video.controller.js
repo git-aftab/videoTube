@@ -10,7 +10,8 @@ import {
 import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
 import { addVideoUploadJob } from "../queues/video.queue.js";
-import { getCache, setCache, deleteCache } from "../utils/cache.js";
+import { deleteCache } from "../utils/cache.js";
+
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
@@ -282,8 +283,6 @@ const updateVideoDets = asyncHandler(async (req, res) => {
   );
 
   await deleteCache("videos:*"); // invalidate all videos cache
-  await deleteCachePattern("videos:*"); // for feed
-
   return res
     .status(200)
     .json(new ApiResponse(200, videoDoc, "Video Updated Successfully"));
@@ -308,8 +307,6 @@ const deleteVideo = asyncHandler(async (req, res) => {
   }
 
   await deleteCache("videos:*"); // invalidate all videos cache
-  await deleteCachePattern("videos:*"); // for feed
-
   return res
     .status(200)
     .json(
@@ -332,9 +329,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     { new: true },
   );
 
-  await deleteCache(`video:${videoId}`);
-  await deleteCachePattern("videos:*"); // for feed
-
+  await deleteCache(`video:*`);
   return res
     .status(200)
     .json(
