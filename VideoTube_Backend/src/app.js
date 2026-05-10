@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import logger from "./utils/logger.js";
 import passport from "./config/OAuth.js";
+import { globaRateLimiter } from "./middlewares/rateLimit.middleware.js";
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
+app.use(globaRateLimiter);
 
 // OAuth Config
 app.use(passport.initialize());
