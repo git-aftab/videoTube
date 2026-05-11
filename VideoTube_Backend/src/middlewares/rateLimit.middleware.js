@@ -14,6 +14,14 @@ const globaRateLimiter = rateLimit({
     message: "Too many requests, please try again later.",
   },
 
+  handler: (req, res) => {
+    console.log("\n RATE LIMIT HIT!!");
+    console.log("IP:", req.ip);
+    console.log("Route:", req.originalUrl);
+    console.log("Method:", req.method);
+    console.log("Time:", new Date().toLocaleDateString());
+  },
+
   store: new RedisStore({
     sendCommand: (...args) => redis.call(...args),
   }),
@@ -29,6 +37,14 @@ const authRateLimiter = rateLimit({
     message: "Too many authentication attempts. Please try again later",
   },
 
+  handler: (req, res) => {
+    console.log("\n RATE LIMIT HIT!!");
+    console.log("IP:", req.ip);
+    console.log("Route:", req.originalUrl);
+    console.log("Method:", req.method);
+    console.log("Time:", new Date().toLocaleDateString());
+  },
+
   store: new RedisStore({
     sendCommand: (...args) => redis.call(...args),
   }),
@@ -42,6 +58,14 @@ const uploadLimiter = rateLimit({
   message: {
     success: false,
     message: "Too many upload attempts. Please try again later",
+  },
+
+  handler: (req, res) => {
+    console.log("\n RATE LIMIT HIT!!");
+    console.log("IP:", req.ip);
+    console.log("Route:", req.originalUrl);
+    console.log("Method:", req.method);
+    console.log("Time:", new Date().toLocaleDateString());
   },
 
   store: new RedisStore({
