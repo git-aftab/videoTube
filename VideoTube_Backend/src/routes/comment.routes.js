@@ -14,6 +14,7 @@ import {
 import { Comment } from "../models/comment.models.js";
 import { validate } from "../middlewares/validator.middleware.js";
 import { cacheMiddleWare } from "../middlewares/cache.middleware.js";
+import { uploadLimiter } from "../middlewares/rateLimit.middleware.js";
 
 const router = Router();
 
@@ -25,7 +26,7 @@ router
     }),
     getVideoComments,
   )
-  .post(verifyJWT, ...addCommentValidator(), validate, addComment);
+  .post(uploadLimiter,verifyJWT, ...addCommentValidator(), validate, addComment);
 
 router
   .route("/:videoId/:commentId")

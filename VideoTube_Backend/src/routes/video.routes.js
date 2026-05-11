@@ -12,6 +12,7 @@ import {
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { cacheMiddleWare } from "../middlewares/cache.middleware.js";
+import { uploadLimiter } from "../middlewares/rateLimit.middleware.js";
 
 const router = Router();
 
@@ -39,6 +40,7 @@ router
     getAllVideos,
   )
   .post(
+    uploadLimiter,
     verifyJWT,
     upload.fields([
       { name: "videoFile", maxCount: 1 },

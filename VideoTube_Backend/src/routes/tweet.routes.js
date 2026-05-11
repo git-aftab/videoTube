@@ -9,10 +9,11 @@ import {
   deleteTweet,
   getAllTweets,
 } from "../controllers/tweet.controller.js";
+import { uploadLimiter } from "../middlewares/rateLimit.middleware.js";
 
 const router = Router();
 
-router.route("/").get(verifyJWT, getAllTweets).post(verifyJWT, createTweet);
+router.route("/").get(uploadLimiter,verifyJWT, getAllTweets).post(verifyJWT, createTweet);
 
 router
   .route("/:tweetId")
