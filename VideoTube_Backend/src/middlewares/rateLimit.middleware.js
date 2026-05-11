@@ -19,4 +19,34 @@ const globaRateLimiter = rateLimit({
   }),
 });
 
-export { globaRateLimiter };
+const authRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 mins
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: "Too many authentication attempts. Please try again later",
+  },
+
+  store: new RedisStore({
+    sendCommand: (...args) => redis.call(...args),
+  }),
+});
+
+const uploadLimiter = rateLimit({
+  windowMs: 40 * 60 * 1000, // 1hr
+  max: 10, //max 10 attempts
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: "Too many upload attempts. Please try again later",
+  },
+
+  store: new RedisStore({
+    sendCommand: (...args) => redis.call(...args),
+  }),
+});
+
+export { globaRateLimiter, authRateLimiter, uploadLimiter };

@@ -28,6 +28,7 @@ import {
   resetForgotPasswordValidator,
 } from "../validators/auth.validator.js";
 import { validate } from "../middlewares/validator.middleware.js";
+import { authRateLimiter, uploadLimiter } from "../middlewares/rateLimit.middleware.js";
 
 const router = Router();
 
@@ -35,6 +36,7 @@ const router = Router();
 
 // registerUser
 router.route("/register").post(
+  authRateLimiter,
   upload.fields([
     { name: "avatar", maxCount: 1 },
     { name: "coverImage", maxCount: 1 },
@@ -45,18 +47,20 @@ router.route("/register").post(
 );
 
 // loginUser
-router.route("/login").post(...loginValidator(), validate, loginUser);
+router
+  .route("/login")
+  .post(authRateLimiter, ...loginValidator(), validate, loginUser);
 
 // verifyEmail
 router.route("/verify-email/:verificationToken").get(verifyEmail);
 
 // refreshAccessToken
-router.route("/refresh-token").post(refreshAccessToken);
+router.route("/refresh-token").post(authRateLimiter,refreshAccessToken);
 // forgotPassword
-router.route("/forgot-password").post(forgotPasswordRequest);
+router.route("/forgot-password").post(authRateLimiter,forgotPasswordRequest);
 
 // resetFrogotPassword
-router.route("/reset-password/:resetToken").post(resetForgotPassword);
+router.route("/reset-password/:resetToken").post(authRateLimiter,resetForgotPassword);
 
 // Secure routes --> hit after user is logged in
 // router.use(verifyJWT);
@@ -73,17 +77,17 @@ router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 //resend email verification
 router
   .route("/resend-email-verification")
-  .post(verifyJWT, resendEmailVerification);
+  .post(authRateLimiter,verifyJWT, resendEmailVerification);
 
 // update avatar
 router
   .route("/update-avatar")
-  .patch(verifyJWT, upload.single("avatar"), updateAvatar);
+  .patch(uploadLimiter,verifyJWT, upload.single("avatar"), updateAvatar);
 
 // update coverImage
 router
   .route("/update-coverimage")
-  .patch(verifyJWT, upload.single("coverImage"), updateCoverImage);
+  .patch(uploadLimiter,verifyJWT, upload.single("coverImage"), updateCoverImage);
 
 // OAuth ROUTES
 router
