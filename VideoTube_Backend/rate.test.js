@@ -7,5 +7,5 @@ export const options = {
 
 export default function () {
   const res = http.get("http://localhost:3000/api/v1/healthcheck");
-  console.log(`Response Status: ${res.status}`);
+  console.log(`Status: ${res.status}, Body: ${res.body}`);
 }
