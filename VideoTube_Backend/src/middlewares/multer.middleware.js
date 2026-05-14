@@ -1,5 +1,6 @@
 import multer from "multer";
-import fs from 'fs'
+import fs from "fs";
+import path from "path";
 
 const uploadPath = "public/temp";
 
@@ -14,8 +15,10 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "_" + Math.round(Math.random() * 1e9);
-    cb(null, file.originalname + "_" + uniqueSuffix);
+    const ext = path.extname(file.originalname);
+    // cb(null, file.originalname + "_" + uniqueSuffix);
+    cb(null, uniqueSuffix + ext);
   },
 });
 
-export const upload = multer({storage})
+export const upload = multer({ storage });
