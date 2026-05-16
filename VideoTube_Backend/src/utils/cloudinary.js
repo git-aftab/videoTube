@@ -41,7 +41,7 @@ export const uploadImageToCloudinary = async (localFilePath) => {
   }
 };
 
-// VIDEO UPLOAD -> stream-based 
+// VIDEO UPLOAD -> stream-based
 export const uploadVideoToCloudinary = async (localFilePath) => {
   return new Promise((resolve, reject) => {
     try {
@@ -52,11 +52,9 @@ export const uploadVideoToCloudinary = async (localFilePath) => {
       const stream = cloudinary.uploader.upload_stream(
         {
           resource_type: "video",
-          timeout: 60000, // increase timeout
+          timeout: 120000, // increase timeout
         },
         (error, result) => {
-          safeUnlink(absolutePath);
-
           if (error) {
             console.error("Video upload error:", error);
             return reject(error);
@@ -66,7 +64,14 @@ export const uploadVideoToCloudinary = async (localFilePath) => {
         },
       );
 
-      fs.createReadStream(absolutePath).pipe(stream);
+      fs.createReadStream(absolutePath);
+
+      // ✅ handle stream errors — prevents process crash
+      readStream.on("error", (err) => {
+        reject(err);
+      });
+      
+      readStream.pipe(stream);
     } catch (error) {
       console.error("Stream setup error:", error);
       // safeUnlink(localFilePath);

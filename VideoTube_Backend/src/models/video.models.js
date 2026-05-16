@@ -10,6 +10,24 @@ const videoSchema = new Schema(
     },
     thumbnail: {
       type: String, // cloudinary
+      default: "",
+    },
+    processingStatus: {
+      type: String,
+      enum: [
+        "PROCESSING",
+        "READY",
+        "FAILED",
+      ],
+      default: "PROCESSING",
+    },
+    audioProcessingError: {
+      type: String,
+      default: null,
+    },
+    audioFile:{
+      type: String,
+      default: ""
     },
     title: {
       type: String,
@@ -21,7 +39,7 @@ const videoSchema = new Schema(
     },
     duration: {
       type: Number,
-      required: true,
+      default: 0,
     },
     views: {
       type: Number,

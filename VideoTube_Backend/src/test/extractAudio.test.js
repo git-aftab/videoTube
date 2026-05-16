@@ -1,4 +1,4 @@
-import { extractAudioFromVideo } from "../src/services/transcription/audioExtract.service.js";
+import { extractAudioFromVideo } from "../services/transcription/audioExtract.service.js";
 
 export const testAudioExtraction = async (req, res) => {
   try {

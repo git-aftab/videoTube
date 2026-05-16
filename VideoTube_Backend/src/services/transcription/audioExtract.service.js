@@ -2,14 +2,33 @@ import ffmpeg from "fluent-ffmpeg";
 import ffmpegPath from "ffmpeg-static";
 import path from "path";
 import fs from "fs";
-import { resolve } from "dns";
-import { rejects } from "assert";
+
+export const hasAudioStream = (videoPath) => {
+  return new Promise((resolve, reject) => {
+    console.log("Checking Audio Availability for videoPath:",videoPath);
+    ffmpeg.ffprobe(videoPath, (err, metadata) => {
+      if (err) {
+        console.log(
+          "There is something wrong with hasAudio or no audio available.",
+        );
+        return reject(err);
+      }
+      const hasAudio = metadata.streams.some(
+        (stream) => stream.codec_type === "audio",
+      );
+
+      resolve(hasAudio);
+      console.log("The Video Contains Audio");
+    });
+  });
+};
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
 export const extractAudioFromVideo = (videoPath) => {
   return new Promise((resolve, reject) => {
     try {
+      console.log("Initializing Video --> Audio");
       if (!fs.existsSync(videoPath)) {
         return reject(new Error("Video file not found"));
       }
