@@ -14,20 +14,33 @@ const videoSchema = new Schema(
     },
     processingStatus: {
       type: String,
-      enum: [
-        "PROCESSING",
-        "READY",
-        "FAILED",
-      ],
+      enum: ["PROCESSING", "READY", "FAILED"],
       default: "PROCESSING",
     },
     audioProcessingError: {
       type: String,
       default: null,
     },
-    audioFile:{
+    audioFile: {
       type: String,
-      default: ""
+      default: "",
+    },
+    transcript: {
+      type: String,
+      default: "",
+    },
+    detectedLanguage: {
+      type: String,
+      default: "",
+    },
+    transcriptionSegment: {
+      type: Array, // timestamped segments for chapter generation later
+      default: [],
+    },
+    transcriptionStatus: {
+      type: String,
+      enum: ["PENDING", "PROCESSING", "COMPLETED", "FAILED", "NO_AUDIO"],
+      default: "PENDING",
     },
     title: {
       type: String,
