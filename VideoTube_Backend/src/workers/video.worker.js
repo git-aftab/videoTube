@@ -11,6 +11,7 @@ import {
 } from "../utils/cloudinary.js";
 import { Video } from "../models/video.models.js";
 import path from "path";
+import { transcribeAudio } from "../services/transcription/transcribeVideo.service.js";
 
 console.log("Initializing video worker...");
 
@@ -56,6 +57,7 @@ const videoWorker = new Worker(
     });
     console.log("Video uploaded and DB updated:", videoId);
 
+    // let extractedAudioPath = null
     try {
       console.log("Checking audio Stream...");
       const audioExists = await hasAudioStream(path.resolve(videoPath));
@@ -75,26 +77,56 @@ const videoWorker = new Worker(
         path.resolve(videoPath),
       );
 
-      if (!extractedAudioPath) {
-        console.log("Audio Extraction failed skipping it");
-      } else {
-        console.log("Audio extracted at:", extractedAudioPath);
+      if (extractedAudioPath) {
+        console.log("Starting transcription for: video:", videoId);
+
+        await Video.findByIdAndUpdate(videoId, {
+          $set: { transcriptionStatus: "PROCESSING" },
+        });
+
+        const transcriptionResult = await transcribeAudio(extractedAudioPath);
+
         await Video.findByIdAndUpdate(videoId, {
           $set: {
-            audioFile: extractedAudioPath,
+            transcript: transcriptionResult.text,
+            detectedLanguage: transcriptionResult.language,
+            transcriptionSegments: transcriptionResult.segments,
+            transcriptionStatus: "COMPLETED",
+            audioFile: "", // clear local path - transcript is stored in Db
           },
         });
+        console.log(
+          `Transcription done for ${videoId}`,
+          `Language: ${transcriptionResult.language}`,
+          `Length: ${transcriptionResult.text.length} Chars`,
+        );
+        safeUnlink(extractedAudioPath);
       }
-    } catch (audioError) {
-      console.error("Audio processing error (non-fatal):", audioError.message);
-      await Video.findByIdAndUpdate(videoId, {
+
+      // if (!extractedAudioPath) {
+      //   console.log("Audio Extraction failed skipping it");
+      // } else {
+      //   console.log("Audio extracted at:", extractedAudioPath);
+      //   await Video.findByIdAndUpdate(videoId, {
+      //     $set: {
+      //       audioFile: extractedAudioPath,
+      //     },
+      //   });
+      // }
+
+    } catch (transcriptionError) {
+      console.error("Transcription failed:",transcriptionError.message);
+
+      await Video.findByIdAndUpdate(videoId,{
         $set: {
-          audioProcessingError: audioError.message,
-        },
-      });
+          transcriptionStatus: "FAILED",
+          AudioProcessingError: transcriptionError.message
+        }
+      })
     }
     safeUnlink(videoPath);
     if (thumbnailPath) safeUnlink(thumbnailPath);
+    if(extractedAudioPath) safeUnlink(extractedAudioPath)
 
     console.log("Video Job completed", videoId);
   },
