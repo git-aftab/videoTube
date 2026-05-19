@@ -84,7 +84,7 @@ const videoWorker = new Worker(
           $set: { transcriptionStatus: "PROCESSING" },
         });
 
-        const transcriptionResult = await transcribeAudio(extractedAudioPath);
+        const transcriptionResult = await transcribeAudio(path.resolve(extractedAudioPath));
 
         await Video.findByIdAndUpdate(videoId, {
           $set: {
@@ -126,7 +126,7 @@ const videoWorker = new Worker(
     }
     safeUnlink(videoPath);
     if (thumbnailPath) safeUnlink(thumbnailPath);
-    if(extractedAudioPath) safeUnlink(extractedAudioPath)
+    // if(extractedAudioPath) safeUnlink(extractedAudioPath)
 
     console.log("Video Job completed", videoId);
   },

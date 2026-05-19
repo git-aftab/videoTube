@@ -64,7 +64,7 @@ export const uploadVideoToCloudinary = async (localFilePath) => {
         },
       );
 
-      fs.createReadStream(absolutePath);
+      const readStream = fs.createReadStream(absolutePath);
 
       // ✅ handle stream errors — prevents process crash
       readStream.on("error", (err) => {

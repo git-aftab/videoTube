@@ -1,7 +1,6 @@
 import Groq from "groq-sdk";
 import fs from "fs";
 import path from "path";
-import { text } from "stream/consumers";
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY,
@@ -9,8 +8,8 @@ const groq = new Groq({
 
 export const transcribeAudio = async (audioFilePath) => {
   try {
-    if (!audioFilePath || fs.existsSync(audioFilePath)) {
-      throw new Error(`Audio file not found: ${audioFilePath}`);
+    if (!audioFilePath || !fs.existsSync(audioFilePath)) {
+      throw new Error(`Audio file not found, file recieved in transcribe services: ${audioFilePath}`);
     }
 
     const stats = fs.statSync(audioFilePath);
