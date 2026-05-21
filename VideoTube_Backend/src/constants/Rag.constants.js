@@ -1,12 +1,12 @@
-export const EMBEDDING_MODEL = "jina-embeddings-v2-base-en";
+export const EMBEDDING_MODEL = "jina-embeddings-v3";
 
 export const CHAT_MODEL = "llama-3.3-70b-versatile";
 
-export const EMBDDING_DIMENSION = 768;
+export const EMBDDING_DIMENSION = 1024;
 
-export const CHUNK_SIZE = 400;
+export const CHUNK_SIZE = 500;
 
-export const CHUNK_OVERLAP = 80;
+export const CHUNK_OVERLAP = 100;
 
 export const RETRIEVEL_COUNT = 8;
 
