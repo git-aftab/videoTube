@@ -1,10 +1,10 @@
-import { CHUNK_OVERLAP, CHUNK_SIZE } from "../../constants/Rag.constants";
+import { CHUNK_OVERLAP, CHUNK_SIZE } from "../../constants/Rag.constants.js";
 
-const approximateTokens = (text) => {
+export const approximateTokens = (text) => {
   return Math.ceil(text.length / 4);
 };
 
-const cleanTranscript = (text) => {
+export const cleanTranscript = (text) => {
   return text
     .replace(/\[.*?\]/g, "") // remove [Music]
     .replace(/\s+/g, " ") // normalize spaces
