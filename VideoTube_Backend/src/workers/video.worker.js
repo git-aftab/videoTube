@@ -12,6 +12,13 @@ import {
 import { Video } from "../models/video.models.js";
 import path from "path";
 import { transcribeAudio } from "../services/transcription/transcribeVideo.service.js";
+import {
+  chunkText,
+  approximateTokens,
+  cleanTranscript,
+} from "../services/Rag/chunking.service.js";
+import { generateEmbedding } from "../services/Rag/embedding.service.js";
+import { storeEmbeddings } from "../services/Rag/qdrant.service.js";
 
 console.log("Initializing video worker...");
 
@@ -84,7 +91,9 @@ const videoWorker = new Worker(
           $set: { transcriptionStatus: "PROCESSING" },
         });
 
-        const transcriptionResult = await transcribeAudio(path.resolve(extractedAudioPath));
+        const transcriptionResult = await transcribeAudio(
+          path.resolve(extractedAudioPath),
+        );
 
         await Video.findByIdAndUpdate(videoId, {
           $set: {
@@ -100,6 +109,33 @@ const videoWorker = new Worker(
           `Language: ${transcriptionResult.language}`,
           `Length: ${transcriptionResult.text.length} Chars`,
         );
+
+        console.log("Initializing the chunking service:");
+        console.log(
+          "Approx Tokens",
+          approximateTokens(transcriptionResult.text),
+        );
+        const cleanTranscriptText = await cleanTranscript(
+          transcriptionResult.text,
+        );
+        console.log("Cleaned Text", cleanTranscriptText);
+
+        const chunkedText = await chunkText(cleanTranscriptText);
+        console.log("Chunked Text:", chunkText);
+
+        const embdText = await generateEmbedding(
+          chunkedText,
+          "retrieval.passage",
+        );
+        console.log("Embedding length:", embdText.length);
+
+        await storeEmbeddings({
+          videoId: videoId,
+          chunkText: chunkedText.content,
+          embedding: embdText,
+          chunkIndex: chunkedText.chunkIndex,
+        });
+
         safeUnlink(extractedAudioPath);
       }
 
@@ -113,16 +149,15 @@ const videoWorker = new Worker(
       //     },
       //   });
       // }
-
     } catch (transcriptionError) {
-      console.error("Transcription failed:",transcriptionError.message);
+      console.error("Transcription failed:", transcriptionError.message);
 
-      await Video.findByIdAndUpdate(videoId,{
+      await Video.findByIdAndUpdate(videoId, {
         $set: {
           transcriptionStatus: "FAILED",
-          AudioProcessingError: transcriptionError.message
-        }
-      })
+          AudioProcessingError: transcriptionError.message,
+        },
+      });
     }
     safeUnlink(videoPath);
     if (thumbnailPath) safeUnlink(thumbnailPath);
