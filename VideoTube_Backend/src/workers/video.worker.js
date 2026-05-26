@@ -121,20 +121,23 @@ const videoWorker = new Worker(
         console.log("Cleaned Text", cleanTranscriptText);
 
         const chunkedText = await chunkText(cleanTranscriptText);
-        console.log("Chunked Text:", chunkText);
+        console.log("Chunked Text:", chunkedText);
 
-        const embdText = await generateEmbedding(
-          chunkedText,
-          "retrieval.passage",
-        );
-        console.log("Embedding length:", embdText.length);
+        for (const chunk of chunkedText) {
+          console.log("Generating the Embeddings");
+          const embdText = await generateEmbedding(
+            chunkedText.content,
+            "retrieval.passage",
+          );
+          console.log("Embedding length/DIM:", embdText.length);
 
-        await storeEmbeddings({
-          videoId: videoId,
-          chunkText: chunkedText.content,
-          embedding: embdText,
-          chunkIndex: chunkedText.chunkIndex,
-        });
+          const QStoreEmbd = await storeEmbeddings({
+            videoId: videoId,
+            chunkText: chunk.content,
+            embedding: embdText,
+            chunkIndex: chunk.chunkIndex,
+          });
+        }
 
         safeUnlink(extractedAudioPath);
       }
