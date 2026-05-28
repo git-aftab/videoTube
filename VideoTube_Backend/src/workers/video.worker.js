@@ -1,3 +1,8 @@
+import connectDB from "../db/index.js";
+import "dotenv/config";
+await connectDB();
+console.log("initialized the video Worker");
+
 import { Worker } from "bullmq";
 import redis from "../config/redis.js";
 import {
@@ -12,15 +17,6 @@ import {
 import { Video } from "../models/video.models.js";
 import path from "path";
 import { transcribeAudio } from "../services/transcription/transcribeVideo.service.js";
-import {
-  chunkText,
-  approximateTokens,
-  cleanTranscript,
-} from "../services/Rag/chunking.service.js";
-import { generateEmbedding } from "../services/Rag/embedding.service.js";
-import { storeEmbeddings } from "../services/Rag/qdrant.service.js";
-
-console.log("Initializing video worker...");
 
 const videoWorker = new Worker(
   "videoQueue",
@@ -104,40 +100,18 @@ const videoWorker = new Worker(
             audioFile: "", // clear local path - transcript is stored in Db
           },
         });
+        // ✅ Free the large object immediately after DB write
+        console.log("Segments count:", transcriptionResult.segments?.length);
+        console.log(
+          "Segments size (bytes):",
+          JSON.stringify(transcriptionResult.segments).length,
+        );
+        transcriptionResult.segments = null;
         console.log(
           `Transcription done for ${videoId}`,
           `Language: ${transcriptionResult.language}`,
           `Length: ${transcriptionResult.text.length} Chars`,
         );
-
-        console.log("Initializing the chunking service:");
-        console.log(
-          "Approx Tokens",
-          approximateTokens(transcriptionResult.text),
-        );
-        const cleanTranscriptText = await cleanTranscript(
-          transcriptionResult.text,
-        );
-        console.log("Cleaned Text", cleanTranscriptText);
-
-        const chunkedText = await chunkText(cleanTranscriptText);
-        console.log("Chunked Text:", chunkedText);
-
-        for (const chunk of chunkedText) {
-          console.log("Generating the Embeddings");
-          const embdText = await generateEmbedding(
-            chunkedText.content,
-            "retrieval.passage",
-          );
-          console.log("Embedding length/DIM:", embdText.length);
-
-          const QStoreEmbd = await storeEmbeddings({
-            videoId: videoId,
-            chunkText: chunk.content,
-            embedding: embdText,
-            chunkIndex: chunk.chunkIndex,
-          });
-        }
 
         safeUnlink(extractedAudioPath);
       }

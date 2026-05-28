@@ -21,8 +21,7 @@ export const generateEmbedding = async (text, task = "retrieval.passage") => {
         },
       },
     );
-
-    console.log(res.data);
+    console.log("Embedding received, dim:", res.data.data[0].embedding.length);
     return res.data.data[0].embedding;
   } catch (error) {
     console.error(
