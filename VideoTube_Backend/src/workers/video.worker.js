@@ -5,6 +5,7 @@ console.log("initialized the video Worker");
 
 import { Worker } from "bullmq";
 import redis from "../config/redis.js";
+import { embeddingQueue } from "../queues/embedding.queue.js";
 import {
   extractAudioFromVideo,
   hasAudioStream,
@@ -112,6 +113,9 @@ const videoWorker = new Worker(
           `Language: ${transcriptionResult.language}`,
           `Length: ${transcriptionResult.text.length} Chars`,
         );
+
+        await embeddingQueue("generateEmbeddings", { videoId });
+        console.log("Handed off to embedding queue:", videoId);
 
         safeUnlink(extractedAudioPath);
       }
