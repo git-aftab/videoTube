@@ -2,6 +2,7 @@
 import connectDB from "../db/index.js";
 import "dotenv/config";
 await connectDB();
+console.log("initialized the embedding Worker");
 
 import { Worker } from "bullmq";
 import redis from "../config/redis.js";
@@ -14,7 +15,7 @@ import {
 import { generateEmbedding } from "../services/Rag/embedding.service.js";
 import { storeEmbeddings } from "../services/Rag/qdrant.service.js";
 
-const embeddingWroker = new Worker(
+const embeddingWorker = new Worker(
   "embeddingQueue",
   async (job) => {
     console.log("Recieved the embedding work:", job.id);
@@ -52,7 +53,7 @@ const embeddingWroker = new Worker(
     });
     console.log("Embedding Job done for:", videoId);
   },
-  { connection: redis },
+  { connection: redis, concurrency: 1 },
 );
 
 embeddingWorker.on("completed", (job) =>

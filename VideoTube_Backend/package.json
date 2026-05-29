@@ -12,7 +12,7 @@
 
     "worker:video": "NODE_OPTIONS='--max-old-space-size=1024' node --env-file=.env src/workers/video.worker.js",
 
-    "worker:embedding": "NODE_OPTIONS='--max-old-space-size=512' node --env-file=.env src/workers/embedding.worker.js",
+    "worker:embedding": "NODE_OPTIONS='--max-old-space-size=1024' node --env-file=.env src/workers/embedding.worker.js",
 
     "dev:all": "concurrently \"npm run dev\" \"npm run worker\" \"npm run worker:video\" \"npm run worker:embedding\"",
     
