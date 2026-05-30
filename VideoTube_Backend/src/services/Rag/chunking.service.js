@@ -15,12 +15,10 @@ export const chunkText = (text, sectionName = "transcript") => {
   if (!text || typeof text !== "string") {
     return [];
   }
-
-  const cleanedText = cleanTranscript(text);
-
+  
   const chunks = [];
 
-  const words = cleanedText.split(" ");
+  const words = text.split(" ");
 
   const maxWords = CHUNK_SIZE;
 
@@ -30,29 +28,21 @@ export const chunkText = (text, sectionName = "transcript") => {
 
   let chunkIndex = 0;
 
-  while (start < words.length) {
-    const end = Math.min(start + maxWords, words.length);
+while (start < words.length) {
+  const end = Math.min(start + maxWords, words.length);
+  const content = words.slice(start, end).join(" ").trim();
 
-    const content = words.slice(start, end).join(" ").trim();
-
-    if (content.length > 0) {
-      chunks.push({
-        chunkIndex,
-        section: sectionName,
-        content,
-      });
-
-      chunkIndex++;
-    }
-
-    // overlap logic
-    start = end - overlapWords;
-
-    // safety check
-    if (start < 0 || start >= end) {
-      break;
-    }
+  if (content.length > 0) {
+    chunks.push({ chunkIndex, section: sectionName, content });
+    chunkIndex++;
   }
+
+  // ✅ if we've reached the end, stop
+  if (end === words.length) break;
+
+  // move forward by (chunkSize - overlap)
+  start = start + maxWords - overlapWords;
+}
 
   return chunks;
 };

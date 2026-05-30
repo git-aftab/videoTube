@@ -18,24 +18,19 @@ import { storeEmbeddings } from "../services/Rag/qdrant.service.js";
 const embeddingWorker = new Worker(
   "embeddingQueue",
   async (job) => {
-    console.log("Recieved the embedding work:", job.id);
-    const { name, data } = job;
+    const { name } = job;
     if (name !== "generateEmbeddings") return;
     const { videoId } = job.data;
 
-    const videoTranscript = await Video.findById(videoId).select("transcript");
+    const video = await Video.findById(videoId).select("transcript").lean();
 
-    if (!videoTranscript) {
-      throw new Error("Transcript not found for video");
-    }
+    if (!video?.transcript) throw new Error("Transcript not found");
 
-    const cleanedText = cleanTranscript(videoTranscript.transcript);
+    const cleanedText = cleanTranscript(video.transcript);
+    console.log("cleaned text:", cleanedText)
     const chunks = chunkText(cleanedText);
-    console.log("Total chunks:", chunks.length);
 
     for (const chunk of chunks) {
-      console.log("Embeding chunk:", chunk.chunkIndex);
-
       const embedding = await generateEmbedding(
         chunk.content,
         "retrieval.passage",
@@ -48,10 +43,11 @@ const embeddingWorker = new Worker(
         chunkIndex: chunk.chunkIndex,
       });
     }
+
     await Video.findByIdAndUpdate(videoId, {
       $set: { embeddingStatus: "COMPLETED" },
     });
-    console.log("Embedding Job done for:", videoId);
+    console.log("✅ Done");
   },
   { connection: redis, concurrency: 1 },
 );
