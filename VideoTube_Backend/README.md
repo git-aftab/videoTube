@@ -255,12 +255,12 @@ FORGOT_PASSWORD_REDIRECT_URL=http://localhost:5173/reset-password
 - [x] Ownership middleware
 - [x] Input validation with express-validator
 - [x] Comments, Likes, Playlists, Subscriptions, Tweets
-- [ ] RAG pipeline — video transcript ingestion + vector embeddings
+- [x] RAG pipeline — video transcript ingestion + vector embeddings
 - [ ] Video Q&A and summarization endpoints
 - [ ] Comment sentiment overview
 - [x] Redis caching layer
-- [ ] Rate limiting
-- [ ] Semantic search
+- [x] Rate limiting
+- [x] Semantic search
 - [ ] Microservices exploration
 
 ---
