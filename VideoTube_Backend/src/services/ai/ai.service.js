@@ -1,15 +1,33 @@
-import { CHAT_MODEL } from "../../constants/Rag.constants.js";
-import { generateEmbedding} from "../Rag/embedding.service.js";
-import {searchVideoEmbd} from "../Rag/qdrant.service.js";
+import { generateEmbedding } from "../Rag/embedding.service.js";
+import { searchVideoEmbd } from "../Rag/qdrant.service.js";
+import { callVideoLLM } from "../Rag/llm.service.js";
 
-export const askAi = (query) => {
-  if (!query || query.trim() === "") {
-    console.log("Query not found.");
+export const askvideoAi = async (query, videoId) => {
+  try {
+    if (!query || query.trim() === "") {
+      console.log("Query not found.");
+    }
+
+    const queryEmbedding = await generateEmbedding(query, "retrieval.query");
+    console.log("Query Embedding:", queryEmbedding.legth);
+
+    const results = await searchVideoEmbd(queryEmbedding, videoId);
+    console.log("results found:", results);
+
+    const context = results.points
+      .map((point) => point.payload.chunkText)
+      .join("\n\n");
+
+    const response = await callVideoLLM(context, query);
+    console.log("Response:", response);
+
+    return response;
+    
+  } catch (error) {
+    console.error("RAG Query Failed:", error.message);
   }
+};
 
-  const queryEmbedding = generateEmbedding(query,task = "retrieval.query");
-  
-  console.log("Query Embedding:", queryEmbedding.legth, queryEmbedding);
-
-  const searchQdrant = search()
+export const askCommentAi = (query) => {
+  //Todo : comment sentiment, overview.
 };
