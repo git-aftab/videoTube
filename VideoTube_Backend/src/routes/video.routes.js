@@ -8,6 +8,7 @@ import {
   getAllVideos,
   getVideoById,
   togglePublishStatus,
+  asktoVideoAI,
 } from "../controllers/video.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -64,5 +65,7 @@ router
 router
   .route("/:videoId/toggle-publish")
   .patch(verifyJWT, verifyOwnerShip(Video, "videoId"), togglePublishStatus);
+
+router.route("/:videoId/ai").post(verifyJWT, asktoVideoAI);
 
 export default router;

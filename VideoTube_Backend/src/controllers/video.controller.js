@@ -11,6 +11,7 @@ import { Video } from "../models/video.models.js";
 import mongoose, { isValidObjectId } from "mongoose";
 import { addVideoUploadJob } from "../queues/video.queue.js";
 import { deleteCache } from "../utils/cache.js";
+import { askvideoAi } from "../services/ai/ai.service.js";
 
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
@@ -341,6 +342,31 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     );
 });
 
+const asktoVideoAI = asyncHandler(async (req, res) => {
+  // todo : get user query, send it to ai service with vidoeId
+  const {query} = req.body;
+  const {videoId} = req.params;
+
+  if (!query || query.trim() === "") {
+    throw new ApiError(404, "Please Enter a Question to be asked");
+  }
+
+  const response = await askvideoAi(query, videoId);
+  if (!response) {
+    throw new ApiError(500, "Error Querying LLM, Please try again later.");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { response: response },
+        "LLM Querying executed successfully.",
+      ),
+    );
+});
+
 export {
   publishAVideo,
   togglePublishStatus,
@@ -348,4 +374,5 @@ export {
   deleteVideo,
   getAllVideos,
   getVideoById,
+  asktoVideoAI,
 };

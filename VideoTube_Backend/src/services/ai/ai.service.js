@@ -9,7 +9,7 @@ export const askvideoAi = async (query, videoId) => {
     }
 
     const queryEmbedding = await generateEmbedding(query, "retrieval.query");
-    console.log("Query Embedding:", queryEmbedding.legth);
+    console.log("Query Embedding:", queryEmbedding.length);
 
     const results = await searchVideoEmbd(queryEmbedding, videoId);
     console.log("results found:", results);
@@ -22,9 +22,10 @@ export const askvideoAi = async (query, videoId) => {
     console.log("Response:", response);
 
     return response;
-    
+
   } catch (error) {
     console.error("RAG Query Failed:", error.message);
+    throw error
   }
 };
 
