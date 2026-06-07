@@ -212,7 +212,7 @@ Full API reference in [`VideoTube_Backend/README.md`](./VideoTube_Backend/README
 
 ## 👤 Author
 
-Built by [Aftab](https://github.com/git-aftab) as a full-stack deep-dive project under [Nexcraft](https://github.com/git-aftab).
+Built by [Aftab](https://github.com/git-aftab) as a full-stack deep-dive project.
 
 ---
 
