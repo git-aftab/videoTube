@@ -256,12 +256,11 @@ FORGOT_PASSWORD_REDIRECT_URL=http://localhost:5173/reset-password
 - [x] Input validation with express-validator
 - [x] Comments, Likes, Playlists, Subscriptions, Tweets
 - [x] RAG pipeline — video transcript ingestion + vector embeddings
-- [ ] Video Q&A and summarization endpoints
-- [ ] Comment sentiment overview
+- [x] Video Q&A and summarization endpoints
 - [x] Redis caching layer
 - [x] Rate limiting
 - [x] Semantic search
-- [ ] Microservices exploration
+- [ ] Comment sentiment overview
 
 ---
 
