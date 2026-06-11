@@ -1,20 +1,15 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import api from "@/services/axios";
-import { User } from "@/types";
+import type { ReactNode } from "react";
+import type { User } from "@/types";
 
 interface AuthContextType {
   user: User | null; //logged-in user, or null if guest
   isLoading: boolean;
   isAuhenticated: boolean;
-  login: (accessToken: string, userData: User) => void;
+  login: (accessToken: string, userData: User) => void; //non returning function => void
   logout: () => Promise<void>;
-  updatedUser: (userData: Partial<User>) => void;
+  updateUser: (userData: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -46,4 +41,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     checkAuth();
   }, []);
+
+  const login = (accessToken: string, userData: User) => {
+    localStorage.setItem("accessToken", accessToken);
+    setUser(userData);
+  };
+
+  const logout = async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch (error) {
+      //even if api fails... clear the local state
+    } finally {
+      localStorage.removeItem("accessToken");
+      setUser(null);
+    }
+  };
+
+  // Called after profile update, update User without re-fetching
+  const updateUser = (userData: Partial<User>) => {
+    setUser((prev) => (prev ? { ...prev, ...userData } : null));
+  };
+
+  const value: AuthContextType = {
+    user,
+    isLoading,
+    isAuhenticated: !!user,
+    login,
+    logout,
+    updateUser,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
+
+// Custom hook
+export const useAuth = () =>{
+  const context = useContext(AuthContext)
+
+  if(!context){
+    throw new Error("useAuth must be used inside AuthProvider")
+  }
+
+  return context
+}
