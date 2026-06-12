@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import api from "@/services/axios";
+import api from "../services/axios";
 import type { ReactNode } from "react";
 import type { User } from "@/types";
 
