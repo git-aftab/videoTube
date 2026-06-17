@@ -245,17 +245,17 @@
   --success: #22c55e;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: "DM Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 h1,
@@ -286,3 +286,4 @@ time,
   background: var(--accent);
   border-radius: 3px;
 }
+
