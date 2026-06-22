@@ -349,6 +349,27 @@ const Register = () => {
           </p>
         </div>
       </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, x: 32 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+        className="relative z-10 hidden lg:flex w-1/2 items-center justify-center px-12 border-l border-border"
+      >
+        <div className="w-full max-w-sm space-y-8">
+          {/*  */}
+          <div>
+            <p className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider mb-1">
+              Live Preview
+            </p>
+            <h2 className="font-['Syne'] text-2xl font-bold text-[var(--text-primary)]">
+              Your profile will look like this
+            </h2>
+          </div>
+
+          
+        </div>
+      </motion.div>
     </div>
   );
 };
