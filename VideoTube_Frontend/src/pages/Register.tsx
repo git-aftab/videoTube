@@ -357,17 +357,67 @@ const Register = () => {
         className="relative z-10 hidden lg:flex w-1/2 items-center justify-center px-12 border-l border-border"
       >
         <div className="w-full max-w-sm space-y-8">
-          {/*  */}
+          {/* Label */}
           <div>
-            <p className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider mb-1">
+            <p className="text-xs font-medium text-(--text-muted) uppercase tracking-wider mb-1">
               Live Preview
             </p>
-            <h2 className="font-['Syne'] text-2xl font-bold text-[var(--text-primary)]">
+            <h2 className="font-['Syne'] text-2xl font-bold text-(--text-primary)">
               Your profile will look like this
             </h2>
           </div>
 
-          
+          {/* Profile card preview */}
+          <div className="bg-(--bg-secondary) border border-border rounded-2xl overflow-hidden">
+            {/* Cover */}
+            <div className="h-24 bg-gradient-to-br from-[var(--accent)]/30 to-[var(--bg-elevated)]" />
+
+            {/* Avatar + info */}
+            <div className="px-6 pb-6">
+              <div className="-mt-8 mb-4">
+                {avatarPreview ? (
+                  <img
+                    src={avatarPreview}
+                    alt="Preview"
+                    className="w-16 h-16 rounded-full object-cover ring-4 ring-[var(--bg-secondary)]"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-[var(--bg-elevated)] border-4 border-[var(--bg-secondary)] flex items-center justify-center">
+                    <User size={24} className="text-[var(--text-muted)]" />
+                  </div>
+                )}
+              </div>
+
+              <h3 className="font-['Syne'] font-bold text-lg text-[var(--text-primary)]">
+                {formData.fullName || "Your Name"}
+              </h3>
+              <p className="text-sm text-[var(--text-muted)] mb-4">
+                @{formData.username || "username"}
+              </p>
+
+              <div className="flex gap-4">
+                <div className="text-center">
+                  <p className="font-['Syne'] font-bold text-lg text-[var(--text-primary)]">
+                    0
+                  </p>
+                  <p className="text-xs text-[var(--text-muted)]">Videos</p>
+                </div>
+                <div className="text-center">
+                  <p className="font-['Syne'] font-bold text-lg text-[var(--text-primary)]">
+                    0
+                  </p>
+                  <p className="text-xs text-[var(--text-muted)]">
+                    Subscribers
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Hint */}
+          <p className="text-xs text-[var(--text-muted)] text-center">
+            Fill in the form to see your profile update in real time
+          </p>
         </div>
       </motion.div>
     </div>
