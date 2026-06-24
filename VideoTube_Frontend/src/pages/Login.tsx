@@ -21,7 +21,18 @@ const Login = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("runnign the login");
     e.preventDefault();
+
+    if (!formData.email.trim() || !formData.password.trim()) {
+      setError("Please enter the email and password");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("The password must be atleast 6 character.");
+      return
+    }
     setisLoading(true);
     setError(null);
 
@@ -80,7 +91,7 @@ const Login = () => {
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 0, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             className="bg-(--error)/10 border border-(--error)/30 text-(--error) text-sm rounded-xl px-4 py-3 mb-6"
           >
             {error}
@@ -149,9 +160,10 @@ const Login = () => {
             </div>
           </div>
           <button
+            onClick={handleSubmit}
             type="button"
             disabled={isLoading}
-            className="w-full bg-accent hover:bg-(--accent-hover) disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors duration-200 shadow-lg shadow-accent/20 mt-2 py-3"
+            className="w-full bg-accent hover:bg-(--accent-hover) disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors duration-200 shadow-lg shadow-accent/20 mt-2 py-3 cursor-pointer"
           >
             {isLoading ? "Sign in..." : "Sign in"}
           </button>
@@ -166,7 +178,7 @@ const Login = () => {
         {/* Google Login */}
         <button
           onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-3 bg-(--bg-elevated) hover:bg-(--bg-elevated)/70 border border-border hover:border-(--text-muted)/30 text-(--text-primary) font-medium rounded-xl py-3 text-sm transition-all duration-200"
+          className="w-full flex items-center justify-center gap-3 bg-(--bg-elevated) hover:bg-(--bg-elevated)/70 border border-border hover:border-(--text-muted)/30 text-(--text-primary) font-medium rounded-xl py-3 text-sm transition-all duration-200 cursor-pointer"
         >
           <FcGoogle size={24} className="mr-5" />
           <span className="">Continue with Google</span>

@@ -104,6 +104,16 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if(!formData.fullName.trim()){
+      setError("Please enter full name.")
+      return
+    }
+
+    if(!formData.email.trim() || !formData.password.trim() || !formData.confirmPassword.trim()){
+      setError("Please enter the email and passwords.")
+      return
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError("Password do not match");
       return;
@@ -132,7 +142,7 @@ const Register = () => {
       // Don't auto-login --> backend reqires email verification first
       navigate("/login?registered=true");
     } catch (error: any) {
-      setError(error.response.data?.message || "Something went wrong");
+      setError(error.response?.data?.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -175,7 +185,7 @@ const Register = () => {
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-error/10 border border-error/30 text-error text-sm rounded-xl px-4, py-3 mb-6"
+              className="bg-(--error)/10 border border-(--erorr)/30 text-(--error) text-sm rounded-xl px-4 py-3 mb-6"
             >
               {error}
             </motion.div>
@@ -292,6 +302,7 @@ const Register = () => {
             />
 
             <button
+            onClick={handleSubmit}
               type="submit"
               disabled={isLoading}
               className="w-full bg-accent hover:bg-(--accent-hover) disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl py-3 text-sm transition-colors duration-200 shadow-lg shadow-accent/20 mt-2"

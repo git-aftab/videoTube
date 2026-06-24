@@ -36,7 +36,6 @@ const router = Router();
 
 // registerUser
 router.route("/register").post(
-  authRateLimiter,
   upload.fields([
     { name: "avatar", maxCount: 1 },
     { name: "coverImage", maxCount: 1 },
@@ -49,7 +48,7 @@ router.route("/register").post(
 // loginUser
 router
   .route("/login")
-  .post(authRateLimiter, ...loginValidator(), validate, loginUser);
+  .post(...loginValidator(), validate, loginUser);
 
 // verifyEmail
 router.route("/verify-email/:verificationToken").get(verifyEmail);

@@ -25,7 +25,7 @@ api.interceptors.response.use(
 
       try {
         await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1/"}/auth/refresh-token`,
+          `${import.meta.env.VITE_API_BASE_URL} || "http://localhost:3000/api/v1/"/auth/refresh-token`,
           {},
           { withCredentials: true },
         );
