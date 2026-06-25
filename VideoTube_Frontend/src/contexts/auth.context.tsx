@@ -6,7 +6,7 @@ import type { User } from "@/types";
 interface AuthContextType {
   user: User | null; //logged-in user, or null if guest
   isLoading: boolean;
-  isAuhenticated: boolean;
+  isAuthenticated: boolean;
   login: (accessToken: string, userData: User) => void; //non returning function => void
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const value: AuthContextType = {
     user,
     isLoading,
-    isAuhenticated: !!user,
+    isAuthenticated: !!user,
     login,
     logout,
     updateUser,
