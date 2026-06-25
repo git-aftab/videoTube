@@ -96,6 +96,17 @@ const Register = () => {
     const file = e.target.files?.[0];
 
     if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      setError("Avatar must be under 10MB");
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      setError("Only image files are allowed");
+      return;
+    }
+    
     setAvatar(file);
     // Create a local URL for preview - no upload yet
     setAvatarPreview(URL.createObjectURL(file));
@@ -104,14 +115,18 @@ const Register = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if(!formData.fullName.trim()){
-      setError("Please enter full name.")
-      return
+    if (!formData.fullName.trim()) {
+      setError("Please enter full name.");
+      return;
     }
 
-    if(!formData.email.trim() || !formData.password.trim() || !formData.confirmPassword.trim()){
-      setError("Please enter the email and passwords.")
-      return
+    if (
+      !formData.email.trim() ||
+      !formData.password.trim() ||
+      !formData.confirmPassword.trim()
+    ) {
+      setError("Please enter the email and passwords.");
+      return;
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -302,7 +317,7 @@ const Register = () => {
             />
 
             <button
-            onClick={handleSubmit}
+              onClick={handleSubmit}
               type="submit"
               disabled={isLoading}
               className="w-full bg-accent hover:bg-(--accent-hover) disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl py-3 text-sm transition-colors duration-200 shadow-lg shadow-accent/20 mt-2"
