@@ -3161,3 +3161,24 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-06-24T12:48:01.604Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-06-24T12:48:02.457Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-06-24T12:48:02.464Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-06-26T18:38:21.950Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-06-26T18:38:23.748Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-06-26T18:38:23.764Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"1014.451\"}","timestamp":"2026-06-26T18:38:27.319Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/users/current-user\",\"status\":\"404\",\"responseTime\":\"3.759\"}","timestamp":"2026-06-26T18:39:15.081Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/users/current-user\",\"status\":\"404\",\"responseTime\":\"2.385\"}","timestamp":"2026-06-26T18:39:15.091Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"452.255\"}","timestamp":"2026-06-26T18:39:40.467Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-06-27T11:49:28.096Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-06-27T11:49:30.163Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-06-27T11:49:30.173Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/users/current-user\",\"status\":\"404\",\"responseTime\":\"4.268\"}","timestamp":"2026-06-27T11:49:32.597Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/users/current-user\",\"status\":\"404\",\"responseTime\":\"1.869\"}","timestamp":"2026-06-27T11:49:32.605Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"976.571\"}","timestamp":"2026-06-27T11:50:14.328Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/users/current-user\",\"status\":\"404\",\"responseTime\":\"0.492\"}","timestamp":"2026-06-27T11:50:39.390Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/users/current-user\",\"status\":\"404\",\"responseTime\":\"0.746\"}","timestamp":"2026-06-27T11:50:39.394Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"1076.035\"}","timestamp":"2026-06-27T11:51:29.164Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/users/current-user\",\"status\":\"404\",\"responseTime\":\"0.696\"}","timestamp":"2026-06-27T11:52:21.499Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/users/current-user\",\"status\":\"404\",\"responseTime\":\"1.440\"}","timestamp":"2026-06-27T11:52:21.509Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"759.569\"}","timestamp":"2026-06-27T12:09:31.023Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/logout\",\"status\":\"200\",\"responseTime\":\"299.032\"}","timestamp":"2026-06-27T12:10:37.442Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"1299.418\"}","timestamp":"2026-06-27T12:16:40.528Z"}

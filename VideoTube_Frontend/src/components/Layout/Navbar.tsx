@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { useAuth } from "../../contexts/auth.context";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
   { label: "Home", path: "/", icon: Home },
@@ -69,6 +70,7 @@ const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
+    <>
     <nav className="sticky top-0 z-50 w-full bg-(--bg-primary)/90 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
@@ -134,21 +136,158 @@ const Navbar = () => {
           )}
 
           {/* Auth - Avatar or sign in */}
-          {isAuthenticated && (
-            <div className="relative">
+          {isAuthenticated ? (
+            <div className="relative" ref={dropdownRef}>
               <button
                 className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-transparent hover:ring-accent transition-all duration-200"
                 onClick={() => setShowDropdown((prev) => !prev)}
               >
-                {user?.avatar ? (<img src={user.avatar} alt={user.fullName} className="w-full h-full object-cover "/>) : (
-                  <div className=""></div>
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.fullName}
+                    className="w-full h-full object-cover "
+                  />
+                ) : (
+                  <div className="w-full h-full bg-(--bg-elevated) flex items-center justify-center">
+                    <User size={16} className="text-(--text-muted)" />
+                  </div>
                 )}
               </button>
+
+              {/* Dropdown */}
+              <AnimatePresence>
+                {showDropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 1, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-12 w-52 bg-(--bg-elevated) border border-border rounded-xl shadow-xl overflow-hidden"
+                  >
+                    <div className="px-4 py-3 border-b border-border">
+                      <p className="text-sm font-semibold text-(--text-primary) truncate">
+                        {user?.username}
+                      </p>
+                    </div>
+
+                    {/* Links */}
+                    <div className="py-1">
+                      <Link
+                        to={`/profile/${user?.username}`}
+                        onClick={() => {
+                          setShowDropdown(false);
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(-bg--secondary) transition-colors"
+                      >
+                        <User size={15} />
+                        Your Channel
+                      </Link>
+                      <Link
+                        to="/dashboard"
+                        onClick={() => {
+                          setShowDropdown(false);
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-secondary) transition-colors"
+                      >
+                        <LayoutDashboard size={15} />
+                        Dashboard
+                      </Link>
+                      <button
+                        onClick={handleLogOut}
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-(--error) hover:bg-(--bg-secondary) transition-colors"
+                      >
+                        <LogOut size={15} />
+                        Sign Out
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
+          ) : (
+            <Link
+              to={"/login"}
+              className="text-sm font-semibold text-(--text-primary) bg-(--bg-elevated) hover:bg-border border border-border px-4 py-2 rounded-xl transition-colors duration-200"
+            >Sign in</Link>
           )}
         </div>
       </div>
     </nav>
+
+    {/* ── Mobile fullscreen search overlay ── */}
+      <AnimatePresence>
+        {showMobileSearch && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-(--bg-primary) md:hidden flex flex-col px-4 pt-6"
+          >
+            <form onSubmit={handleSearch} className="flex items-center gap-3">
+              <div className="flex-1 flex items-center bg-(--bg-elevated) border border-accent rounded-xl overflow-hidden">
+                <Search size={16} className="ml-4 text-(--text-muted) shrink-0" />
+                <input
+                  autoFocus
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search videos..."
+                  className="flex-1 bg-transparent px-3 py-3 text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowMobileSearch(false)}
+                className="p-2 text-(--text-muted) hover:text-(--text-primary)"
+              >
+                <X size={20} />
+              </button>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Mobile bottom nav ── */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-(--bg-primary)/95 backdrop-blur-md border-t border-border">
+        <div className="flex items-center justify-around h-16 px-2">
+          {MOBILE_NAV.map(({ label, path, icon: Icon }) => {
+            const active = isActive(path)
+            const isUpload = label === 'Upload'
+
+            if (isUpload) {
+              return (
+                <Link
+                  key={path}
+                  to={path}
+                  className="flex flex-col items-center gap-1 p-2"
+                >
+                  <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30">
+                    <Icon size={18} color="white" />
+                  </div>
+                </Link>
+              )
+            }
+
+            return (
+              <Link
+                key={path}
+                to={path}
+                className={`flex flex-col items-center gap-1 p-2 transition-colors ${
+                  active ? 'text-accent' : 'text-(--text-muted)'
+                }`}
+              >
+                <Icon size={20} />
+                <span className="text-[10px] font-medium">{label}</span>
+              </Link>
+            )
+          })}
+        </div>
+      </nav>
+
+      {/* Bottom padding so content isn't hidden behind mobile nav */}
+      <div className="h-16 md:hidden" />
+    </>
   );
 };
 
