@@ -24,9 +24,9 @@ import "./App.css";
 import { useAuth } from "./contexts/auth.context";
 
 const GuestRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuhenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   if (isLoading) return null;
-  return isAuhenticated ? <Navigate to="/" replace /> : <>{children}</>;
+  return isAuthenticated ? <Navigate to="/" replace /> : <>{children}</>;
 };
 
 // Root layout wrapper
