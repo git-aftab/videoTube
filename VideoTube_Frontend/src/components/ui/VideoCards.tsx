@@ -28,7 +28,7 @@ const videoCards = ({ video }: VideoCardsProps) => {
         </p>
         <p className="flex justify-between items-center text-(--text-muted) px-3 text-sm">
           {/* Channel Name */}
-          <span>{video.owner.fullName}</span>
+          {/* <span>{video.owner.fullName}</span> */}
           <span className="text-(--text-muted)">
             {/* views */}
             {video.views.toLocaleString()}
