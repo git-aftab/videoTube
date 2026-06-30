@@ -1,8 +1,12 @@
-import React from "react";
-import {motion} from "framer-motion"
-import img from "../../assets/website_profile_img01.png";
+import { motion } from "framer-motion";
+// import img from "../../assets/website_profile_img01.png";
+import type { Video } from "../../types";
 
-const videoCards = () => {
+interface VideoCardsProps {
+  video: Video;
+}
+
+const videoCards = ({ video }: VideoCardsProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: -8, scale: 0.9 }}
@@ -12,7 +16,7 @@ const videoCards = () => {
     >
       <div className="img w-full h-[80%] px-0.5 py-0.5 ">
         <img
-          src={img}
+          src={video.thumbnail}
           alt="thumbnail"
           className="h-full w-full object-cover rounded-2xl"
         />
@@ -20,14 +24,14 @@ const videoCards = () => {
       <div className="dets border-t border-(--accent-soft) h-[20%]">
         <p className="text-(--text-primary) font-semibold px-3">
           {/* Title  */}
-          This is a Video Title lorem10
+          {video.title.trim()}
         </p>
         <p className="flex justify-between items-center text-(--text-muted) px-3 text-sm">
           {/* Channel Name */}
-          <span>Aftab speaks</span>
+          <span>{video.owner.fullName}</span>
           <span className="text-(--text-muted)">
             {/* views */}
-            57.4k views
+            {video.views.toLocaleString()}
           </span>
         </p>
       </div>

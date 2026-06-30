@@ -6,7 +6,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 
 const Home = () => {
-  const [videos, setVideos] = useState([]);
+  const [videos, setVideos] = useState<Video>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
