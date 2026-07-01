@@ -5,6 +5,7 @@ import FilterBar from "../components/ui/FilterBar";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useVideos } from "../hooks/useVideos";
 import ErrorState from "../components/ui/ErrorState";
+import LoadingState from "../components/ui/LoadingState";
 
 
 const Home = () => {
@@ -22,9 +23,9 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <div className="h-full w-full flex justify-center items-center">
-        <div className="text-(--text-muted) text-2xl">Loading...</div>
-      </div>
+      <main>
+        <LoadingState/>
+      </main>
     );
   }
 
