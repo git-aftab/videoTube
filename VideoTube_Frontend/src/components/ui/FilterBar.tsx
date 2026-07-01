@@ -3,7 +3,7 @@ import { useState } from "react";
 const FilterBar = () => {
   const [selected, setSelected] = useState('All')
 
-  const categories = ["All", "Music", "Gaminig", "Programming", "Sports"];
+  const categories = ["All", "Music", "Gaming", "Programming", "Sports"];
 
   return (
     <h1 className="w-full h-10 flex gap-3 items-center ">

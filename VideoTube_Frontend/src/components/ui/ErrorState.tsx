@@ -1,24 +1,24 @@
 import { MdOutlineErrorOutline } from "react-icons/md";
 import { RiSignalWifiErrorFill } from "react-icons/ri";
 
-interface ErrorStateProps {
+interface Props {
   message?: string;
 }
 
-const ErrorState = ({ message }: ErrorStateProps) => {
+const ErrorState = ({ message = "Something Went Wrong" }: Props) => {
+  const network = message === "Network Error";
+
   return (
-    <div>
-      {message === "Network Error" ? (
-        <div className="flex gap-2 justify-center items-center text-(--error)">
-          <RiSignalWifiErrorFill size={24} />
-          <h2 className="text-2xl font-bold ">{message}</h2>
-        </div>
-      ) : (
-        <div className="flex justify-center items-center gap-2 text-(--error) ">
-          <MdOutlineErrorOutline />
-          <h2 className="text-2xl font-bold">{message}</h2>
-        </div>
-      )}
+    <div className="flex-1 w-full flex items-center justify-center">
+      <div className="flex items-center gap-3 text-(--error)">
+        {network ? (
+          <RiSignalWifiErrorFill size={32} />
+        ) : (
+          <MdOutlineErrorOutline size={32} />
+        )}
+
+        <h2 className="text-2xl font-semibold">{message}</h2>
+      </div>
     </div>
   );
 };
