@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import VideoCards from "../components/ui/VideoCards";
 import FilterBar from "../components/ui/FilterBar";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useVideos } from "../hooks/useVideos";
+import ErrorState from "../components/ui/ErrorState";
+
 
 const Home = () => {
   const [seacrhParams] = useSearchParams();
@@ -19,23 +21,27 @@ const Home = () => {
   });
 
   if (isLoading) {
-    return <div className="text-(--text-muted)">Loading...</div>;
-  }
-
-  if (isError) {
     return (
-      <div className="text-error p-8">
-        {(error as any)?.message || "Something went Wrong"}
+      <div className="h-full w-full flex justify-center items-center">
+        <div className="text-(--text-muted) text-2xl">Loading...</div>
       </div>
     );
   }
 
-  if(!data?.docs.length){
-    return <div className="text-(--text-muted)">No Videos Found</div>
+  if (isError) {
+    return (
+      <main>
+        <ErrorState message={error.message} />
+      </main>
+    )
+  }
+
+  if (!data?.docs.length) {
+    return <div className="text-(--text-muted)">No Videos Found</div>;
   }
 
   return (
-    <main className="relative grid md:grid-cols-7  bg-(--bg-primary) py-6 text-(--text-primary) px-6 space-y-6">
+    <main className="relative grid md:grid-cols-7  bg-(--bg-primary) py-6 text-(--text-primary) px-6 gap-3">
       <aside className="hidden lg:flex flex-col col-span-1 gap-x-3">
         <div className="">
           <GiHamburgerMenu size={24} />
@@ -63,8 +69,10 @@ const Home = () => {
         <div className="">
           <FilterBar />
         </div>
-        <div className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {data.docs.map( video => (<VideoCards key={video._id} video={video}/>))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {data.docs.map((video) => (
+            <VideoCards key={video._id} video={video} />
+          ))}
         </div>
       </div>
     </main>
