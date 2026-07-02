@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-// import img from "../../assets/website_profile_img01.png";
+import img from "../../assets/website_profile_img01.png";
 import type { Video } from "../../types";
 
 interface VideoCardsProps {
@@ -16,7 +16,7 @@ const videoCards = ({ video }: VideoCardsProps) => {
     >
       <div className="img w-full h-[80%] px-0.5 py-0.5 ">
         <img
-          src={video.thumbnail}
+          src={video.thumbnail || img}
           alt="thumbnail"
           className="h-full w-full object-cover rounded-2xl"
         />

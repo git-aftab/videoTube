@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/auth.context";
 import type React from "react";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuhenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   //   Still checking auth - don't render anything yet
   if (isLoading) {
@@ -26,7 +26,7 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
 //   if not logged in then redirect to login page.
-  if (!isAuhenticated) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
