@@ -18,17 +18,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  //   On load checks if user is already logge(Token is LocalStorage)
+  //   On load checks if user is already logged(Token is LocalStorage)
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem("accessToken");
       if (!token) {
         setIsLoading(false);
+        console.log("No token available")
         return;
       }
       try {
         //fetch current user profile from Backend
-        const response = await api.get("/users/current-user");
+        const response = await api.get("/auth/current-user");
+        console.log(response.data)
         setUser(response.data.data);
       } catch (error) {
         // token is invalid or expired - clean up
