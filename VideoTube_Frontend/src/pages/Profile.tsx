@@ -1,22 +1,21 @@
-import React, {useEffect, useState, useRef, use } from "react";
+import React, { useEffect, useState, useRef, use } from "react";
 import { MdEdit } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "../contexts/auth.context";
 
 const Profile = () => {
-  const {user} = useAuth();
-  console.log(user)
+  const { user } = useAuth();
+  console.log(user);
 
   const inputImgRef = useRef<HTMLInputElement | null>(null);
   const [bannerimg, setBannerimg] = useState<string | null>(user?.coverImage);
   const [profileImg, setProfileImg] = useState<string | null>(user?.avatar);
   const [error, setError] = useState("");
 
-
   useEffect(() => {
     if (!user) return;
 
-    setBannerimg(user.coverImage);
+    setBannerimg(user?.coverImage);
     setProfileImg(user.avatar);
   }, [user]);
 
@@ -42,7 +41,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="relative h-25 bg-(--bg-elevated) w-full outline-none border-none">
+      <div className="relative h-28 sm:h-36 md:h-44 lg:h-56 bg-(--bg-elevated) w-full outline-none border-none">
         <input
           type="file"
           ref={inputImgRef}
@@ -58,12 +57,57 @@ const Profile = () => {
           <MdEdit onClick={openFilePicker} />
         </div>
       </div>
-      <div className="flex h-30 w-full ">
-        <img src={profileImg || ''} alt="" className="-mt-5 z-10 h-full rounded-full mx-3 "/>
-        <div className="py-4">
-          <h1 className="text-xl tracking-wide ">{user?.fullName}</h1>
-          <h1 className="text-xs tracking-wide text-(--text-muted)">@{user?.username}</h1>
+      <div className="flex h-28 sm:h-36 md:h-44 lg:h-56 w-full border-b border-accent-foreground bg-(--bg-elevated)/50 mb-3">
+        <img
+          src={profileImg || ""}
+          alt=""
+          className="-mt-5 z-10 h-full rounded-full mx-3 md:mx-6"
+        />
+        <div className="py-4 flex flex-col justify-center ">
+          <h1 className="text-xl tracking-wide  md:text-2xl">
+            {user?.fullName}
+          </h1>
+          <h1 className="text-xs md:text-sm tracking-wide text-(--text-muted)">
+            @{user?.username}
+          </h1>
           <h1 className="text-(--text-muted) text-sm ">13.5k Subscriber</h1>
+        </div>
+      </div>
+
+      {/* Videos Filter */}
+      <div className="ml-3 flex gap-4 mb-3">
+        <h1 className="px-3 py-2 border border-accent/30 rounded">Videos</h1>
+        <select className="border border-border px-3 py-2 rounded">
+          <option
+            value="latest"
+            className="text-(--text-primary) bg-(--bg-primary)"
+          >
+            Latest
+          </option>
+          <option
+            value="oldest"
+            className="text-(--text-primary) bg-(--bg-primary)"
+          >
+            Oldest
+          </option>
+        </select>
+      </div>
+
+      {/* Videos */}
+      <div className="flex flex-col gap-3 ml-3 ">
+        <div className="flex gap-2 h-22 sm:h-36 md:h-44 lg:h-56 hover:bg-accent/10 rounded">
+          <img
+            src=""
+            alt=""
+            className="aspect-video border-none outline-none rounded"
+          />
+          <div className="">
+            <h1 className="text-sm sm:text-xl lg:text-2xl">Title</h1>
+            <div className="flex gap-3 text-xs sm:text-xl lg:text-2xl text-(--text-muted) ">
+              <p className="">views</p>
+              <p className="">3 weeks ago</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
