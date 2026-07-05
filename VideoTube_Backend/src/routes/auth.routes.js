@@ -68,7 +68,7 @@ router.route("/reset-password/:resetToken").post(authRateLimiter,resetForgotPass
 router.route("/logout").post(verifyJWT, logoutUser);
 
 // get Current user
-router.route("/current-user").post(verifyJWT, getCurrentUser);
+router.route("/current-user").get(verifyJWT, getCurrentUser);
 
 // changePassword
 router.route("/change-password").post(verifyJWT, changeCurrentPassword);

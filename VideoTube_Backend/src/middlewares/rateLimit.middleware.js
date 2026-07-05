@@ -20,6 +20,11 @@ const globaRateLimiter = rateLimit({
     console.log("Route:", req.originalUrl);
     console.log("Method:", req.method);
     console.log("Time:", new Date().toLocaleDateString());
+
+    return res.status(429).json({
+      success: false,
+      message: "Too many requests. Please try again later.",
+    });
   },
 
   store: new RedisStore({
@@ -43,6 +48,11 @@ const authRateLimiter = rateLimit({
     console.log("Route:", req.originalUrl);
     console.log("Method:", req.method);
     console.log("Time:", new Date().toLocaleDateString());
+
+    return res.status(429).json({
+      success: false,
+      message: "Too many requests. Please try again later.",
+    });
   },
 
   store: new RedisStore({
@@ -66,6 +76,11 @@ const uploadLimiter = rateLimit({
     console.log("Route:", req.originalUrl);
     console.log("Method:", req.method);
     console.log("Time:", new Date().toLocaleDateString());
+
+    return res.status(429).json({
+      success: false,
+      message: "Too many requests. Please try again later.",
+    });
   },
 
   store: new RedisStore({
