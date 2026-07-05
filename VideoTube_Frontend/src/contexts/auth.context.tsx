@@ -32,6 +32,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const response = await api.get("/auth/current-user");
         console.log(response.data)
         setUser(response.data.data);
+        console.log(response);
+        
       } catch (error) {
         // token is invalid or expired - clean up
         localStorage.removeItem("accessToken");

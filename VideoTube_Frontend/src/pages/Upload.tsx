@@ -1,12 +1,20 @@
 import React, { useRef, useState } from "react";
 import { ImUpload3 } from "react-icons/im";
 import { SiGoogledisplayandvideo360 } from "react-icons/si";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUploadVideo } from "../hooks/useUploadVideo";
+import ErrorState from "../components/ui/ErrorState";
 
 const Upload = () => {
+  const navigate = useNavigate();
+  const { mutate, isPending, isError, error } = useUploadVideo();
+
   const [videoFile, setvideoFile] = useState<File | null>(null);
   const [vidoePreviewUrl, setVidoePreviewUrl] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [title, settitle] = useState<string>("");
+  const [description, setDescription] = useState("");
+  const [Visibility, setVisibility] = useState(true);
+  const [Error, setError] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const openFilePicker = () => {
@@ -26,11 +34,12 @@ const Upload = () => {
     setvideoFile(file);
     setVidoePreviewUrl(URL.createObjectURL(file));
   };
+
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLDivElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const file = e.target.files?.[0];
     if (!file) {
@@ -45,7 +54,31 @@ const Upload = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!videoFile) {
+      setError("Please select a Video");
+      return;
+    }
+
+    if (!title.trim()) {
+      setError("Title is required");
+      return;
+    }
+
+    const data = new FormData();
+    data.append("title", title);
+    data.append("description", description);
+    data.append("videoFile", videoFile);
+    data.append("isPublished", Visibility ? "true" : "false");
+
+    mutate(data, {
+      onSuccess: () => navigate("/dashboard"),
+      onError: (err: any) => setError(err.response?.data?.message),
+    });
   };
+
+  if (isError) {
+    return <ErrorState message={Error || undefined} />;
+  }
 
   return (
     <>
@@ -99,6 +132,10 @@ const Upload = () => {
               {/* From */}
               <div className="flex flex-col gap-6">
                 <input
+                  value={title}
+                  onChange={(e) => {
+                    settitle(e.target.value);
+                  }}
                   type="text"
                   name="title"
                   id="title"
@@ -106,6 +143,8 @@ const Upload = () => {
                   className="border-b-2 border-accent pb-2 bg-transparent outline-none"
                 />
                 <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   rows={6}
                   placeholder="Enter Description"
                   className="w-full resize-none border-b-2 border-accent bg-transparent pb-2 outline-none"
@@ -115,8 +154,10 @@ const Upload = () => {
                   <label className="font-medium">Visibility</label>
 
                   <select
-                    name=""
-                    id=""
+                    value={String(Visibility)}
+                    onChange={(e) => {
+                      setVisibility(e.target.value === "true");
+                    }}
                     className="rounded-lg border border-(--border) bg-(--bg-secondary) outline-none"
                   >
                     <option value="false">Private</option>
@@ -125,18 +166,23 @@ const Upload = () => {
                 </div>
 
                 <div className="flex gap-6 transition-colors duration-200">
-                  <button className="bg-accent px-3 py-2.5 rounded-xl cursor-pointer hover:bg-accent/70">
-                    <Link to={"/"}>Cancel</Link>
+                  <button
+                    onClick={() => navigate("/")}
+                    className="bg-accent px-3 py-2.5 rounded-xl cursor-pointer hover:bg-accent/70"
+                  >
+                    Cancel
                   </button>
-                  <button className="bg-accent px-3 py-2.5 rounded-xl cursor-pointer hover:bg-accent/70 transition-colors duration-200">
-                    <Link to={"/profile"}>
-                      {!isLoading ? "Upload" : "Uploading"}
-                    </Link>
+                  <button
+                    onClick={handleSubmit}
+                    type="submit"
+                    disabled={isPending}
+                    className="bg-accent px-3 py-2.5 rounded-xl cursor-pointer hover:bg-accent/70 transition-colors duration-200"
+                  >
+                    {!isPending ? "Upload" : "Uploading"}
                   </button>
                 </div>
               </div>
             </div>
-            <div className=""></div>
           </form>
         </div>
       )}

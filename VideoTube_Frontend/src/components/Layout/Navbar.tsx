@@ -286,7 +286,7 @@ const Navbar = () => {
       </nav>
 
       {/* Bottom padding so content isn't hidden behind mobile nav */}
-      <div className="h-16 md:hidden" />
+      {/* <div className="h-16 md:hidden" /> */}
     </>
   );
 };
