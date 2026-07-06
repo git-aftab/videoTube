@@ -342,10 +342,44 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
     );
 });
 
+const getVideosByUserId = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const currUser = req?.user._id;
+
+  const match = {
+    owner: new mongoose.Types.ObjectId(userId),
+  };
+
+  if (currUser.toString() !== userId) {
+    match.isPublished = true;
+  }
+
+  const videos = await Video.aggregate([
+    {
+      $match: match,
+    },
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+  ]);
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { videos: videos },
+        "User Videos Fetched Successfully",
+      ),
+    );
+});
+
 const asktoVideoAI = asyncHandler(async (req, res) => {
   // todo : get user query, send it to ai service with vidoeId
-  const {query} = req.body;
-  const {videoId} = req.params;
+  const { query } = req.body;
+  const { videoId } = req.params;
 
   if (!query || query.trim() === "") {
     throw new ApiError(404, "Please Enter a Question to be asked");
@@ -375,4 +409,5 @@ export {
   getAllVideos,
   getVideoById,
   asktoVideoAI,
+  getVideosByUserId
 };

@@ -8,6 +8,7 @@ import {
   getAllVideos,
   getVideoById,
   togglePublishStatus,
+  getVideosByUserId,
   asktoVideoAI,
 } from "../controllers/video.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
@@ -67,5 +68,13 @@ router
   .patch(verifyJWT, verifyOwnerShip(Video, "videoId"), togglePublishStatus);
 
 router.route("/:videoId/ai").post(verifyJWT, asktoVideoAI);
+
+router.route("/user/:userId").get(
+  cacheMiddleWare((req) => {
+    `videos: ${req.params.userId}`;
+  }),
+  verifyJWT,
+  getVideosByUserId,
+);
 
 export default router;
