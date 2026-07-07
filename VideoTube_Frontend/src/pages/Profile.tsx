@@ -1,7 +1,11 @@
-import React, { useEffect, useState, useRef, use } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MdEdit } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "../contexts/auth.context";
+import { useUserVideos } from "../hooks/useUserVideos";
+import LoadingState from "../components/ui/LoadingState";
+import ErrorState from "../components/ui/ErrorState";
+import { formatTimeAgo } from "../utils/formatTime";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -10,7 +14,8 @@ const Profile = () => {
   const inputImgRef = useRef<HTMLInputElement | null>(null);
   const [bannerimg, setBannerimg] = useState<string | null>(user?.coverImage);
   const [profileImg, setProfileImg] = useState<string | null>(user?.avatar);
-  const [error, setError] = useState("");
+  const [Error, setError] = useState("");
+  const [sortBy, setSortBy] = useState("latest");
 
   useEffect(() => {
     if (!user) return;
@@ -38,6 +43,25 @@ const Profile = () => {
   };
 
   const handleSubmit = () => {};
+
+  const { data, isError, isLoading, error } = useUserVideos(user?._id);
+  console.log("data from profile videos:", data);
+  const videos = data?.videos ?? [];
+  console.log(videos);
+
+  const sortedVideos = [...videos].sort((a, b) =>
+    sortBy === "latest"
+      ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  );
+
+  if (isLoading) {
+    return <LoadingState />;
+  }
+
+  if (isError) {
+    return <ErrorState message={error.message} />;
+  }
 
   return (
     <div className="flex flex-col w-full">
@@ -77,7 +101,11 @@ const Profile = () => {
       {/* Videos Filter */}
       <div className="ml-3 flex gap-4 mb-3">
         <h1 className="px-3 py-2 border border-accent/30 rounded">Videos</h1>
-        <select className="border border-border px-3 py-2 rounded">
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="border border-border px-3 py-2 rounded"
+        >
           <option
             value="latest"
             className="text-(--text-primary) bg-(--bg-primary)"
@@ -94,21 +122,26 @@ const Profile = () => {
       </div>
 
       {/* Videos */}
-      <div className="flex flex-col gap-3 ml-3 ">
-        <div className="flex gap-2 h-22 sm:h-36 md:h-44 lg:h-56 hover:bg-accent/10 rounded">
-          <img
-            src=""
-            alt=""
-            className="aspect-video border-none outline-none rounded"
-          />
-          <div className="">
-            <h1 className="text-sm sm:text-xl lg:text-2xl">Title</h1>
-            <div className="flex gap-3 text-xs sm:text-xl lg:text-2xl text-(--text-muted) ">
-              <p className="">views</p>
-              <p className="">3 weeks ago</p>
+      <div className="flex flex-col gap-3 md:px-6 ">
+        {sortedVideos.map((video) => (
+          <div
+            key={video._id}
+            className="flex gap-2 h-22 sm:h-36 md:h-44 lg:h-56 hover:bg-accent/10 rounded"
+          >
+            <img
+              src={video.thumbnail || ""}
+              alt=""
+              className="aspect-video border-none outline-none rounded"
+            />
+            <div className="">
+              <h1 className="text-sm sm:text-xl lg:text-2xl">{video.title}</h1>
+              <div className="flex gap-3 text-xs sm:text-xl lg:text-2xl text-(--text-muted) ">
+                <p className="">{video.views} views</p>
+                <p className="">• {formatTimeAgo(video.createdAt)}</p>
+              </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
