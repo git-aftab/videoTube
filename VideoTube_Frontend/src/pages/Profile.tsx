@@ -5,7 +5,8 @@ import { useAuth } from "../contexts/auth.context";
 import { useUserVideos } from "../hooks/useUserVideos";
 import LoadingState from "../components/ui/LoadingState";
 import ErrorState from "../components/ui/ErrorState";
-import { formatTimeAgo } from "../utils/formatTime";
+import VideosStack from "../components/ui/VideosStack";
+
 
 const Profile = () => {
   const { user } = useAuth();
@@ -122,27 +123,7 @@ const Profile = () => {
       </div>
 
       {/* Videos */}
-      <div className="flex flex-col gap-3 md:px-6 ">
-        {sortedVideos.map((video) => (
-          <div
-            key={video._id}
-            className="flex gap-2 h-22 sm:h-36 md:h-44 lg:h-56 hover:bg-accent/10 rounded"
-          >
-            <img
-              src={video.thumbnail || ""}
-              alt=""
-              className="aspect-video border-none outline-none rounded"
-            />
-            <div className="">
-              <h1 className="text-sm sm:text-xl lg:text-2xl">{video.title}</h1>
-              <div className="flex gap-3 text-xs sm:text-xl lg:text-2xl text-(--text-muted) ">
-                <p className="">{video.views} views</p>
-                <p className="">• {formatTimeAgo(video.createdAt)}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      <VideosStack videos={sortedVideos}/>
     </div>
   );
 };
