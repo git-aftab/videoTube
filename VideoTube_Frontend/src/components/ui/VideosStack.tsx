@@ -1,17 +1,21 @@
 // import React from 'react'
 import type { Video } from "@/types";
 import { formatTimeAgo } from "../../utils/formatTime.ts";
+import {useNavigate} from "react-router-dom";
 
 interface VideosStackProp {
     videos: Video[];
 }
 
 const VideosStack = ({videos}: VideosStackProp) => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <div className="flex flex-col gap-3 md:px-6 ">
         {videos.map((video) => (
           <div
+          onClick={ () => navigate(`/watch/${video._id}`)}
             key={video._id}
             className="flex gap-2 h-22 sm:h-36 md:h-44 lg:h-56 hover:bg-accent/10 rounded"
           >

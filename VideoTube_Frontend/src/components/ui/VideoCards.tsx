@@ -1,18 +1,23 @@
 import { motion } from "framer-motion";
 import img from "../../assets/website_profile_img01.png";
 import type { Video } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 interface VideoCardsProps {
   video: Video;
 }
 
 const videoCards = ({ video }: VideoCardsProps) => {
+  const navigate = useNavigate();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -8, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       className="w-full h-full border border-border hover:border-accent rounded-2xl aspect-video shadow-lg hover:shadow-accent/50 transition-colors duration-200 ease-in"
+      key={video._id}
+      onClick={() => navigate(`watch/${video._id}`)}
     >
       <div className="img w-full h-[80%] px-0.5 py-0.5 ">
         <img
@@ -31,7 +36,7 @@ const videoCards = ({ video }: VideoCardsProps) => {
           {/* <span>{video.owner.fullName}</span> */}
           <span className="text-(--text-muted)">
             {/* views */}
-            {video.views.toLocaleString()}
+            {video.views.toLocaleString()} views
           </span>
         </p>
       </div>

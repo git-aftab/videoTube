@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 import VideoCards from "../components/ui/VideoCards";
@@ -10,6 +10,8 @@ import LoadingState from "../components/ui/LoadingState";
 import { useVideos } from "../hooks/useVideos";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search") || undefined;
 
