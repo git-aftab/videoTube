@@ -15,10 +15,11 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     targetType: "Video",
     likedBy: userId,
   });
+  console.log("existingLike", existingLike);
 
   if (existingLike) {
-    await Like.findByIdAndDelete(existingLike.targetId);
-
+    await Like.findByIdAndDelete(existingLike._id); // like id
+    console.log("existingLike", existingLike);
     return res
       .status(200)
       .json(
@@ -31,6 +32,7 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
     targetType: "Video",
     likedBy: userId,
   });
+  console.log("likedVideo", likedVideo);
 
   return res
     .status(200)
@@ -49,7 +51,7 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
   });
 
   if (existingLike) {
-    await Like.findByIdAndDelete(existingLike.targetId);
+    await Like.findByIdAndDelete(existingLike._id); // like id
 
     return res
       .status(200)
@@ -79,7 +81,8 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
   });
 
   if (existingLike) {
-    await Like.findByIdAndDelete(existingLike.targetId);
+    await Like.findByIdAndDelete(existingLike._id); // like id
+    console.log("existingLike", existingLike);
 
     return res
       .status(200)

@@ -4201,3 +4201,91 @@
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/videos/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"537.813\"}","timestamp":"2026-07-09T13:53:39.029Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/videos?page=1&limit=12&sortBy=createdAt&sortType=desc\",\"status\":\"200\",\"responseTime\":\"1.298\"}","timestamp":"2026-07-09T13:53:52.464Z"}
 {"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/videos/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"112.126\"}","timestamp":"2026-07-09T13:53:52.577Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:09:24.208Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:09:24.926Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:09:24.934Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"535.593\"}","timestamp":"2026-07-09T14:09:55.119Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:12:52.458Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:13:11.472Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:13:11.484Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:13:17.881Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:13:18.524Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:13:18.540Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:13:23.595Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:13:26.853Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:13:26.860Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"404\",\"responseTime\":\"3.281\"}","timestamp":"2026-07-09T14:13:52.574Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:15:14.500Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:15:15.250Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:15:15.258Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"404\",\"responseTime\":\"2.946\"}","timestamp":"2026-07-09T14:15:50.153Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:16:42.975Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:16:43.904Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:16:43.911Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:25:14.400Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:25:15.429Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:25:15.436Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:25:26.186Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:25:30.677Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:25:32.018Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:25:32.027Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:34:30.094Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:34:43.677Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:34:43.684Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"460.964\"}","timestamp":"2026-07-09T14:34:49.593Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"404\",\"responseTime\":\"2.564\"}","timestamp":"2026-07-09T14:34:55.336Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:35:46.301Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:35:47.691Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:35:47.701Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:37:50.291Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:37:51.164Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:37:51.171Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:38:06.399Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:38:07.456Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:38:07.464Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/videos/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"247.542\"}","timestamp":"2026-07-09T14:38:36.726Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"404\",\"responseTime\":\"2.395\"}","timestamp":"2026-07-09T14:40:31.086Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T14:41:56.690Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T14:41:57.991Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T14:41:57.998Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"217.567\"}","timestamp":"2026-07-09T14:43:27.077Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"214.038\"}","timestamp":"2026-07-09T14:43:31.990Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"281.295\"}","timestamp":"2026-07-09T15:00:35.287Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"683.056\"}","timestamp":"2026-07-09T15:00:39.423Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"180.848\"}","timestamp":"2026-07-09T15:01:15.618Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a4a18650651e383e6ae9e0d\",\"status\":\"200\",\"responseTime\":\"223.462\"}","timestamp":"2026-07-09T15:02:48.411Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"GET\",\"url\":\"/api/v1/videos/user/69ed0bc7c49250ed33e8662e\",\"status\":\"200\",\"responseTime\":\"195.867\"}","timestamp":"2026-07-09T15:03:25.638Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"163.213\"}","timestamp":"2026-07-09T15:03:56.688Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"185.764\"}","timestamp":"2026-07-09T15:04:01.203Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"181.614\"}","timestamp":"2026-07-09T15:04:02.812Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T15:07:50.317Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T15:07:51.280Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T15:07:51.287Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"500\",\"responseTime\":\"138.692\"}","timestamp":"2026-07-09T15:08:00.806Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/auth/login\",\"status\":\"200\",\"responseTime\":\"426.936\"}","timestamp":"2026-07-09T15:08:10.879Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T15:08:32.818Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T15:08:33.463Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T15:08:33.471Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"259.599\"}","timestamp":"2026-07-09T15:08:38.761Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T15:10:37.339Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T15:10:38.126Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T15:10:38.136Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T15:10:48.394Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T15:10:49.046Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T15:10:49.054Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"176.749\"}","timestamp":"2026-07-09T15:11:01.955Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"180.441\"}","timestamp":"2026-07-09T15:11:03.974Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T15:12:00.484Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T15:12:01.535Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T15:12:01.547Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"182.928\"}","timestamp":"2026-07-09T15:12:03.606Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T15:14:17.919Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T15:14:18.861Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T15:14:18.873Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Hello world","timestamp":"2026-07-09T15:14:26.107Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"MongoDB connected","timestamp":"2026-07-09T15:14:27.107Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"Server running on http://localhost:3000","timestamp":"2026-07-09T15:14:27.113Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"223.841\"}","timestamp":"2026-07-09T15:14:43.122Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"233.513\"}","timestamp":"2026-07-09T15:14:44.991Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"254.220\"}","timestamp":"2026-07-09T15:14:48.025Z"}
+{"level":"\u001b[32minfo\u001b[39m","message":"{\"method\":\"POST\",\"url\":\"/api/v1/like/video-like/6a224978557c456a04cc5144\",\"status\":\"200\",\"responseTime\":\"231.545\"}","timestamp":"2026-07-09T15:14:50.112Z"}
