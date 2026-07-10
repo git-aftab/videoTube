@@ -1,21 +1,11 @@
 import React, { useState } from "react";
 // import {usePara}
 import { useSearchParams, useParams } from "react-router-dom";
-import {
-  BiLike,
-  BiSolidLike,
-  BiDislike,
-  BiSolidDislike,
-  BiSolidCommentDetail,
-} from "react-icons/bi";
-import { FaShare, FaRegBookmark } from "react-icons/fa6";
-import { FaBookmark } from "react-icons/fa";
 
-import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
-import { RiRobot3Fill } from "react-icons/ri";
 
 import { useVideos } from "../hooks/useVideos";
 import { useVideoById } from "../hooks/useVideoById";
+import { useLikeVideo } from "../hooks/useLikeVideo";
 import VideosStack from "../components/ui/VideosStack";
 import LoadingState from "../components/ui/LoadingState";
 import ErrorState from "../components/ui/ErrorState";
@@ -49,8 +39,9 @@ const Watch = () => {
     error: currVideoError,
   } = useVideoById(videoId);
 
-  const playVideo = currVideo;
-  // console.log(playVideo);
+  // const currVideo = currVideo;
+  // console.log(currVideo);
+
 
   if (isLoading || isVideoLoading) {
     return <LoadingState></LoadingState>;
@@ -67,8 +58,8 @@ const Watch = () => {
     <div className="h-full w-full">
       <div className="screen flex justify-center items-center aspect-video mb-2">
         <video
-          key={playVideo._id}
-          src={playVideo.videoFile}
+          key={currVideo._id}
+          src={currVideo.videoFile}
           controls
           playsInline
           preload="metadata"
@@ -78,30 +69,14 @@ const Watch = () => {
 
       <div className="title border-t border-(--border) ">
         <h1 className="text-xl md:text-2xl px-4 py-3 bg-(--bg-elevated)">
-          {playVideo.title}
+          {currVideo.title}
         </h1>
         {/* <p className="text-(--text-muted) text-xs sm:text-[16px] border border-(--border) px-4 py-2.5 rounded">
-          {playVideo.description}
+          {currVideo.description}
         </p> */}
       </div>
-      <div className="interactions flex justify-between text-xl sm:text-2xl px-4 py-4 items-center bg-(--bg-elevated)">
-        <div className="flex gap-5 cursor-pointer">
-          <BiLike />
-          <BiDislike />
-          <BiSolidCommentDetail />
-          <RiRobot3Fill />
-        </div>
-        <div className="">
-          {/* <img src="" alt="" /> */}
-          <button className="flex items-center gap-3 bg-accent px-3 py-2 rounded-full hover:bg-accent/70 cursor-pointer">
-            <h1 className="text-sm sm:text-xl">Subscribe</h1>
-            <CiCirclePlus />
-          </button>
-        </div>
-      </div>
-      <div className="comment my-5 px-4 border border-(--border) py-3 rounded-2xl text-sm sm:text-[16px]">
-        I'm Comment
-      </div>
+      
+
       <div className="px-4 sm:px-0">
         <VideosStack videos={videos} />
       </div>
