@@ -1,21 +1,37 @@
 import React from 'react'
 import { RiRobot3Fill } from "react-icons/ri";
 
-const VideoTabs = () => {
-  return (
-    <div className="comment my-5 px-4 border border-(--border) py-3 rounded-2xl text-sm sm:text-[16px] flex gap-4 justify-start items-center">
-      <button className="px-3 py-3 bg-(--bg-elevated) rounded-xl hover:bg-accent transition-colors duration-200 cursor-pointer">
-        Comment
-      </button>
+type Tab = 'description' | 'comments' | 'ai'
+interface VideoTabsProps{
+  activeTab: Tab | null
+  onTabChange: (tab: Tab) =>  void
+}
 
-      <button className="px-3 py-3 bg-(--bg-elevated) rounded-xl hover:bg-accent transition-colors duration-200 cursor-pointer">
-        Description
-      </button>
-      <button className="px-3 py-3 bg-(--bg-elevated) rounded-xl hover:bg-accent transition-colors duration-200 cursor-pointer flex items-center gap-2">
-        Ask <RiRobot3Fill />
-      </button>
+const VideoTabs = ({ activeTab, onTabChange }: VideoTabsProps) => {
+  const tabs: { id: Tab; label: string; icon?: React.ReactNode }[] = [
+    { id: "description", label: "Description" },
+    { id: "comments", label: "Comment" },
+    { id: "ai", label: "Ask", icon: <RiRobot3Fill /> },
+  ];
+
+  return (
+    <div className="my-5 px-4 border border-[var(--border)] py-3 rounded-2xl text-sm sm:text-base flex gap-4 justify-start items-center">
+      {tabs.map(({ id, label, icon }) => (
+        <button
+          key={id}
+          onClick={() => onTabChange(id)}
+          className={`px-3 py-2 rounded-xl transition-colors duration-200 cursor-pointer flex items-center gap-2 font-medium ${
+            activeTab === id
+              ? "bg-[var(--accent)] text-white"
+              : "bg-[var(--bg-elevated)] text-[var(--text-muted)] hover:bg-[var(--accent)] hover:text-white"
+          }`}
+        >
+          {label}
+          {icon}
+        </button>
+      ))}
     </div>
   );
-}
+};
 
 export default VideoTabs

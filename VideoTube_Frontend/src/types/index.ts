@@ -26,10 +26,23 @@ export interface Video {
   videoFile: string;
   duration: number;
   views: number;
-  isPublished: Boolean;
-  owner: User;
+  isPublished: boolean;
+  owner: string;
+  ownerDetails: {
+    _id: string;
+    username: string;
+    avatar?: string;
+    fullName?: string;
+  };
+  processingStatus: "READY" | "PROCESSING" | "FAILED";
+  transcriptionStatus: "COMPLETED" | "PENDING" | "FAILED";
+  transcript?: string;
   createdAt: string;
   updatedAt: string;
+  // These come only if backend adds aggregation
+  isLiked?: boolean;
+  likesCount?: number;
+  isSubscribed?: boolean;
 }
 
 // Comment

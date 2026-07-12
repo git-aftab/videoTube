@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../services/axios";
 
 const LikeVideo = async (videoId: string) => {
-  const res = await api.post(`/like-videos/${videoId}`);
+  const res = await api.post(`like/video-like/${videoId}`);
   return res.data.data;
 };
 
@@ -12,10 +12,10 @@ export const useLikeVideo = () => {
   return useMutation({
     mutationFn: LikeVideo,
 
-    onSuccess: () => {
+    onSuccess: (_, videoId) => {
       //Refetch the current video and verify
       queryClient.invalidateQueries({
-        queryKey: ["video-by-id"],
+        queryKey: ["video-by-id", videoId],
       });
     },
   });

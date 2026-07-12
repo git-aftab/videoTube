@@ -18,5 +18,7 @@ export const useVideoById = (videoId: string) => {
     queryKey: ["video-by-id", videoId],
     queryFn: () => fetchVideoById(videoId),
     enabled: !!videoId,
+    staleTime: 0, //always refetch on mount
+    gcTime: 0, //don't keep in cache after unmount
   });
 };

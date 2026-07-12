@@ -21,8 +21,11 @@ const VideosStack = ({ videos }: VideosStackProp) => {
           >
             <img
               key={video._id}
-              src={video.thumbnail || ""}
-              alt=""
+              src={video.thumbnail || undefined}
+              alt={video.title}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
               className="aspect-video border-none outline-none rounded"
             />
             <div className="">
