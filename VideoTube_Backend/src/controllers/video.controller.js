@@ -356,13 +356,44 @@ const getVideosByUserId = asyncHandler(async (req, res) => {
 
   const videos = await Video.aggregate([
     {
-      $match: match,
-    },
-    {
-      $sort: {
-        createdAt: -1,
+      $match: {
+        owner: new mongoose.Types.ObjectId(userId),
       },
     },
+    {
+      $facet: {
+        videos: [
+          { $sort: { createdAt: -1 } },
+          {
+            $lookup: {
+              from: "users",
+              localField: "owner",
+              foreignField: "_id",
+              as: "ownerDetails",
+            },
+          },
+          {$unwind: "$ownerDetails"},
+          {
+            $project:{
+              videoFile: 1,
+              title: 1,
+              thumbnail: 1,
+              views: 1,
+              createdAt: 1,
+              "ownerDetails._id": 1,
+              "ownerDetails.username": 1,
+              "ownerDetails.fullName": 1,
+              "ownerDetails.avatar":1,
+            }
+          }
+        ],
+      },
+    },
+    // {
+    //   $sort: {
+    //     createdAt: -1,
+    //   },
+    // },
   ]);
 
   res
@@ -409,5 +440,5 @@ export {
   getAllVideos,
   getVideoById,
   asktoVideoAI,
-  getVideosByUserId
+  getVideosByUserId,
 };
