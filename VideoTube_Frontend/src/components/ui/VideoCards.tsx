@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import img from "../../assets/website_profile_img01.png";
+import img from "../../assets/website_profile_img03.png";
 import type { Video } from "../../types";
 import { useNavigate } from "react-router-dom";
 

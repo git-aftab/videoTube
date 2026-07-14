@@ -11,6 +11,8 @@ const Upload = () => {
 
   const [videoFile, setvideoFile] = useState<File | null>(null);
   const [vidoePreviewUrl, setVidoePreviewUrl] = useState<string | null>(null);
+  const [thumbnail, setThumbnail] = useState<File|null>(null)
+  const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null)
   const [title, settitle] = useState<string>("");
   const [description, setDescription] = useState("");
   const [Visibility, setVisibility] = useState(true);
@@ -20,6 +22,7 @@ const Upload = () => {
   const openFilePicker = () => {
     inputRef.current?.click();
   };
+  const thumbnailInpRef = useRef<HTMLInputElement>(null)
 
   const handleDrop = (e: React.DragEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,6 +55,16 @@ const Upload = () => {
     setVidoePreviewUrl(URL.createObjectURL(file));
   };
 
+  const handleThumbnailChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
+    e.preventDefault()
+    const file = e.target.files?.[0];
+    if(!file){
+      return
+    }
+    setThumbnail(file)
+    setThumbnailPreview(URL.createObjectURL(file))
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!videoFile) {
@@ -66,6 +79,7 @@ const Upload = () => {
 
     const data = new FormData();
     data.append("title", title);
+    data.append("thumbnail", thumbnail);
     data.append("description", description);
     data.append("videoFile", videoFile);
     data.append("isPublished", Visibility ? "true" : "false");
@@ -142,6 +156,28 @@ const Upload = () => {
                   placeholder="Enter The Title"
                   className="border-b-2 border-accent pb-2 bg-transparent outline-none"
                 />
+                <input
+                  ref={thumbnailInpRef}
+                  type="file"
+                  accept="image"
+                  onChange={handleThumbnailChange}
+                  className="hidden"
+                />
+                <div
+                onClick={()=> thumbnailInpRef.current?.click()}
+                className="aspect-video w-full border rounded-xl cursor-pointer flex items-center justify-center">
+                  {thumbnailPreview ? (
+                    <img
+                      src={thumbnailPreview}
+                      alt=""
+                      className="w-full h-full object-cover rounded-xl"
+                    />
+                  ) : (
+                    <div className="flex justify-center items-center text-(--text-muted)">
+                      select Thumbnail
+                    </div>
+                  )}
+                </div>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}

@@ -47,9 +47,9 @@ const Profile = () => {
   };
 
   const { data, isError, isLoading, error } = useUserVideos(user?._id ?? "");
-  // console.log("data from profile videos:", data);
-  const videos = data?.videos ?? [];
-  // console.log(videos);
+  console.log("data recieved profile videos:", data);
+  const videos = data ?? [];
+  console.log("Vidoes array for profile:",videos);
 
   const sortedVideos = [...videos].sort((a, b) =>
     sortBy === "latest"

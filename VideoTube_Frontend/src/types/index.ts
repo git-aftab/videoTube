@@ -27,7 +27,6 @@ export interface Video {
   duration: number;
   views: number;
   isPublished: boolean;
-  owner: string;
   ownerDetails: {
     _id: string;
     username: string;

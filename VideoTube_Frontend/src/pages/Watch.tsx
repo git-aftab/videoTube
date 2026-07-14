@@ -104,9 +104,9 @@ const Watch = () => {
         {activeTab === null && <VideosStack videos={videos} />}
       </div>
 
-      <div className="px-4 sm:px-0">
+      {/* <div className="px-4 sm:px-0">
         <VideosStack videos={videos} />
-      </div>
+      </div> */}
     </div>
   );
 };
