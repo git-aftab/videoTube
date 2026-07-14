@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { MdEdit } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
 import { useAuth } from "../contexts/auth.context";
 import { useUserVideos } from "../hooks/useUserVideos";
 import LoadingState from "../components/ui/LoadingState";
@@ -13,16 +12,20 @@ const Profile = () => {
   console.log(user);
 
   const inputImgRef = useRef<HTMLInputElement | null>(null);
-  const [bannerimg, setBannerimg] = useState<string | null>(user?.coverImage);
-  const [profileImg, setProfileImg] = useState<string | null>(user?.avatar);
-  const [Error, setError] = useState("");
+  const [bannerimg, setBannerimg] = useState<string | null>(
+    user?.coverImage ?? null,
+  );
+  const [profileImg, setProfileImg] = useState<string | null>(
+    user?.avatar ?? null,
+  );
+  const [, setError] = useState("");
   const [sortBy, setSortBy] = useState("latest");
 
   useEffect(() => {
     if (!user) return;
 
-    setBannerimg(user?.coverImage);
-    setProfileImg(user.avatar);
+    setBannerimg(user.coverImage ?? null);
+    setProfileImg(user.avatar ?? null);
   }, [user]);
 
   const openFilePicker = () => {
@@ -43,9 +46,7 @@ const Profile = () => {
     setBannerimg(URL.createObjectURL(file));
   };
 
-  const handleSubmit = () => {};
-
-  const { data, isError, isLoading, error } = useUserVideos(user?._id);
+  const { data, isError, isLoading, error } = useUserVideos(user?._id ?? "");
   // console.log("data from profile videos:", data);
   const videos = data?.videos ?? [];
   // console.log(videos);
@@ -123,7 +124,7 @@ const Profile = () => {
       </div>
 
       {/* Videos */}
-      <VideosStack videos={sortedVideos}/>
+      <VideosStack videos={sortedVideos} />
     </div>
   );
 };

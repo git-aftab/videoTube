@@ -1,7 +1,7 @@
 import React from 'react'
 import { RiRobot3Fill } from "react-icons/ri";
 
-type Tab = 'description' | 'comments' | 'ai'
+type Tab = 'description' | 'comment' | 'ai'
 interface VideoTabsProps{
   activeTab: Tab | null
   onTabChange: (tab: Tab) =>  void
@@ -10,7 +10,7 @@ interface VideoTabsProps{
 const VideoTabs = ({ activeTab, onTabChange }: VideoTabsProps) => {
   const tabs: { id: Tab; label: string; icon?: React.ReactNode }[] = [
     { id: "description", label: "Description" },
-    { id: "comments", label: "Comment" },
+    { id: "comment", label: "Comment" },
     { id: "ai", label: "Ask", icon: <RiRobot3Fill /> },
   ];
 

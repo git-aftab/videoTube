@@ -1,22 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../services/axios";
-import type { Video } from "../types";
+import type { ApiResponse, Video } from "../types";
 
-// interface VidoeProps{
-//     videoId:
-// }
+const fetchVideoById = async (videoId: string): Promise<Video> => {
+  const res = await api.get<ApiResponse<Video>>(`/videos/${videoId}`);
 
-const fetchVideoById = async (videoId: string) => {
-  const res = await api.get(`/videos/${videoId}`);
-  console.log("videoId:", res.data.data);
+  if (!res.data.data) {
+    throw new Error("Video not found");
+  }
 
   return res.data.data;
 };
 
-export const useVideoById = (videoId: string) => {
+export const useVideoById = (videoId?: string) => {
   return useQuery({
     queryKey: ["video-by-id", videoId],
-    queryFn: () => fetchVideoById(videoId),
+    queryFn: () => fetchVideoById(videoId!),
     enabled: !!videoId,
     staleTime: 0, //always refetch on mount
     gcTime: 0, //don't keep in cache after unmount

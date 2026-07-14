@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
 import { ImUpload3 } from "react-icons/im";
 import { SiGoogledisplayandvideo360 } from "react-icons/si";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useUploadVideo } from "../hooks/useUploadVideo";
 import ErrorState from "../components/ui/ErrorState";
 
 const Upload = () => {
   const navigate = useNavigate();
-  const { mutate, isPending, isError, error } = useUploadVideo();
+  const { mutate, isPending, isError } = useUploadVideo();
 
   const [videoFile, setvideoFile] = useState<File | null>(null);
   const [vidoePreviewUrl, setVidoePreviewUrl] = useState<string | null>(null);
@@ -21,7 +21,7 @@ const Upload = () => {
     inputRef.current?.click();
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e: React.DragEvent<HTMLFormElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (!file) {
@@ -35,7 +35,7 @@ const Upload = () => {
     setVidoePreviewUrl(URL.createObjectURL(file));
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: React.DragEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 

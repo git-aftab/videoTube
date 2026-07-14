@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { BiLike, BiSolidLike, BiDislike, BiSolidDislike } from "react-icons/bi";
+import { useEffect, useState } from "react";
+import { BiLike, BiSolidLike, BiDislike } from "react-icons/bi";
 import { FaShare, FaRegBookmark } from "react-icons/fa6";
-import { FaBookmark } from "react-icons/fa";
 import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { useAuth } from "../../contexts/auth.context";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +30,15 @@ const VideoInteractions = ({
   const navigate = useNavigate();
   const { mutate: toggleLike, isPending } = useLikeVideo();
 
-  const [isLiked, setIsLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(0);
-  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
+  const [likesCount, setLikesCount] = useState(initialIsLikesCounts);
+  const [isSubscribed, setIsSubscribed] = useState(initialisSubscribed);
+
+  useEffect(() => {
+    setIsLiked(initialIsLiked);
+    setLikesCount(initialIsLikesCounts);
+    setIsSubscribed(initialisSubscribed);
+  }, [initialIsLiked, initialIsLikesCounts, initialisSubscribed, videoId]);
 
   const handleLike = () => {
     if (!isAuthenticated) {
@@ -61,8 +66,6 @@ const VideoInteractions = ({
   };
 
   const handleShare = () => {
-    console.log("executing the share fun");
-    
     navigator.clipboard.writeText(window.location.href);
     alert("Link copied!");
   };
@@ -76,6 +79,7 @@ const VideoInteractions = ({
           className="flex items-center gap-1.5 text-(--text-muted) hover:text-accent transition-colors duration-200 disabled:opacity-50"
         >
           {isLiked ? <BiSolidLike className="text-accent" /> : <BiLike />}
+          <span className="text-sm">{likesCount}</span>
         </button>
         <button className="flex items-center gap-1.5 text-(--text-muted) hover:text-accent transition-colors duration-200 disabled:opacity-50">
           <BiDislike />
@@ -124,22 +128,6 @@ const VideoInteractions = ({
         </button>
       </div>
     </div>
-
-    // <div className="interactions flex justify-between text-xl sm:text-2xl px-4 py-4 items-center bg-(--bg-elevated)">
-    //   <div className="flex gap-5 cursor-pointer">
-    //     <BiLike />
-    //     <BiDislike />
-    //     <FaRegBookmark />
-    //     <FaShare />
-    //   </div>
-    //   <div className="">
-    //     {/* <img src="" alt="" /> */}
-    //     <button className="flex items-center gap-3 bg-accent px-3 py-2 rounded-full hover:bg-accent/70 cursor-pointer">
-    //       <h1 className="text-sm sm:text-xl">Subscribe</h1>
-    //       <CiCirclePlus />
-    //     </button>
-    //   </div>
-    // </div>
   );
 };
 

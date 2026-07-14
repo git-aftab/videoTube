@@ -1,14 +1,19 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "../services/axios";
-import type { Comment, ApiResponse, PaginatedResponse } from "../types";
+import type { ApiResponse, Comment } from "../types";
+
+interface CommentsResponse {
+  comments: Comment[];
+  totalCount: number;
+}
 
 // Fetch
 const fetchComments = async (videoId: string): Promise<Comment[]> => {
-  const res = await api.get<ApiResponse<PaginatedResponse<Comment>>>(
+  const res = await api.get<ApiResponse<CommentsResponse[]>>(
     `/comment/${videoId}`,
   );
-  console.log(res.data.data);
-  return res.data.data.docs;
+
+  return res.data.data?.[0]?.comments ?? [];
 };
 
 export const useGetComments = (videoId: string) => {
@@ -37,7 +42,7 @@ export const useAddComment = (videoId: string) => {
   return useMutation({
     mutationFn: addComment,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["Comments", videoId] });
+      queryClient.invalidateQueries({ queryKey: ["comments", videoId] });
     },
   });
 };
@@ -65,7 +70,7 @@ export const useDelComment = (videoId: string) => {
 };
 
 // Update Comment
-const updateComment = async({
+const updateComment = async ({
   videoId,
   commentId,
   content,

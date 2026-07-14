@@ -300,7 +300,7 @@ const Register = () => {
             <InputField
               label="Confirm Password"
               name="confirmPassword"
-              type={showPassword ? "text" : "password"}
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="********"
               value={formData.confirmPassword}
               onChange={handleChange}
@@ -308,10 +308,14 @@ const Register = () => {
               rightElement={
                 <button
                   type="button"
-                  onClick={() => setshowPassword((p) => !p)}
+                  onClick={() => setshowConfirmPassword((p) => !p)}
                   className="text-(--text-muted) hover:text-(--text-primary) transition-colors"
                 >
-                  {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={15} />
+                  ) : (
+                    <Eye size={15} />
+                  )}
                 </button>
               }
             />

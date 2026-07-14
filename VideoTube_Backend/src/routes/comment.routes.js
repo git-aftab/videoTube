@@ -21,9 +21,7 @@ const router = Router();
 router
   .route("/:videoId")
   .get(
-    cacheMiddleWare((req) => {
-      `video:${req.params.videoId}`;
-    }),
+    cacheMiddleWare((req) => `video:${req.params.videoId}:comments`),
     getVideoComments,
   )
   .post(uploadLimiter,verifyJWT, ...addCommentValidator(), validate, addComment);

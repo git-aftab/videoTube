@@ -1,6 +1,4 @@
-import React from 'react'
-
-const AskAiTab = ({videoId}: {videoid:string}) => {
+const AskAiTab = ({ videoId: _videoId }: { videoId: string }) => {
   return (
     <div className="space-y-4">
       <div className="bg-[var(--bg-elevated)] rounded-2xl p-4 min-h-48 flex items-center justify-center">

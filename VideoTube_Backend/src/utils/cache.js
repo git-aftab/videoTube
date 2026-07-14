@@ -14,7 +14,7 @@ export const setCache = async (key, value, ttl = 60) => {
   try {
     await redis.set(key, JSON.stringify(value), "EX", ttl);
   } catch (error) {
-    console.error("Cache SET error:", err);
+    console.error("Cache SET error:", error);
   }
 };
 
@@ -23,6 +23,7 @@ export const deleteCache = async (pattern) => {
     const keys = await redis.keys(pattern);
     if (keys.length) {
       await redis.del(keys);
+      console.log("Cache DELETED on data update or del.")
     }
   } catch (error) {
     console.error("Cache DELETE error:", error);

@@ -5,6 +5,11 @@ export const cacheMiddleWare = (keyBuilder, ttl = 60) => {
   return async (req, res, next) => {
     try {
       const key = keyBuilder(req);
+
+      if (!key) {
+        return next();
+      }
+
       const cached = await getCache(key);
 
       if (cached) {
@@ -19,7 +24,7 @@ export const cacheMiddleWare = (keyBuilder, ttl = 60) => {
             ),
           );
       }
-      console.log("Cache MISS:", key);
+      console.log("===>Cache MISS:", key);
 
       //   Interceptor response
       const originalJson = res.json.bind(res);

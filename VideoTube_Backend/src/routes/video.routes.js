@@ -55,9 +55,7 @@ router
   .route("/:videoId")
   .get(
     verifyJWT,
-    cacheMiddleWare((req) => {
-      `video:${req.params.videoId}`;
-    }),
+    cacheMiddleWare((req) => `video:${req.params.videoId}`),
     getVideoById,
   )
   .patch(verifyJWT, verifyOwnerShip(Video, "videoId"), updateVideoDets)
@@ -70,9 +68,7 @@ router
 router.route("/:videoId/ai").post(verifyJWT, asktoVideoAI);
 
 router.route("/user/:userId").get(
-  cacheMiddleWare((req) => {
-    `videos: ${req.params.userId}`;
-  }),
+  cacheMiddleWare((req) => `videos:${req.params.userId}`),
   verifyJWT,
   getVideosByUserId,
 );

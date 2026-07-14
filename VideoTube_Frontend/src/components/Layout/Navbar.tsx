@@ -10,9 +10,6 @@ import {
   LogOut,
   LayoutDashboard,
   X,
-  Menu,
-  icons,
-  Icon,
 } from "lucide-react";
 
 import { useAuth } from "../../contexts/auth.context";

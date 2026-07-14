@@ -18,11 +18,11 @@ const Watch = () => {
   const { videoId } = useParams();
   const search = searchParams.get("search") || undefined;
 
-  const [sortBy, setsortBy] = useState("createdAt");
+  const sortBy = "createdAt";
   const [activeTab, setActiveTab] = useState<
     "description" | "comment" | "ai" | null
   >(null);
-  const [page, setPage] = useState(1);
+  const page = 1;
 
   const {
     data: recomendedVideos,
@@ -35,7 +35,7 @@ const Watch = () => {
     sortBy,
   });
   // console.log(recomendedVideos);
-  const videos = recomendedVideos?.docs;
+  const videos = recomendedVideos?.docs ?? [];
   // console.log(videos);
 
   const {
@@ -60,6 +60,10 @@ const Watch = () => {
   }
   if (isCurrVideoError) {
     return <ErrorState message={currVideoError.message} />;
+  }
+
+  if (!videoId || !currVideo) {
+    return <ErrorState message="Video not found" />;
   }
 
   return (
@@ -94,9 +98,9 @@ const Watch = () => {
         <VideoTabs activeTab={activeTab} onTabChange={handleTabChange} />
       </div>
       <div className="px-4 sm:px-0 mt-4">
-        {activeTab === "description" && <DescriptionTab video={currVideo}/>}
-        {activeTab === "comments" && <CommentTab  videoId={currVideo._id}/>}
-        {activeTab === "ai" && <AskAiTab videoId={currVideo._id}/>}
+        {activeTab === "description" && <DescriptionTab video={currVideo} />}
+        {activeTab === "comment" && <CommentTab videoId={currVideo._id} />}
+        {activeTab === "ai" && <AskAiTab videoId={currVideo._id} />}
         {activeTab === null && <VideosStack videos={videos} />}
       </div>
 

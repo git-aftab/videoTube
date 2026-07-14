@@ -1,5 +1,4 @@
 import type { Video } from '@/types';
-import React from 'react'
 
 const DescriptionTab = ({video}: {video: Video}) => {
   return (
