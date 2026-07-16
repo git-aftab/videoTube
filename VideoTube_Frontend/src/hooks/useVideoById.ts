@@ -8,6 +8,7 @@ const fetchVideoById = async (videoId: string): Promise<Video> => {
   if (!res.data.data) {
     throw new Error("Video not found");
   }
+  console.log(res.data.data)
 
   return res.data.data;
 };

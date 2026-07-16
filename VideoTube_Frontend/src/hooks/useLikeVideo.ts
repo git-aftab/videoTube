@@ -3,10 +3,12 @@ import api from "../services/axios";
 
 const LikeVideo = async (videoId: string) => {
   const res = await api.post(`like/video-like/${videoId}`);
+  console.log(res.data.data)
   return res.data.data;
 };
 
 export const useLikeVideo = () => {
+  console.log("Fetching likes")
   const queryClient = useQueryClient();
 
   return useMutation({
