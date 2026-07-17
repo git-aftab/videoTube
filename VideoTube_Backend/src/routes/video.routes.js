@@ -55,7 +55,9 @@ router
   .route("/:videoId")
   .get(
     verifyJWT,
-    cacheMiddleWare((req) => `video:${req.params.videoId}`),
+    cacheMiddleWare(
+      (req) => `video:${req.params.videoId}:user:${req.user._id}`,
+    ),
     getVideoById,
   )
   .patch(verifyJWT, verifyOwnerShip(Video, "videoId"), updateVideoDets)

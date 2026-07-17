@@ -177,6 +177,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
 const getVideoById = asyncHandler(async (req, res) => {
   //TODO: get video by id
   const { videoId } = req.params;
+  const userId = req.user?._id;
   if (!isValidObjectId(videoId)) {
     throw new ApiError(404, "Invalid videoId");
   }
@@ -229,6 +230,39 @@ const getVideoById = asyncHandler(async (req, res) => {
     {
       $addFields: {
         ownerDetails: { $first: "$ownerDetails" },
+      },
+    },
+
+    {
+      $lookup: {
+        from: "likes",
+        localField: "_id",
+        foreignField: "targetId",
+        as: "likes",
+        pipeline: [
+          {
+            $match: {
+              targetType: "Video",
+            },
+          },
+        ],
+      },
+    },
+
+    {
+      $addFields: {
+        likesCount: {
+          $size: "$likes",
+        },
+        isLiked: {
+          $in: [new mongoose.Types.ObjectId(userId), "$likes.likedBy"],
+        },
+      },
+    },
+
+    {
+      $project: {
+        likes: 0,
       },
     },
   ]);
@@ -372,9 +406,9 @@ const getVideosByUserId = asyncHandler(async (req, res) => {
               as: "ownerDetails",
             },
           },
-          {$unwind: "$ownerDetails"},
+          { $unwind: "$ownerDetails" },
           {
-            $project:{
+            $project: {
               videoFile: 1,
               title: 1,
               thumbnail: 1,
@@ -383,9 +417,9 @@ const getVideosByUserId = asyncHandler(async (req, res) => {
               "ownerDetails._id": 1,
               "ownerDetails.username": 1,
               "ownerDetails.fullName": 1,
-              "ownerDetails.avatar":1,
-            }
-          }
+              "ownerDetails.avatar": 1,
+            },
+          },
         ],
       },
     },

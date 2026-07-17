@@ -3,12 +3,17 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import mongoose, { isValidObjectId } from "mongoose";
+import { deleteCache } from "../utils/cache.js";
 
 // Controllers
 const toggleVideoLike = asyncHandler(async (req, res) => {
   // TODO: toggle like on videos
   const { videoId } = req.params;
   const userId = req.user._id;
+
+  if (!isValidObjectId(videoId)) {
+    throw new ApiError(400, "Invalid videoId");
+  }
 
   const existingLike = await Like.findOne({
     targetId: videoId,
@@ -20,10 +25,21 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
   if (existingLike) {
     await Like.findByIdAndDelete(existingLike._id); // like id
     console.log("existingLike", existingLike);
+
+    const likesCount = await Like.countDocuments({
+      targetId: videoId,
+      targetType: "Video",
+    });
+    await deleteCache(`video:${videoId}:user:*`);
+
     return res
       .status(200)
       .json(
-        new ApiResponse(200, { unlikedVideo: existingLike }, "Video unliked"),
+        new ApiResponse(
+          200,
+          { isLiked: false, likesCount, like: existingLike },
+          "Video unliked",
+        ),
       );
   }
 
@@ -34,9 +50,21 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
   });
   console.log("likedVideo", likedVideo);
 
+  const likesCount = await Like.countDocuments({
+    targetId: videoId,
+    targetType: "Video",
+  });
+  await deleteCache(`video:${videoId}:user:*`);
+
   return res
     .status(200)
-    .json(new ApiResponse(200, { likedVideo: likedVideo }, "Video Liked"));
+    .json(
+      new ApiResponse(
+        200,
+        { isLiked: true, likesCount, like: likedVideo },
+        "Video Liked",
+      ),
+    );
 });
 
 const toggleTweetLike = asyncHandler(async (req, res) => {
