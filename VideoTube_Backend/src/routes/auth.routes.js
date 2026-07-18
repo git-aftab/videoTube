@@ -56,10 +56,10 @@ router.route("/verify-email/:verificationToken").get(verifyEmail);
 // refreshAccessToken
 router.route("/refresh-token").post(authRateLimiter,refreshAccessToken);
 // forgotPassword
-router.route("/forgot-password").post(authRateLimiter,forgotPasswordRequest);
+router.route("/forgot-password").post(forgotPasswordRequest);
 
 // resetFrogotPassword
-router.route("/reset-password/:resetToken").post(authRateLimiter,resetForgotPassword);
+router.route("/reset-password/:resetToken").post(resetForgotPassword);
 
 // Secure routes --> hit after user is logged in
 // router.use(verifyJWT);

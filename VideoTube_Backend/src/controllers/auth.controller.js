@@ -17,6 +17,7 @@ import {
 } from "../queues/email.queue.js";
 import { addAvatarUploadJob } from "../queues/profile.queue.js";
 import path from "path";
+import { log } from "console";
 
 // Generate AcessToken and RefreshToken for users
 const generateAccessTokenAndRefreshToken = async (userId) => {
@@ -349,6 +350,8 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
   const { unHashedToken, hashedToken, tokenExpiry } =
     user.generateTemporaryToken();
 
+  console.log("unhashed token for forget-pass", unHashedToken)
+  console.log("uhashed token for forget-pass", hashedToken)
   user.forgotPasswordToken = hashedToken;
   user.forgotPasswordTokenExpiry = tokenExpiry;
 
@@ -367,7 +370,7 @@ const forgotPasswordRequest = asyncHandler(async (req, res) => {
   await addForgotPasswordEmailJob(
     user.email,
     user.username,
-    `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/${unHashedToken}`,
+    `${process.env.FORGOT_PASSWORD_REDIRECT_URL}/reset-password/${unHashedToken}`,
   );
 
   return res
@@ -386,10 +389,13 @@ const resetForgotPassword = asyncHandler(async (req, res) => {
   const { resetToken } = req.params;
   const { newPassword } = req.body;
 
+  console.log("reset token in params: ", resetToken)
   let hashedToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
+
+  console.log(hashedToken);
 
   const user = await User.findOne({
     forgotPasswordToken: hashedToken,
@@ -476,7 +482,9 @@ const updateCoverImage = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { user: user }, "Cover Image Updated Successfully"));
+    .json(
+      new ApiResponse(200, { user: user }, "Cover Image Updated Successfully"),
+    );
 });
 
 export {
