@@ -79,7 +79,9 @@ const Upload = () => {
 
     const data = new FormData();
     data.append("title", title);
-    data.append("thumbnail", thumbnail);
+    if (thumbnail) {
+      data.append("thumbnail", thumbnail);
+    }
     data.append("description", description);
     data.append("videoFile", videoFile);
     data.append("isPublished", Visibility ? "true" : "false");

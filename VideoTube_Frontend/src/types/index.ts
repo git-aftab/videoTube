@@ -44,6 +44,19 @@ export interface Video {
   isSubscribed?: boolean;
 }
 
+export interface Tweet {
+  _id: string;
+  content: string;
+  owner: {
+    _id: string;
+    username: string;
+    avatar?: string;
+  };
+  createdAt?: string;
+  createdAte?: string;
+  updatedAt: string;
+}
+
 // Comment
 export interface Comment {
   _id: string;
@@ -95,4 +108,3 @@ export interface PaginatedResponse<T> {
   hasNextPage: boolean;
   hasPrevPage: boolean;
 }
-

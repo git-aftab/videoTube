@@ -1,13 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import api from "../services/axios";
-// import type { Video } from "@/types";
+import type { Video } from "@/types";
 
-const fetchUserVideo = async (userId: string) => {
+const fetchUserVideo = async (userId: string): Promise<Video[]> => {
   const response = await api.get(`/videos/user/${userId}`);
-  console.log("userVides", response.data.data);
-  console.log("userVides", response.data.data.videos[0]?.videos);
-  
-  return response.data.data.videos[0]?.videos;
+  return response.data.data?.videos?.[0]?.videos ?? [];
 };
 
 export const useUserVideos = (userId: string) => {

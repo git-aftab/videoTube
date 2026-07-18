@@ -7,15 +7,14 @@ interface AskAiPayload {
 }
 
 interface AskAiResponse {
-  answer: string;
-  sources: string[];
+  response: string;
 }
 
 const AskAi = async ({
   videoId,
   question,
 }: AskAiPayload): Promise<AskAiResponse> => {
-  const res = await api.post(`/${videoId}/ai`, { question });
+  const res = await api.post(`/videos/${videoId}/ai`, { query: question });
   return res.data.data;
 };
 

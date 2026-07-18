@@ -18,6 +18,11 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Playlist from "./pages/Playlist";
 import Profile from "./pages/Profile";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Tweets from "./pages/Tweets";
+import LikedVideos from "./pages/LikedVideos";
+import Health from "./pages/Health";
 
 import "./App.css";
 import { useAuth } from "./contexts/auth.context";
@@ -96,6 +101,42 @@ const App = () => {
             </GuestRoute>
           }
         />
+        <Route
+          path="/forgot-password"
+          element={
+            <GuestRoute>
+              <ForgotPassword />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/reset-password/:resetToken"
+          element={
+            <GuestRoute>
+              <ResetPassword />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="/tweets"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Tweets />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/health"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Health />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
 
         {/* Protected — redirect to login if not authenticated */}
         <Route
@@ -104,6 +145,16 @@ const App = () => {
             <ProtectedRoute>
               <Layout>
                 <Upload />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/liked-videos"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <LikedVideos />
               </Layout>
             </ProtectedRoute>
           }

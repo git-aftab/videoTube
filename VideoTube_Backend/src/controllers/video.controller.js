@@ -12,6 +12,7 @@ import mongoose, { isValidObjectId } from "mongoose";
 import { addVideoUploadJob } from "../queues/video.queue.js";
 import { deleteCache } from "../utils/cache.js";
 import { askvideoAi } from "../services/ai/ai.service.js";
+import { Subscription } from "../models/subscription.models.js";
 
 const getAllVideos = asyncHandler(async (req, res) => {
   //TODO: get all videos based on query, sort pagination
@@ -272,12 +273,20 @@ const getVideoById = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Video not found");
   }
 
+  const finalVideo = video[0];
+  finalVideo.isSubscribed = Boolean(
+    await Subscription.exists({
+      subscriber: userId,
+      channel: finalVideo.owner,
+    }),
+  );
+
   // const finalVideo = video[0];
   // await setCache(cachekey, finalVideo, 60);
 
   return res
     .status(200)
-    .json(new ApiResponse(200, video[0], "Video Fetched Successfully"));
+    .json(new ApiResponse(200, finalVideo, "Video Fetched Successfully"));
 });
 
 const updateVideoDets = asyncHandler(async (req, res) => {

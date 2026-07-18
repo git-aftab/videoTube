@@ -66,6 +66,9 @@ const Watch = () => {
     return <ErrorState message="Video not found" />;
   }
 
+  const transcriptWordCount = currVideo.transcript?.trim().split(/\s+/).filter(Boolean).length ?? 0;
+  const isAiAvailable = transcriptWordCount > 10;
+
   return (
     <div key={videoId} className="h-full w-full">
       <div className="screen flex justify-center items-center aspect-video mb-2">
@@ -95,12 +98,18 @@ const Watch = () => {
         />
       </div>
       <div className="">
-        <VideoTabs activeTab={activeTab} onTabChange={handleTabChange} />
+        <VideoTabs
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          isAiAvailable={isAiAvailable}
+        />
       </div>
       <div className="px-4 sm:px-0 mt-4">
         {activeTab === "description" && <DescriptionTab video={currVideo} />}
         {activeTab === "comment" && <CommentTab videoId={currVideo._id} />}
-        {activeTab === "ai" && <AskAiTab videoId={currVideo._id} />}
+        {activeTab === "ai" && (
+          <AskAiTab videoId={currVideo._id} isAvailable={isAiAvailable} />
+        )}
         {activeTab === null && <VideosStack videos={videos} />}
       </div>
 

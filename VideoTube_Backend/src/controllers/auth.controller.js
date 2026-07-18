@@ -438,7 +438,7 @@ const updateAvatar = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Avatar file is required");
   }
 
-  const avatar = await uploadOnCloudinary(avatarLocalPath);
+  const avatar = await uploadImageToCloudinary(avatarLocalPath);
 
   if (!avatar) {
     throw new ApiError(500, "Error uplaading the Avatar");
@@ -462,7 +462,7 @@ const updateCoverImage = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Cover Image is required");
   }
 
-  const coverImage = await uploadOnCloudinary(coverImgLocalPath);
+  const coverImage = await uploadImageToCloudinary(coverImgLocalPath);
 
   if (!coverImage) {
     throw new ApiError(500, "Error uploading cover Image");
@@ -474,7 +474,9 @@ const updateCoverImage = asyncHandler(async (req, res) => {
     { new: true },
   ).select("-password -refreshToken");
 
-  return res.status(200, { user: user }, "Cover Image Updated Successfully");
+  return res
+    .status(200)
+    .json(new ApiResponse(200, { user: user }, "Cover Image Updated Successfully"));
 });
 
 export {

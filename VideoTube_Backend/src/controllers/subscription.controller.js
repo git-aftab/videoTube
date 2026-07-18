@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import mongoose, { isValidObjectId } from "mongoose";
 import { Subscription } from "../models/subscription.models.js";
 import { User } from "../models/user.models.js";
+import { deleteCache } from "../utils/cache.js";
 
 // controller
 const toggleSubscription = asyncHandler(async (req, res) => {
@@ -30,6 +31,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 
   if (existingSubs) {
     await Subscription.findByIdAndDelete(existingSubs._id);
+    await deleteCache(`video:*:user:${userId}`);
 
     return res
       .status(200)
@@ -40,6 +42,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
     subscriber: userId,
     channel: channelId,
   });
+  await deleteCache(`video:*:user:${userId}`);
 
   return res
     .status(201)

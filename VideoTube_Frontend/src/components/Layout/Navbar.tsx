@@ -10,6 +10,9 @@ import {
   LogOut,
   LayoutDashboard,
   X,
+  Heart,
+  Activity,
+  MessageSquareText,
 } from "lucide-react";
 
 import { useAuth } from "../../contexts/auth.context";
@@ -17,14 +20,16 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
   { label: "Home", path: "/", icon: Home },
+  { label: "Tweets", path: "/tweets", icon: MessageSquareText },
   { label: "Subscription", path: "/subscription", icon: Tv2 },
 ];
 
 const MOBILE_NAV = [
   { label: "Home", path: "/", icon: Home },
+  { label: "Tweets", path: "/tweets", icon: MessageSquareText },
   { label: "Subscription", path: "/subscription", icon: Tv2 },
   { label: "Upload", path: "/upload", icon: Upload },
-  { label: "Profile", path: "/profile", icon: User },
+  { label: "Profile", path: "/dashboard", icon: User },
 ];
 
 const Navbar = () => {
@@ -189,6 +194,26 @@ const Navbar = () => {
                       >
                         <LayoutDashboard size={15} />
                         Dashboard
+                      </Link>
+                      <Link
+                        to="/liked-videos"
+                        onClick={() => {
+                          setShowDropdown(false);
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-secondary) transition-colors"
+                      >
+                        <Heart size={15} />
+                        Liked Videos
+                      </Link>
+                      <Link
+                        to="/health"
+                        onClick={() => {
+                          setShowDropdown(false);
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-secondary) transition-colors"
+                      >
+                        <Activity size={15} />
+                        Health
                       </Link>
                       <button
                         onClick={handleLogOut}

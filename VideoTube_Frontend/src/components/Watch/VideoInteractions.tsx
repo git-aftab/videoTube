@@ -5,6 +5,7 @@ import { CiCirclePlus, CiCircleMinus } from "react-icons/ci";
 import { useAuth } from "../../contexts/auth.context";
 import { useNavigate } from "react-router-dom";
 import { useLikeVideo } from "../../hooks/useLikeVideo";
+import { useToggleSubscription } from "../../hooks/useSocialActions";
 
 interface VideoInteractionsProps {
   videoId: string;
@@ -29,6 +30,8 @@ const VideoInteractions = ({
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { mutate: toggleLike, isPending } = useLikeVideo();
+  const { mutate: toggleSubscription, isPending: isSubscriptionPending } =
+    useToggleSubscription();
 
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   const [likesCount, setLikesCount] = useState(initialIsLikesCounts);
@@ -62,7 +65,10 @@ const VideoInteractions = ({
       return;
     }
     setIsSubscribed((prev) => !prev);
-    // TODO: wire useSubscribe hook here
+
+    toggleSubscription(ownerDetails._id, {
+      onError: () => setIsSubscribed((prev) => !prev),
+    });
   };
 
   const handleShare = () => {
@@ -113,6 +119,7 @@ const VideoInteractions = ({
 
         <button
           onClick={handleSubscribe}
+          disabled={isSubscriptionPending}
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200 
           ${isSubscribed ? "bg-(--bg-elevated) border border-(--border) text-(--text-muted) hover:border-accent hover:text-accent" : "bg-accent hover:bg-(--accent-soft) text-white"}`}
         >
