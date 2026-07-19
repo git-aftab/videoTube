@@ -11,7 +11,7 @@ import {
   getVideosByUserId,
   asktoVideoAI,
 } from "../controllers/video.controller.js";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { optionalJWT, verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { cacheMiddleWare } from "../middlewares/cache.middleware.js";
 import { uploadLimiter } from "../middlewares/rateLimit.middleware.js";
@@ -54,9 +54,10 @@ router
 router
   .route("/:videoId")
   .get(
-    verifyJWT,
+    optionalJWT,
     cacheMiddleWare(
-      (req) => `video:${req.params.videoId}:user:${req.user._id}`,
+      (req) =>
+        `video:${req.params.videoId}:user:${req.user?._id?.toString() || "guest"}`,
     ),
     getVideoById,
   )

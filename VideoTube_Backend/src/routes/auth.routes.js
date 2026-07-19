@@ -106,13 +106,14 @@ router
       const options = {
         httpOnly: true,
         secure: true,
+        sameSite: "lax"
       };
 
       return res
         .status(200)
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", refreshToken, options)
-        .redirect(`${process.env.CLIENT_URL}/dashboard`);
+        .redirect(`${process.env.CLIENT_URL}/`);
     },
   );
 

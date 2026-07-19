@@ -13,7 +13,7 @@ passport.use(
 
     async (accessToken, refreshToken, profile, done) => {
       console.log("GOOGLE PROFILE:", JSON.stringify(profile, null, 2));
-      
+
       // This runs after Google redirects back to your app
       try {
         let user = await User.findOne({ email: profile._json.email });
@@ -22,6 +22,7 @@ passport.use(
           user = await User.create({
             email: profile._json.email,
             username: profile._json.email.split("@")[0],
+            fullName: profile.displayName,
             isEmailVerified: true, //Google already verified it
             loginType: "GOOGLE",
           });

@@ -179,6 +179,7 @@ const getVideoById = asyncHandler(async (req, res) => {
   //TODO: get video by id
   const { videoId } = req.params;
   const userId = req.user?._id;
+  const viewerObjectId = userId ? new mongoose.Types.ObjectId(userId) : null;
   if (!isValidObjectId(videoId)) {
     throw new ApiError(404, "Invalid videoId");
   }
@@ -255,9 +256,11 @@ const getVideoById = asyncHandler(async (req, res) => {
         likesCount: {
           $size: "$likes",
         },
-        isLiked: {
-          $in: [new mongoose.Types.ObjectId(userId), "$likes.likedBy"],
-        },
+        isLiked: viewerObjectId
+          ? {
+              $in: [viewerObjectId, "$likes.likedBy"],
+            }
+          : false,
       },
     },
 
@@ -274,12 +277,14 @@ const getVideoById = asyncHandler(async (req, res) => {
   }
 
   const finalVideo = video[0];
-  finalVideo.isSubscribed = Boolean(
-    await Subscription.exists({
-      subscriber: userId,
-      channel: finalVideo.owner,
-    }),
-  );
+  finalVideo.isSubscribed = viewerObjectId
+    ? Boolean(
+        await Subscription.exists({
+          subscriber: viewerObjectId,
+          channel: finalVideo.owner,
+        }),
+      )
+    : false;
 
   // const finalVideo = video[0];
   // await setCache(cachekey, finalVideo, 60);
