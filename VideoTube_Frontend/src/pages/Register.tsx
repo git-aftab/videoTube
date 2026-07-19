@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../services/axios";
+import api, { API_BASE_URL } from "../services/axios";
 
 interface FormData {
   fullName: string;
@@ -342,7 +342,7 @@ const Register = () => {
           <button
             type="button"
             onClick={() =>
-              (window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`)
+              (window.location.href = `${API_BASE_URL}/auth/google`)
             }
             className="w-full flex items-center justify-center gap-3 bg-(--bg-elevated) hover:bg-(--bg-elevated)/70 border border-border hover:border-(--text-muted)/30 text-(--text-primary) font-medium rounded-xl py-3 text-sm transition-all duration-200"
           >

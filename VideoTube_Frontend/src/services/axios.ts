@@ -1,41 +1,45 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
+
+export const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1";
+
+type RetryableRequestConfig = InternalAxiosRequestConfig & {
+  _retry?: boolean;
+};
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1",
+  baseURL: API_BASE_URL,
   withCredentials: true,
 });
 
-// Attach token to every req
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+const authApi = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
-// if req fails with 401, tyr refreshing token once the retry
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const orgReq = error.config;
+    const originalRequest = error.config as RetryableRequestConfig | undefined;
 
-    if (error.response?.status === 401 && !orgReq._retry) {
-      orgReq._retry = true;
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry &&
+      originalRequest.url !== "/auth/refresh-token"
+    ) {
+      originalRequest._retry = true;
 
       try {
-        await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL} || "http://localhost:3000/api/v1/"/auth/refresh-token`,
-          {},
-          { withCredentials: true },
-        );
+        await authApi.post("/auth/refresh-token");
 
-        return api(orgReq);
-      } catch (error) {
-        localStorage.removeItem("accessToken");
-        window.location.href = "/login";
+        return api(originalRequest);
+      } catch (refreshError) {
+        window.dispatchEvent(new Event("auth:unauthorized"));
+        return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(error);
   },
 );

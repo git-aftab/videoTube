@@ -7,6 +7,7 @@ import {
   useUpdateComment,
 } from "../../hooks/useComments";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useToggleCommentLike } from "../../hooks/useSocialActions";
 import type { Comment } from "../../types";
 
@@ -17,7 +18,8 @@ const CommentItem = ({
   comment: Comment;
   videoId: string;
 }) => {
-  const { user } = useAuth();
+  const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(comment.content);
   const [liked, setLiked] = useState(false);
@@ -33,6 +35,19 @@ const CommentItem = ({
       { videoId, commentId: comment._id, content: draft },
       { onSuccess: () => setIsEditing(false) },
     );
+  };
+
+  const handleLike = () => {
+    if (isAuthLoading) return;
+
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+
+    toggleCommentLike(comment._id, {
+      onSuccess: () => setLiked((prev) => !prev),
+    });
   };
 
   return (
@@ -94,12 +109,8 @@ const CommentItem = ({
 
         <div className="mt-2 flex items-center gap-2">
           <button
-            onClick={() =>
-              toggleCommentLike(comment._id, {
-                onSuccess: () => setLiked((prev) => !prev),
-              })
-            }
-            disabled={isLiking}
+            onClick={handleLike}
+            disabled={isLiking || isAuthLoading}
             className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs ${
               liked
                 ? "text-[var(--accent)]"

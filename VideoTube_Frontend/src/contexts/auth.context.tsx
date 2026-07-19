@@ -7,7 +7,7 @@ interface AuthContextType {
   user: User | null; //logged-in user, or null if guest
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (accessToken: string, userData: User) => void; //non returning function => void
+  login: (userData: User) => void; //non returning function => void
   logout: () => Promise<void>;
   updateUser: (userData: Partial<User>) => void;
 }
@@ -18,25 +18,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  //   On load checks if user is already logged(Token is LocalStorage)
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        setIsLoading(false);
-        console.log("No token available")
-        return;
-      }
       try {
-        //fetch current user profile from Backend
         const response = await api.get("/auth/current-user");
-        console.log(response.data)
         setUser(response.data.data);
-        console.log(response);
-        
       } catch (error) {
-        // token is invalid or expired - clean up
-        localStorage.removeItem("accessToken");
         setUser(null);
       } finally {
         setIsLoading(false);
@@ -44,10 +31,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     checkAuth();
+
+    const handleUnauthorized = () => setUser(null);
+    window.addEventListener("auth:unauthorized", handleUnauthorized);
+
+    return () => {
+      window.removeEventListener("auth:unauthorized", handleUnauthorized);
+    };
   }, []);
 
-  const login = (accessToken: string, userData: User) => {
-    localStorage.setItem("accessToken", accessToken);
+  const login = (userData: User) => {
     setUser(userData);
   };
 
@@ -57,7 +50,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       //even if api fails... clear the local state
     } finally {
-      localStorage.removeItem("accessToken");
       setUser(null);
     }
   };

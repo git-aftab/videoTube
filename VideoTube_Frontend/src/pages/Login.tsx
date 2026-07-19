@@ -4,7 +4,7 @@ import { Eye, EyeOff, Mail, Lock, Play } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/auth.context";
-import api from "../services/axios";
+import api, { API_BASE_URL } from "../services/axios";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,8 +38,8 @@ const Login = () => {
 
     try {
       const response = await api.post("/auth/login", formData);
-      const { accessToken, user } = response.data.data;
-      login(accessToken, user);
+      const { user } = response.data.data;
+      login(user);
       navigate("/");
     } catch (error: any) {
       setError(error.response?.data?.message || "Something went Wrong");
@@ -49,7 +49,7 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+    window.location.href = `${API_BASE_URL}/auth/google`;
   };
 
   return (
