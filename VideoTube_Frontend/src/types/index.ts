@@ -4,6 +4,7 @@ export interface User {
   username: string;
   fullName: string;
   email: string;
+  loginType: string
   avatar: string;
   coverImage?: string;
   isEmailVerified: boolean;

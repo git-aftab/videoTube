@@ -52,7 +52,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   const { channelId } = req.params;
 
-  if (!channelId) {
+  if (!isValidObjectId(channelId)) {
     throw new ApiError(404, "Invalid Channel Id");
   }
 
@@ -84,6 +84,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
               _id: "$subscriber._id",
               username: "$subscriber.username",
               avatar: "$subscriber.avatar",
+              fullName: "$subscriber.fullName",
             },
           },
         ],
@@ -151,6 +152,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {0
               "channel._id": 1,
               "channel.username": 1,
               "channel.avatar": 1,
+              "channel.fullName": 1
             },
           },
         ],

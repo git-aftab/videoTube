@@ -1,9 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Layout/Navbar";
 import Footer from "./components/Layout/Footer";
@@ -26,6 +21,7 @@ import Health from "./pages/Health";
 
 import "./App.css";
 import { useAuth } from "./contexts/auth.context";
+import EmailVerification from "./pages/EmailVerification";
 
 const GuestRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -115,6 +111,16 @@ const App = () => {
             <GuestRoute>
               <ResetPassword />
             </GuestRoute>
+          }
+        />
+        <Route
+          path="/verify-email:verificationToken"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <EmailVerification />
+              </Layout>
+            </ProtectedRoute>
           }
         />
         <Route

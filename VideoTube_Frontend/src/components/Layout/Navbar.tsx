@@ -13,6 +13,7 @@ import {
   Heart,
   Activity,
   MessageSquareText,
+  Mail
 } from "lucide-react";
 
 import { useAuth } from "../../contexts/auth.context";
@@ -30,6 +31,7 @@ const MOBILE_NAV = [
   { label: "Subscription", path: "/subscription", icon: Tv2 },
   { label: "Upload", path: "/upload", icon: Upload },
   { label: "Profile", path: "/dashboard", icon: User },
+  {label: "Email", path: '/verify-email', icon: Mail}
 ];
 
 const Navbar = () => {
@@ -206,14 +208,14 @@ const Navbar = () => {
                         Liked Videos
                       </Link>
                       <Link
-                        to="/health"
+                        to="/verify-email"
                         onClick={() => {
                           setShowDropdown(false);
                         }}
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-secondary) transition-colors"
                       >
-                        <Activity size={15} />
-                        Health
+                        <Mail size={15} />
+                        Verify Email
                       </Link>
                       <button
                         onClick={handleLogOut}
