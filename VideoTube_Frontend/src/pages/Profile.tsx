@@ -36,11 +36,11 @@ const VideoManagerRow = ({ video }: { video: Video }) => {
   };
 
   return (
-    <div className="flex flex-col gap-3 border-b border-[var(--border)] px-3 py-4 md:flex-row">
+    <div className="flex flex-col gap-4 border-b border-[var(--border)] p-4 transition-colors hover:bg-[var(--bg-elevated)]/40 md:flex-row">
       <img
         src={video.thumbnail || img}
         alt={video.title}
-        className="aspect-video w-full rounded-lg object-cover md:w-52"
+        className="aspect-video w-full rounded-xl object-cover md:w-52"
       />
 
       <div className="min-w-0 flex-1">
@@ -49,13 +49,13 @@ const VideoManagerRow = ({ video }: { video: Video }) => {
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)]"
+              className="vt-input py-2"
             />
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className="w-full resize-none rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)]"
+              className="vt-input resize-none py-2"
             />
             <div className="flex gap-2">
               <button
@@ -71,7 +71,7 @@ const VideoManagerRow = ({ video }: { video: Video }) => {
                   setDescription(video.description || "");
                   setIsEditing(false);
                 }}
-                className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs text-[var(--text-muted)]"
+                className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)]"
               >
                 Cancel
               </button>
@@ -79,12 +79,12 @@ const VideoManagerRow = ({ video }: { video: Video }) => {
           </div>
         ) : (
           <>
-            <h2 className="text-lg font-semibold">{video.title}</h2>
+            <h2 className="line-clamp-2 text-base font-semibold text-[var(--text-primary)] md:text-lg">{video.title}</h2>
             <p className="mt-1 line-clamp-2 text-sm text-[var(--text-muted)]">
               {video.description || "No description"}
             </p>
-            <p className="mt-2 text-xs text-[var(--text-muted)]">
-              {video.views} views · {video.isPublished ? "Published" : "Private"}
+            <p className="mt-2 text-xs font-medium text-[var(--text-muted)]">
+              {video.views.toLocaleString()} views · {video.isPublished ? "Published" : "Private"}
             </p>
           </>
         )}
@@ -93,7 +93,7 @@ const VideoManagerRow = ({ video }: { video: Video }) => {
       <div className="flex flex-wrap items-start gap-2 md:justify-end">
         <button
           onClick={() => setIsEditing(true)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 py-2 text-xs text-[var(--text-muted)] hover:text-[var(--accent)]"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-xs text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)]"
         >
           <Pencil size={14} />
           Edit
@@ -101,7 +101,7 @@ const VideoManagerRow = ({ video }: { video: Video }) => {
         <button
           onClick={() => togglePublish(video._id)}
           disabled={isPublishing}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 py-2 text-xs text-[var(--text-muted)] hover:text-[var(--accent)] disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-xs text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--accent)] disabled:opacity-50"
         >
           {video.isPublished ? <EyeOff size={14} /> : <Eye size={14} />}
           {video.isPublished ? "Unpublish" : "Publish"}
@@ -109,7 +109,7 @@ const VideoManagerRow = ({ video }: { video: Video }) => {
         <button
           onClick={() => deleteVideo(video._id)}
           disabled={isDeleting}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 py-2 text-xs text-[var(--text-muted)] hover:text-[var(--error)] disabled:opacity-50"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-xs text-[var(--text-muted)] transition-colors hover:border-[var(--error)] hover:text-[var(--error)] disabled:opacity-50"
         >
           <Trash2 size={14} />
           Delete
@@ -211,8 +211,9 @@ const Profile = () => {
   if (isError) return <ErrorState message={error.message} />;
 
   return (
-    <div className="flex w-full flex-col">
-      <div className="relative h-32 w-full bg-[var(--bg-elevated)] sm:h-44 md:h-56">
+    <div className="vt-page">
+      <div className="mx-auto flex w-full max-w-7xl flex-col">
+      <div className="relative h-36 w-full overflow-hidden rounded-b-2xl border-b border-[var(--border)] bg-[var(--bg-elevated)] sm:h-44 md:h-60">
         <input
           type="file"
           ref={coverRef}
@@ -230,13 +231,13 @@ const Profile = () => {
         <button
           onClick={() => coverRef.current?.click()}
           disabled={isCoverUpdating}
-          className="absolute right-3 top-3 rounded-full bg-[var(--accent-soft)] p-3 text-xl text-white hover:bg-[var(--accent)] disabled:opacity-50"
+          className="absolute right-3 top-3 rounded-xl border border-white/10 bg-black/45 p-3 text-xl text-white backdrop-blur transition-colors hover:bg-[var(--accent)] disabled:opacity-50"
         >
           <MdEdit />
         </button>
       </div>
 
-      <div className="flex flex-col gap-5 border-b border-[var(--border)] bg-[var(--bg-elevated)]/50 px-4 py-5 md:flex-row md:items-end">
+      <div className="mx-4 -mt-10 flex flex-col gap-5 rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-5 shadow-xl shadow-black/20 md:mx-6 md:flex-row md:items-end lg:mx-8">
         <div className="relative h-28 w-28 shrink-0">
           <input
             type="file"
@@ -248,19 +249,19 @@ const Profile = () => {
           <img
             src={profileImg || ""}
             alt={user?.username || "Profile"}
-            className="h-28 w-28 rounded-full border-4 border-[var(--bg-primary)] object-cover"
+            className="h-28 w-28 rounded-full border-4 border-[var(--bg-secondary)] bg-[var(--bg-elevated)] object-cover"
           />
           <button
             onClick={() => avatarRef.current?.click()}
             disabled={isAvatarUpdating}
-            className="absolute bottom-1 right-1 rounded-full bg-[var(--accent)] p-2 text-white disabled:opacity-50"
+            className="absolute bottom-1 right-1 rounded-xl bg-[var(--accent)] p-2 text-white shadow-lg shadow-accent/30 disabled:opacity-50"
           >
             <UploadCloud size={16} />
           </button>
         </div>
 
         <div className="flex-1">
-          <h1 className="text-2xl font-bold">{user?.fullName}</h1>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">{user?.fullName}</h1>
           <p className="text-sm text-[var(--text-muted)]">@{user?.username}</p>
           {message && (
             <p className="mt-3 text-sm text-[var(--success)]">{message}</p>
@@ -271,8 +272,8 @@ const Profile = () => {
         </div>
       </div>
 
-      <section className="border-b border-[var(--border)] px-4 py-5">
-        <h2 className="mb-3 text-lg font-semibold">Account</h2>
+      <section className="mx-4 mt-6 rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-5 md:mx-6 lg:mx-8">
+        <h2 className="mb-4 text-lg font-semibold text-[var(--text-primary)]">Account</h2>
         <form
           onSubmit={handlePasswordChange}
           className="grid gap-3 md:grid-cols-[1fr_1fr_auto]"
@@ -282,33 +283,33 @@ const Profile = () => {
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
             placeholder="Current password"
-            className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
+            className="vt-input"
           />
           <input
             type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
             placeholder="New password"
-            className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
+            className="vt-input"
           />
           <button
             disabled={isChangingPassword || !oldPassword || !newPassword}
-            className="rounded-xl bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white disabled:opacity-50"
+            className="vt-button-primary py-3"
           >
             Change
           </button>
         </form>
       </section>
 
-      <section className="px-4 py-5">
-        <div className="mb-3 flex items-center gap-4">
-          <h2 className="rounded border border-[var(--accent)]/30 px-3 py-2">
+      <section className="px-4 py-6 md:px-6 lg:px-8">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-xl font-bold text-[var(--text-primary)]">
             Videos
           </h2>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="rounded border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-sm"
+            className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent)] sm:w-auto"
           >
             <option value="latest" className="bg-[var(--bg-primary)]">
               Latest
@@ -319,7 +320,7 @@ const Profile = () => {
           </select>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-[var(--border)]">
+        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)]">
           {sortedVideos.length ? (
             sortedVideos.map((video) => (
               <VideoManagerRow key={video._id} video={video} />
@@ -331,6 +332,7 @@ const Profile = () => {
           )}
         </div>
       </section>
+      </div>
     </div>
   );
 };

@@ -42,13 +42,16 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center px-4 bg-[var(--bg-primary)]">
-      <div className="w-full max-w-md bg-[var(--bg-secondary)] border border-[var(--border)] rounded-2xl p-8">
+    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[var(--bg-primary)] px-4">
+      <div className="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full bg-[var(--accent)] opacity-10 blur-[120px] pointer-events-none" />
+      <div className="absolute -bottom-40 -right-40 h-[400px] w-[400px] rounded-full bg-[var(--accent)] opacity-10 blur-[120px] pointer-events-none" />
+
+      <div className="relative z-10 w-full max-w-md rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-8 shadow-xl shadow-black/20">
         <div className="flex items-center gap-2.5 mb-8">
-          <div className="w-9 h-9 bg-[var(--accent)] rounded-xl flex items-center justify-center">
+          <div className="w-9 h-9 bg-[var(--accent)] rounded-xl flex items-center justify-center shadow-lg shadow-accent/30">
             <Play size={16} fill="white" color="white" />
           </div>
-          <span className="font-bold text-xl">VideoTube</span>
+          <span className="font-syne font-bold text-xl">VideoTube</span>
         </div>
 
         <h1 className="text-2xl font-bold mb-2">Create new password</h1>
@@ -79,7 +82,7 @@ const ResetPassword = () => {
                 }
                 placeholder={index === 0 ? "New password" : "Confirm password"}
                 required
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] py-3 pl-10 pr-11 text-sm outline-none focus:border-[var(--accent)]"
+                className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] py-3 pl-10 pr-11 text-sm outline-none transition-colors focus:border-[var(--accent)]"
               />
               {index === 0 && (
                 <button
@@ -95,7 +98,7 @@ const ResetPassword = () => {
 
           <button
             disabled={isPending}
-            className="w-full rounded-xl bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-xl bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-accent/20 transition-colors hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isPending ? "Resetting..." : "Reset password"}
           </button>

@@ -11,26 +11,30 @@ const Health = () => {
   if (isError) return <ErrorState message={error.message} />;
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 py-8">
-      <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-6">
+    <div className="vt-page">
+      <div className="mx-auto w-full max-w-2xl px-4 py-8">
+      <div className="vt-card p-6">
         <div className="flex items-center justify-between gap-4">
-          <h1 className="flex items-center gap-2 text-2xl font-bold">
-            <Activity size={22} className="text-[var(--success)]" />
+          <h1 className="flex items-center gap-3 text-2xl font-bold text-[var(--text-primary)]">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--success)]/10 text-[var(--success)]">
+              <Activity size={20} />
+            </span>
             Health
           </h1>
           <button
             onClick={() => refetch()}
             disabled={isFetching}
-            className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] px-3 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] disabled:opacity-50"
+            className="vt-button-ghost"
           >
             <RefreshCw size={15} />
             Refresh
           </button>
         </div>
 
-        <pre className="mt-6 overflow-auto rounded-xl bg-[var(--bg-elevated)] p-4 text-sm text-[var(--text-primary)]">
+        <pre className="mt-6 overflow-auto rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-4 font-mono text-sm text-[var(--text-primary)]">
           {JSON.stringify(data, null, 2)}
         </pre>
+      </div>
       </div>
     </div>
   );

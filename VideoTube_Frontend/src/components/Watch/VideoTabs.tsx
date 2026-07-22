@@ -16,7 +16,7 @@ const VideoTabs = ({ activeTab, onTabChange, isAiAvailable = true }: VideoTabsPr
   ];
 
   return (
-    <div className="my-5 px-4 border border-[var(--border)] py-3 rounded-2xl text-sm sm:text-base flex gap-4 justify-start items-center">
+    <div className="flex items-center gap-2 overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-2 text-sm">
       {tabs.map(({ id, label, icon }) => (
         <button
           key={id}
@@ -25,10 +25,10 @@ const VideoTabs = ({ activeTab, onTabChange, isAiAvailable = true }: VideoTabsPr
             onTabChange(id);
           }}
           disabled={id === "ai" && !isAiAvailable}
-          className={`px-3 py-2 rounded-xl transition-colors duration-200 cursor-pointer flex items-center gap-2 font-medium disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[var(--bg-elevated)] disabled:hover:text-[var(--text-muted)] ${
+          className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-xl px-4 py-2.5 font-semibold transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[var(--bg-elevated)] disabled:hover:text-[var(--text-muted)] ${
             activeTab === id
               ? "bg-[var(--accent)] text-white"
-              : "bg-[var(--bg-elevated)] text-[var(--text-muted)] hover:bg-[var(--accent)] hover:text-white"
+              : "text-[var(--text-muted)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)]"
           }`}
           title={
             id === "ai" && !isAiAvailable

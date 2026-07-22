@@ -32,7 +32,7 @@ const TweetItem = ({ tweet }: { tweet: Tweet }) => {
   };
 
   return (
-    <article className="border-b border-[var(--border)] px-4 py-4">
+    <article className="rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4 shadow-lg shadow-black/10">
       <div className="flex items-start gap-3">
         {tweet.owner?.avatar ? (
           <img
@@ -58,7 +58,7 @@ const TweetItem = ({ tweet }: { tweet: Tweet }) => {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 rows={3}
-                className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)]"
+                className="vt-input resize-none"
               />
               <div className="flex gap-2">
                 <button
@@ -73,7 +73,7 @@ const TweetItem = ({ tweet }: { tweet: Tweet }) => {
                     setDraft(tweet.content);
                     setIsEditing(false);
                   }}
-                  className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs text-[var(--text-muted)]"
+                  className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                 >
                   Cancel
                 </button>
@@ -145,50 +145,63 @@ const Tweets = () => {
   if (isError) return <ErrorState message={error.message} />;
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <div className="sticky top-16 z-10 bg-[var(--bg-primary)]/95 backdrop-blur border-b border-[var(--border)] px-4 py-4">
-        <div className="flex items-center justify-between gap-3">
-          <h1 className="text-2xl font-bold">Tweets</h1>
-          {isAuthenticated && (
-            <button
-              onClick={() => setShowMine((prev) => !prev)}
-              className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-            >
-              {showMine ? "All tweets" : "My tweets"}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {isAuthenticated && (
-        <div className="border-b border-[var(--border)] px-4 py-4">
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={3}
-            placeholder="Share something..."
-            className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
-          />
-          <div className="mt-3 flex justify-end">
-            <button
-              onClick={handleCreate}
-              disabled={isPending || !content.trim()}
-              className="inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
-            >
-              {isPending ? <X size={15} /> : <Send size={15} />}
-              Post
-            </button>
+    <div className="vt-page">
+      <div className="mx-auto w-full max-w-3xl px-4 py-6">
+        <div className="sticky top-16 z-10 -mx-4 border-b border-[var(--border)] bg-[var(--bg-primary)]/95 px-4 py-4 backdrop-blur">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+                Tweets
+              </h1>
+              <p className="mt-1 text-sm text-[var(--text-muted)]">
+                Short updates from the VideoTube community.
+              </p>
+            </div>
+            {isAuthenticated && (
+              <button
+                onClick={() => setShowMine((prev) => !prev)}
+                className="vt-button-ghost shrink-0"
+              >
+                {showMine ? "All tweets" : "My tweets"}
+              </button>
+            )}
           </div>
         </div>
-      )}
 
-      {!visibleTweets.length ? (
-        <p className="px-4 py-10 text-center text-sm text-[var(--text-muted)]">
-          No tweets yet.
-        </p>
-      ) : (
-        visibleTweets.map((tweet) => <TweetItem key={tweet._id} tweet={tweet} />)
-      )}
+        {isAuthenticated && (
+          <div className="vt-card my-4 p-4">
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={3}
+              placeholder="Share something..."
+              className="vt-input resize-none"
+            />
+            <div className="mt-3 flex justify-end">
+              <button
+                onClick={handleCreate}
+                disabled={isPending || !content.trim()}
+                className="vt-button-primary"
+              >
+                {isPending ? <X size={15} /> : <Send size={15} />}
+                Post
+              </button>
+            </div>
+          </div>
+        )}
+
+        {!visibleTweets.length ? (
+          <p className="vt-card px-4 py-10 text-center text-sm text-[var(--text-muted)]">
+            No tweets yet.
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {visibleTweets.map((tweet) => (
+              <TweetItem key={tweet._id} tweet={tweet} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

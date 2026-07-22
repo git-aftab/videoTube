@@ -31,11 +31,11 @@ const GuestRoute = ({ children }: { children: React.ReactNode }) => {
 
 // Root layout wrapper
 const Layout = ({ children }: { children: React.ReactNode }) => (
-  <div className="min-h-screen flex flex-col bg-(--bg-primary)">
+  <div className="min-h-screen flex flex-col bg-[var(--bg-primary)]">
     <Navbar />
 
     {/* This fills the space between navbar and footer */}
-    <main className="flex-1 flex">{children}</main>
+    <main className="flex-1 flex pb-16 md:pb-0">{children}</main>
 
     <Footer />
   </div>

@@ -70,52 +70,50 @@ const Watch = () => {
   const isAiAvailable = transcriptWordCount > 10;
 
   return (
-    <div key={videoId} className="h-full w-full">
-      <div className="screen flex justify-center items-center aspect-video mb-2">
-        <video
-          key={videoId}
-          src={currVideo.videoFile}
-          controls
-          playsInline
-          preload="metadata"
-          className="w-full h-full"
-        ></video>
-      </div>
+    <div key={videoId} className="vt-page">
+      <div className="vt-container max-w-6xl space-y-5">
+        <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-black shadow-2xl shadow-black/40">
+          <video
+            key={videoId}
+            src={currVideo.videoFile}
+            controls
+            playsInline
+            preload="metadata"
+            className="aspect-video w-full bg-black"
+          ></video>
+        </div>
 
-      <div className="title border-t border-(--border) ">
-        <h1 className="text-xl md:text-2xl px-4 py-3 bg-(--bg-elevated)">
-          {currVideo.title}
-        </h1>
-      </div>
+        <section className="vt-card overflow-hidden">
+          <div className="border-b border-[var(--border)] px-4 py-4 sm:px-5">
+            <h1 className="text-xl font-bold leading-tight text-[var(--text-primary)] md:text-2xl">
+              {currVideo.title}
+            </h1>
+          </div>
 
-      <div className="">
-        <VideoInteractions
-          videoId={currVideo._id}
-          ownerDetails={currVideo.ownerDetails}
-          initialIsLiked={currVideo.isLiked}
-          initialIsLikesCounts={currVideo.likesCount}
-          initialisSubscribed={currVideo.isSubscribed}
-        />
-      </div>
-      <div className="">
+          <VideoInteractions
+            videoId={currVideo._id}
+            ownerDetails={currVideo.ownerDetails}
+            initialIsLiked={currVideo.isLiked}
+            initialIsLikesCounts={currVideo.likesCount}
+            initialisSubscribed={currVideo.isSubscribed}
+          />
+        </section>
+
         <VideoTabs
           activeTab={activeTab}
           onTabChange={handleTabChange}
           isAiAvailable={isAiAvailable}
         />
-      </div>
-      <div className="px-4 sm:px-0 mt-4">
-        {activeTab === "description" && <DescriptionTab video={currVideo} />}
-        {activeTab === "comment" && <CommentTab videoId={currVideo._id} />}
-        {activeTab === "ai" && (
-          <AskAiTab videoId={currVideo._id} isAvailable={isAiAvailable} />
-        )}
-        {activeTab === null && <VideosStack videos={videos} />}
-      </div>
 
-      {/* <div className="px-4 sm:px-0">
-        <VideosStack videos={videos} />
-      </div> */}
+        <section>
+          {activeTab === "description" && <DescriptionTab video={currVideo} />}
+          {activeTab === "comment" && <CommentTab videoId={currVideo._id} />}
+          {activeTab === "ai" && (
+            <AskAiTab videoId={currVideo._id} isAvailable={isAiAvailable} />
+          )}
+          {activeTab === null && <VideosStack videos={videos} />}
+        </section>
+      </div>
     </div>
   );
 };

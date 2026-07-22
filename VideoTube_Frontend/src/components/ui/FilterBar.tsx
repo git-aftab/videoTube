@@ -1,22 +1,26 @@
 import { useState } from "react";
 
 const FilterBar = () => {
-  const [selected, setSelected] = useState('All')
+  const [selected, setSelected] = useState("All");
 
   const categories = ["All", "Music", "Gaming", "Programming", "Sports"];
 
   return (
-    <h1 className="w-full h-10 flex gap-3 items-center ">
+    <div className="flex w-full items-center gap-2 overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-2">
       {categories.map((cat) => (
         <button
-        key={cat}
+          key={cat}
           onClick={() => setSelected(cat)}
-          className={`py-2 px-3 text-xl font-bold rounded-xl hover:bg-accent ${selected === cat? 'bg-accent text-white' : 'border border-border'}`}
+          className={`shrink-0 rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${
+            selected === cat
+              ? "bg-[var(--accent)] text-white shadow-lg shadow-accent/20"
+              : "border border-transparent text-[var(--text-muted)] hover:border-[var(--border)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)]"
+          }`}
         >
           {cat}
         </button>
       ))}
-    </h1>
+    </div>
   );
 };
 

@@ -11,9 +11,8 @@ import {
   LayoutDashboard,
   X,
   Heart,
-  Activity,
   MessageSquareText,
-  Mail
+  Mail,
 } from "lucide-react";
 
 import { useAuth } from "../../contexts/auth.context";
@@ -75,8 +74,8 @@ const Navbar = () => {
 
   return (
     <>
-    <nav className="sticky top-0 z-50 w-full bg-(--bg-primary)/90 backdrop-blur-md border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+    <nav className="sticky top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--bg-primary)]/90 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 shrink-0">
           <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center shadow-lg shadow-accent/30">
@@ -91,16 +90,16 @@ const Navbar = () => {
         {/* Search bar - hidden in mobile */}
         <form
           onSubmit={handleSearch}
-          className="hidden md:flex flex-1 max-w-md items-center bg-(--bg-elevated) border border-border rounded-xl overflow-hidden focus-within:border-accent transition-colors duration-200"
+          className="hidden flex-1 max-w-md items-center overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-colors duration-200 focus-within:border-[var(--accent)] md:flex"
         >
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search Videos..."
-            className="px-4 py-2.5 flex-1 bg-transparent text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none"
+            className="flex-1 bg-transparent px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none"
           />
-          <button className="px-4 py-2.5 text-(--text-muted) hover:text-accent transition-colors">
+          <button className="px-4 py-2.5 text-[var(--text-muted)] transition-colors hover:text-[var(--accent)]">
             <Search size={16} />{" "}
           </button>
         </form>
@@ -110,7 +109,7 @@ const Navbar = () => {
           {/* Mobile search Toggle */}
           <button
             onClick={() => setShowMobileSearch(true)}
-            className="md:hidden p-2 text-(--text-muted) hover:text-(--text-primary) transition-colors"
+            className="rounded-xl p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)] md:hidden"
           >
             <Search size={20} />
           </button>
@@ -121,7 +120,7 @@ const Navbar = () => {
               <Link
                 key={path}
                 to={path}
-                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${isActive(path) ? "text-accent bg-(--accent-soft)" : "text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-elevated)"}`}
+                className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200 ${isActive(path) ? "bg-[var(--accent-soft)] text-[var(--accent)]" : "text-[var(--text-muted)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)]"}`}
               >
                 <Icon size={15} />
                 {label}
@@ -132,7 +131,7 @@ const Navbar = () => {
           {isAuthenticated && (
             <Link
               to="/upload"
-              className="hidden md:flex items-center gap-2 bg-accent hover:bg-(--accent-hover) text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors duration-200 shadow-lg shadow-accent/20"
+              className="hidden items-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-accent/20 transition-colors duration-200 hover:bg-[var(--accent-hover)] md:flex"
             >
               <Upload size={15} />
               Upload
@@ -143,7 +142,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <div className="relative" ref={dropdownRef}>
               <button
-                className="w-9 h-9 rounded-full overflow-hidden ring-2 ring-transparent hover:ring-accent transition-all duration-200"
+                className="h-9 w-9 overflow-hidden rounded-full ring-2 ring-transparent transition-all duration-200 hover:ring-[var(--accent)]"
                 onClick={() => setShowDropdown((prev) => !prev)}
               >
                 {user?.avatar ? (
@@ -153,8 +152,8 @@ const Navbar = () => {
                     className="w-full h-full object-cover "
                   />
                 ) : (
-                  <div className="w-full h-full bg-(--bg-elevated) flex items-center justify-center">
-                    <User size={16} className="text-(--text-muted)" />
+                  <div className="flex h-full w-full items-center justify-center bg-[var(--bg-elevated)]">
+                    <User size={16} className="text-[var(--text-muted)]" />
                   </div>
                 )}
               </button>
@@ -167,10 +166,10 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 1, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-12 w-52 bg-(--bg-elevated) border border-border rounded-xl shadow-xl overflow-hidden"
+                    className="absolute right-0 top-12 w-56 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] shadow-xl shadow-black/30"
                   >
-                    <div className="px-4 py-3 border-b border-border">
-                      <p className="text-sm font-semibold text-(--text-primary) truncate">
+                    <div className="border-b border-[var(--border)] px-4 py-3">
+                      <p className="truncate text-sm font-semibold text-[var(--text-primary)]">
                         {user?.username}
                       </p>
                     </div>
@@ -182,7 +181,7 @@ const Navbar = () => {
                         onClick={() => {
                           setShowDropdown(false);
                         }}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(-bg--secondary) transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]"
                       >
                         <User size={15} />
                         Your Channel
@@ -192,7 +191,7 @@ const Navbar = () => {
                         onClick={() => {
                           setShowDropdown(false);
                         }}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-secondary) transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]"
                       >
                         <LayoutDashboard size={15} />
                         Dashboard
@@ -202,7 +201,7 @@ const Navbar = () => {
                         onClick={() => {
                           setShowDropdown(false);
                         }}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-secondary) transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]"
                       >
                         <Heart size={15} />
                         Liked Videos
@@ -212,14 +211,14 @@ const Navbar = () => {
                         onClick={() => {
                           setShowDropdown(false);
                         }}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-(--text-muted) hover:text-(--text-primary) hover:bg-(--bg-secondary) transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-secondary)] hover:text-[var(--text-primary)]"
                       >
                         <Mail size={15} />
                         Verify Email
                       </Link>
                       <button
                         onClick={handleLogOut}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-(--error) hover:bg-(--bg-secondary) transition-colors"
+                        className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-[var(--error)] transition-colors hover:bg-[var(--bg-secondary)]"
                       >
                         <LogOut size={15} />
                         Sign Out
@@ -232,7 +231,7 @@ const Navbar = () => {
           ) : (
             <Link
               to={"/login"}
-              className="text-sm font-semibold text-(--text-primary) bg-(--bg-elevated) hover:bg-border border border-border px-4 py-2 rounded-xl transition-colors duration-200"
+              className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-2 text-sm font-semibold text-[var(--text-primary)] transition-colors duration-200 hover:border-[var(--accent)]"
             >Sign in</Link>
           )}
         </div>
@@ -246,24 +245,24 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-(--bg-primary) md:hidden flex flex-col px-4 pt-6"
+            className="fixed inset-0 z-50 flex flex-col bg-[var(--bg-primary)] px-4 pt-6 md:hidden"
           >
             <form onSubmit={handleSearch} className="flex items-center gap-3">
-              <div className="flex-1 flex items-center bg-(--bg-elevated) border border-accent rounded-xl overflow-hidden">
-                <Search size={16} className="ml-4 text-(--text-muted) shrink-0" />
+              <div className="flex flex-1 items-center overflow-hidden rounded-xl border border-[var(--accent)] bg-[var(--bg-elevated)]">
+                <Search size={16} className="ml-4 shrink-0 text-[var(--text-muted)]" />
                 <input
                   autoFocus
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search videos..."
-                  className="flex-1 bg-transparent px-3 py-3 text-sm text-(--text-primary) placeholder:text-(--text-muted) focus:outline-none"
+                  className="flex-1 bg-transparent px-3 py-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none"
                 />
               </div>
               <button
                 type="button"
                 onClick={() => setShowMobileSearch(false)}
-                className="p-2 text-(--text-muted) hover:text-(--text-primary)"
+                className="rounded-xl p-2 text-[var(--text-muted)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-primary)]"
               >
                 <X size={20} />
               </button>
@@ -273,7 +272,7 @@ const Navbar = () => {
       </AnimatePresence>
 
       {/* ── Mobile bottom nav ── */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-(--bg-primary)/95 backdrop-blur-md border-t border-border">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--border)] bg-[var(--bg-primary)]/95 backdrop-blur-md md:hidden">
         <div className="flex items-center justify-around h-16 px-2">
           {MOBILE_NAV.map(({ label, path, icon: Icon }) => {
             const active = isActive(path)
@@ -286,7 +285,7 @@ const Navbar = () => {
                   to={path}
                   className="flex flex-col items-center gap-1 p-2"
                 >
-                  <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/30">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] shadow-lg shadow-accent/30">
                     <Icon size={18} color="white" />
                   </div>
                 </Link>
@@ -298,7 +297,7 @@ const Navbar = () => {
                 key={path}
                 to={path}
                 className={`flex flex-col items-center gap-1 p-2 transition-colors ${
-                  active ? 'text-accent' : 'text-(--text-muted)'
+                  active ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'
                 }`}
               >
                 <Icon size={20} />

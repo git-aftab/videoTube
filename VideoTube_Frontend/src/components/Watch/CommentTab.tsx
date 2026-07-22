@@ -51,25 +51,25 @@ const CommentItem = ({
   };
 
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-3 rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-4">
       {comment.owner.avatar ? (
         <img
           src={comment.owner.avatar}
           alt=""
-          className="w-8 h-8 rounded-full object-cover shrink-0"
+          className="h-9 w-9 shrink-0 rounded-full object-cover ring-2 ring-[var(--bg-elevated)]"
         />
       ) : (
-        <div className="w-8 h-8 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center text-xs text-[var(--text-muted)] shrink-0">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] text-xs text-[var(--text-muted)]">
           {comment.owner.fullName?.[0]?.toUpperCase()}
         </div>
       )}
 
       <div className="flex-1">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-medium text-(--text-muted)">
-            {comment.owner.username}
+          <span className="text-sm font-semibold text-[var(--text-primary)]">
+            @{comment.owner.username}
           </span>
-          <span className="text-xs text-(--text-muted)">
+          <span className="text-xs text-[var(--text-muted)]">
             {new Date(comment.createdAt).toLocaleDateString()}
           </span>
         </div>
@@ -80,7 +80,7 @@ const CommentItem = ({
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
               rows={3}
-              className="w-full resize-none rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-2 text-sm outline-none focus:border-[var(--accent)]"
+              className="vt-input resize-none"
             />
             <div className="flex gap-2">
               <button
@@ -95,14 +95,14 @@ const CommentItem = ({
                   setDraft(comment.content);
                   setIsEditing(false);
                 }}
-                className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs text-[var(--text-muted)]"
+                className="rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)]"
               >
                 Cancel
               </button>
             </div>
           </div>
         ) : (
-          <p className="text-sm text-(--text-primary) mt-1">
+          <p className="mt-2 text-sm leading-6 text-[var(--text-primary)]">
             {comment.content}
           </p>
         )}
@@ -163,35 +163,38 @@ const CommentTab = ({ videoId }: { videoId: string }) => {
   return (
     <div className="space-y-4">
       {isAuthenticated ? (
-        <div
-          className="flex flex-col gap-2
-        "
-        >
+        <div className="vt-card flex flex-col gap-3 p-4">
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             placeholder="Add a comment..."
-            className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--accent)] resize-none transition-colors"
+            className="vt-input resize-none"
             rows={3}
           />
-          <button
-            onClick={handleSubmit}
-            disabled={isPending || !content.trim()}
-            className="bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors"
-          >
-            {isPending ? "Posting..." : "Post"}
-          </button>
+          <div className="flex justify-end">
+            <button
+              onClick={handleSubmit}
+              disabled={isPending || !content.trim()}
+              className="vt-button-primary"
+            >
+              {isPending ? "Posting..." : "Post"}
+            </button>
+          </div>
         </div>
       ) : (
-        <p className="text-(--text-muted) text-sm">Sign in to comment</p>
+        <p className="vt-card px-4 py-6 text-center text-sm text-[var(--text-muted)]">
+          Sign in to comment.
+        </p>
       )}
 
       {/* Comments */}
       {isLoading ? (
-        <p className="text-(--text-muted) text-sm">Loading Comments...</p>
+        <p className="vt-card px-4 py-6 text-center text-sm text-[var(--text-muted)]">
+          Loading comments...
+        </p>
       ) : !comments?.length ? (
-        <p className="text-(--text-muted) text-sm">
-          No Comments yet Be the first!
+        <p className="vt-card px-4 py-8 text-center text-sm text-[var(--text-muted)]">
+          No comments yet. Be the first!
         </p>
       ) : (
         <div className="space-y-4">

@@ -99,14 +99,14 @@ const Upload = () => {
   return (
     <>
       {!videoFile ? (
-        <div className="flex flex-1 justify-center items-center flex-col gap-3">
+        <div className="vt-page flex flex-1 items-center justify-center px-4">
           <form
             onClick={openFilePicker}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
-            className=""
+            className="w-full max-w-xl"
           >
-            <div className="bg-accent/20  border-2 border-border hover:border-dashed hover:border-accent hover:bg-(--bg-elevated) rounded-full p-15 transition-colors duration-200 hover:text-accent/70">
+            <div className="group flex min-h-80 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border)] bg-[var(--bg-secondary)] p-8 text-center transition-colors duration-200 hover:border-[var(--accent)] hover:bg-[var(--bg-elevated)]">
               <input
                 ref={inputRef}
                 onChange={handleChange}
@@ -116,48 +116,58 @@ const Upload = () => {
                 id=""
                 className="hidden "
               />
-              <ImUpload3 size={72} className="" />
+              <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--accent-soft)] text-[var(--accent)] transition-colors group-hover:bg-[var(--accent)] group-hover:text-white">
+                <ImUpload3 size={42} />
+              </div>
+              <h1 className="text-xl font-bold text-[var(--text-primary)]">
+                Upload a video
+              </h1>
+              <p className="mt-2 max-w-sm text-sm text-[var(--text-muted)]">
+                Drag and drop a video file here, or click to choose one.
+              </p>
             </div>
           </form>
-          <h4 className="text-(--text-muted) text-xl ">
-            Drag and Drop or Click to Upload
-          </h4>
         </div>
       ) : (
-        <div className="flex flex-1 justify-center items-center px-4 py-8 ">
+        <div className="vt-page flex flex-1 justify-center px-4 py-8">
           <form onSubmit={handleSubmit} className="w-full max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.2fr_0.8fr]">
               {vidoePreviewUrl ? (
-                <div className="w-full">
+                <div className="vt-card overflow-hidden p-2">
                   <video
                     src={vidoePreviewUrl}
                     controls
-                    className="aspect-video w-full border rounded-xl border-(--accent-soft) "
+                    className="aspect-video w-full rounded-xl bg-black"
                   />
                 </div>
               ) : (
-                <div className="aspect-video w-full rounded-xl border border-(--accent-soft) flex items-center justify-center">
-                  <div className="h-full w-full border rounded-xl border-(--accent-soft)">
+                <div className="vt-card flex aspect-video w-full items-center justify-center">
+                  <div className="flex h-full w-full items-center justify-center rounded-xl border border-[var(--border)]">
                     <SiGoogledisplayandvideo360
                       size={64}
-                      className="text-(--text-muted)"
+                      className="text-[var(--text-muted)]"
                     />
                   </div>
                 </div>
               )}
               {/* From */}
-              <div className="flex flex-col gap-6">
-                <input
-                  value={title}
-                  onChange={(e) => {
-                    settitle(e.target.value);
-                  }}
-                  type="text"
-                  name="title"
-                  id="title"
-                  placeholder="Enter The Title"
-                  className="border-b-2 border-accent pb-2 bg-transparent outline-none"
-                />
+              <div className="vt-card flex flex-col gap-5 p-5">
+                <div>
+                  <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
+                    Title
+                  </label>
+                  <input
+                    value={title}
+                    onChange={(e) => {
+                      settitle(e.target.value);
+                    }}
+                    type="text"
+                    name="title"
+                    id="title"
+                    placeholder="Enter the title"
+                    className="vt-input"
+                  />
+                </div>
                 <input
                   ref={thumbnailInpRef}
                   type="file"
@@ -165,48 +175,59 @@ const Upload = () => {
                   onChange={handleThumbnailChange}
                   className="hidden"
                 />
-                <div
-                onClick={()=> thumbnailInpRef.current?.click()}
-                className="aspect-video w-full border rounded-xl cursor-pointer flex items-center justify-center">
-                  {thumbnailPreview ? (
-                    <img
-                      src={thumbnailPreview}
-                      alt=""
-                      className="w-full h-full object-cover rounded-xl"
-                    />
-                  ) : (
-                    <div className="flex justify-center items-center text-(--text-muted)">
-                      select Thumbnail
-                    </div>
-                  )}
+                <div>
+                  <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
+                    Thumbnail
+                  </label>
+                  <div
+                    onClick={()=> thumbnailInpRef.current?.click()}
+                    className="flex aspect-video w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-dashed border-[var(--border)] bg-[var(--bg-elevated)] transition-colors hover:border-[var(--accent)]"
+                  >
+                    {thumbnailPreview ? (
+                      <img
+                        src={thumbnailPreview}
+                        alt=""
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center text-sm text-[var(--text-muted)]">
+                        Select thumbnail
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={6}
-                  placeholder="Enter Description"
-                  className="w-full resize-none border-b-2 border-accent bg-transparent pb-2 outline-none"
-                />
+                <div>
+                  <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
+                    Description
+                  </label>
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    rows={6}
+                    placeholder="Enter description"
+                    className="vt-input resize-none"
+                  />
+                </div>
 
-                <div className="flex items-center gap-3">
-                  <label className="font-medium">Visibility</label>
+                <div className="flex items-center justify-between gap-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-3">
+                  <label className="text-sm font-semibold text-[var(--text-primary)]">Visibility</label>
 
                   <select
                     value={String(Visibility)}
                     onChange={(e) => {
                       setVisibility(e.target.value === "true");
                     }}
-                    className="rounded-lg border border-(--border) bg-(--bg-secondary) outline-none"
+                    className="rounded-lg border border-[var(--border)] bg-[var(--bg-secondary)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none focus:border-[var(--accent)]"
                   >
                     <option value="false">Private</option>
                     <option value="true">Public</option>
                   </select>
                 </div>
 
-                <div className="flex gap-6 transition-colors duration-200">
+                <div className="flex flex-col gap-3 pt-1 transition-colors duration-200 sm:flex-row">
                   <button
                     onClick={() => navigate("/")}
-                    className="bg-accent px-3 py-2.5 rounded-xl cursor-pointer hover:bg-accent/70"
+                    className="vt-button-ghost sm:flex-1"
                   >
                     Cancel
                   </button>
@@ -214,7 +235,7 @@ const Upload = () => {
                     onClick={handleSubmit}
                     type="submit"
                     disabled={isPending}
-                    className="bg-accent px-3 py-2.5 rounded-xl cursor-pointer hover:bg-accent/70 transition-colors duration-200"
+                    className="vt-button-primary sm:flex-1"
                   >
                     {!isPending ? "Upload" : "Uploading"}
                   </button>

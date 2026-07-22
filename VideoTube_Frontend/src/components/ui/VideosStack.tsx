@@ -12,13 +12,16 @@ const VideosStack = ({ videos }: VideosStackProp) => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div className="flex flex-col gap-3 md:px-6 ">
+    <div className="space-y-3">
+      <h2 className="px-1 text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+        More videos
+      </h2>
+      <div className="flex flex-col gap-3">
         {videos.map((video) => (
           <div
             onClick={() => navigate(`/watch/${video._id}`)}
             key={video._id}
-            className="flex gap-2 h-22 sm:h-36 md:h-44 lg:h-56 hover:bg-accent/10 rounded border-y border-border/50"
+            className="group flex cursor-pointer gap-3 rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] p-2 transition-colors hover:border-[var(--accent)]"
           >
             <img
               key={video._id}
@@ -27,14 +30,18 @@ const VideosStack = ({ videos }: VideosStackProp) => {
               onError={(e) => {
                 e.currentTarget.style.display = "none";
               }}
-              className="aspect-video border-none outline-none rounded"
+              className="aspect-video w-32 shrink-0 rounded-xl object-cover sm:w-48 md:w-56"
             />
-            <div className="">
-              <h1 className=" sm:text-xl lg:text-2xl">{video.title}</h1>
-              <h1 className="text-(--text-muted) text-xs sm:text-sm">@{video.ownerDetails.username}</h1>
-              <div className="flex gap-3 text-xs sm:text-sm lg:text-xl text-(--text-muted) ">
-                <p className="">{video.views} views</p>
-                <p className="">• {formatTimeAgo(video.createdAt)}</p>
+            <div className="min-w-0 py-1">
+              <h1 className="line-clamp-2 text-sm font-semibold leading-5 text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent)] sm:text-base">
+                {video.title}
+              </h1>
+              <h1 className="mt-1 truncate text-xs text-[var(--text-muted)] sm:text-sm">
+                @{video.ownerDetails.username}
+              </h1>
+              <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-[var(--text-muted)] sm:text-sm">
+                <p>{video.views.toLocaleString()} views</p>
+                <p>• {formatTimeAgo(video.createdAt)}</p>
               </div>
             </div>
           </div>

@@ -250,12 +250,56 @@ body {
   color: var(--text-primary);
   font-family: "DM Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
+  min-width: 320px;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+@layer utilities {
+  .font-syne {
+    font-family: "Syne", sans-serif;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  .vt-page {
+    @apply w-full bg-[var(--bg-primary)] text-[var(--text-primary)];
+  }
+
+  .vt-container {
+    @apply mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8;
+  }
+
+  .vt-card {
+    @apply rounded-2xl border border-[var(--border)] bg-[var(--bg-secondary)] shadow-lg shadow-black/20;
+  }
+
+  .vt-card-elevated {
+    @apply rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] shadow-lg shadow-black/20;
+  }
+
+  .vt-input {
+    @apply w-full rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--accent)] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .vt-button-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent/20 transition-colors hover:bg-[var(--accent-hover)] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .vt-button-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-2.5 text-sm font-semibold text-[var(--text-muted)] transition-colors hover:border-[var(--accent)] hover:text-[var(--text-primary)] disabled:cursor-not-allowed disabled:opacity-50;
+  }
 }
 
 h1,
@@ -286,4 +330,3 @@ time,
   background: var(--accent);
   border-radius: 3px;
 }
-
