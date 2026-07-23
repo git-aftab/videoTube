@@ -277,8 +277,9 @@ const resendEmailVerification = asyncHandler(async (req, res) => {
   await addVerificationEmailJob(
     user.email,
     user.username,
-    `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${unHashedToken}`,
+    `http://localhost:5173/verify-email/${unHashedToken}`,
   );
+  // `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${unHashedToken}`,
 
   return res
     .status(200)

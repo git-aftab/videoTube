@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import {
   Play,
   Search,
@@ -207,7 +207,7 @@ const Navbar = () => {
                         Liked Videos
                       </Link>
                       <Link
-                        to="/verify-email"
+                        to='/verify-email'
                         onClick={() => {
                           setShowDropdown(false);
                         }}

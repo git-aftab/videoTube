@@ -22,6 +22,7 @@ import Health from "./pages/Health";
 import "./App.css";
 import { useAuth } from "./contexts/auth.context";
 import EmailVerification from "./pages/EmailVerification";
+import IsEmailVerifiedConf from "./pages/IsEmailVerifiedConf";
 
 const GuestRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -114,11 +115,21 @@ const App = () => {
           }
         />
         <Route
-          path="/verify-email:verificationToken"
+          path="/verify-email"
           element={
             <ProtectedRoute>
               <Layout>
                 <EmailVerification />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/verify-email/:verificationToken"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <IsEmailVerifiedConf />
               </Layout>
             </ProtectedRoute>
           }

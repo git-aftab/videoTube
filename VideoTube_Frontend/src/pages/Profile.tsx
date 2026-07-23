@@ -247,6 +247,7 @@ const Profile = () => {
             className="hidden"
           />
           <img
+          key={"profile-img"}
             src={profileImg || ""}
             alt={user?.username || "Profile"}
             className="h-28 w-28 rounded-full border-4 border-[var(--bg-secondary)] bg-[var(--bg-elevated)] object-cover"

@@ -1,16 +1,13 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import { useAuth } from "../contexts/auth.context";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {useVerifyEmail} from "../hooks/useVerifyEmail"
+import { useVerifyEmail } from "../hooks/useVerifyEmail";
 
 const EmailVerification = () => {
-  const { verificationToken } = useParams();
+  const navigate = useNavigate();
   const { user } = useAuth();
 
-  const [mailSent, setMailSent] = useState(false);
-
-  const {data, isLoading, isError} = useVerifyEmail(verificationToken);
-  
+  const { mutate: sendVerifyEmailReq, isPending, isError } = useVerifyEmail();
 
   console.log(user);
   return (
@@ -52,7 +49,11 @@ const EmailVerification = () => {
                   Email is not veirifed
                 </p>
 
-                <button className="text-center cursor-pointer bg-accent w-full py-3 px-3 rounded-xl hover:bg-accent/70 transition-colors duration-200">
+                <button
+                  onClick={() => sendVerifyEmailReq()}
+                  disabled={isPending}
+                  className="text-center cursor-pointer bg-accent w-full py-3 px-3 rounded-xl hover:bg-accent/70 transition-colors duration-200"
+                >
                   Verify Email
                 </button>
               </div>

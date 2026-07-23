@@ -20,6 +20,10 @@ const userSchema = new Schema(
       lowecase: true,
       trim: true,
     },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
     fullName: {
       type: String,
       required: true,

@@ -76,7 +76,7 @@ router.route("/change-password").post(verifyJWT, changeCurrentPassword);
 //resend email verification
 router
   .route("/resend-email-verification")
-  .post(authRateLimiter,verifyJWT, resendEmailVerification);
+  .post(verifyJWT, resendEmailVerification);
 
 // update avatar
 router
